@@ -6,6 +6,7 @@ import java.util.Set;
  *	    size() > 0
  * 		isFull() <==> forall cell : cells(), getCell(coord).value() != 0
  * 		getCell(coord) <==>	cells[coord.col][coord.row]
+ * 		size() == tabCells().size()
  *      </pre>
  * @cons <pre>
  *     $DESC$ Une grille de taille n et avec les valeurs de départ
@@ -53,7 +54,7 @@ public interface IGrid {
 	int size();
 	
 	/**
-	 * Retourne le tableau de cellule
+	 * Retourne le tableau de cellules
 	 */
 	ICell[][] cells();
 	
@@ -160,4 +161,17 @@ public interface IGrid {
 	 * </pre>
 	 */
 	void removePossibility(ICoord coord, int value);	
+	
+	/**
+	 * Change le tableau de cellules par tabCells.
+	 * @pre <pre>
+	 * 		tabCells != null
+	 *		forall  cell : tabCells, cell != null
+	 *		tabCells.size() == size()
+	 * </pre>
+	 * @post <pre>
+	 * 		cells() == tabCells
+	 * </pre>
+	 */
+	void changeCells(ICell[][] tabCells);
 }
