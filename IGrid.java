@@ -4,14 +4,14 @@ import java.util.Set;
 /**
  * @inv <pre>
  *	    size() > 0
- * 		isFull() <==> forall cell : cells(), getCell(coord).value() != 0
- * 		getCell(coord) <==>	cells[coord.col][coord.row]
- * 		size() == tabCells().size()
+ * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
+ * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow]
+ * 		size() == cells().size()
  *      </pre>
  * @cons <pre>
  *     $DESC$ Une grille de taille n et avec les valeurs de départ
  *     
- *     $ARGS$ int n, Map map<ICoord coord, int value>
+ *     $ARGS$ int n, Map map<ICoord, Integer>
  *     
  *     $PRE$ 
  *         n != null && map != null 
@@ -23,7 +23,7 @@ import java.util.Set;
  *    </pre>
  * 
  * @cons <pre>
- *     $DESC$ Une grille de taille n 
+ *     $DESC$ Une grille de taille n
  *     
  *     $ARGS$ int n
  *     
@@ -32,7 +32,7 @@ import java.util.Set;
  *         
  *     $POST$ 
  *         size() == n
- * 		   cells() == null
+ * 		   cells() == null       CONTREDIT L'INVARIANT
  *    </pre>
  *    
  * @cons <pre>
@@ -103,7 +103,7 @@ public interface IGrid {
 	/**
 	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
 	 * départ
-	 * @post :
+	 * @post
 	 */
 	void reset();
 	
