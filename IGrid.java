@@ -33,8 +33,18 @@ import java.util.Set;
  *         size() == n
  * 		   cells() == null
  *    </pre>
+ *    
+ * @cons <pre>
+ *     $DESC$ Une grille de taille standard 9 
+ *         
+ *     $POST$ 
+ *         size() == DEFAULT_SIZE
+ * 		   cells() == null
+ *    </pre>
  */
 public interface IGrid {
+	
+	int DEFAULT_SIZE = 9;
 	
 	//REQUÊTE
 	/**
