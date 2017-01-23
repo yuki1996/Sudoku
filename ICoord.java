@@ -1,4 +1,4 @@
-package appli_info;
+package Sudoku;
 
 /**
  * Type des coordonnées (non mutables).

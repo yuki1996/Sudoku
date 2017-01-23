@@ -1,4 +1,4 @@
-package appli_info;
+package Sudoku;
 
 public final class Coord implements ICoord {
     
