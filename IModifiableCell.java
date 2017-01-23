@@ -1,30 +1,31 @@
-package appli_info;
+package Sudoku;
 
 /**
- * @inv
- * 0 <= getValue <= getPossibilities().size
- * pour tout i de 0 a getPossibilities().size - 1:
- * 		canTakeValue(i) <==> getPossibilities()[i]
- * getValue != 0 <==> haveValue()
- * 
  * @cons
- * $DESC$ Une cellule modifiable qui peut prendre toutes les valeurs
- * 	entre 0 et n.
- * $ARGS$ int n
+ * $DESC$ Une cellule modifiable.
  * $POST$
  * 		getValue() == 0
- *      getPossibilities().size == n
- * 		pour tout i de 0 a n - 1:
- * 			getPossibilities()[i]
- *
+ * 		forall int i : ! canTakeValue(i)
+ * 
+ * @cons
+ * $DESC$ Une cellule modifiable de valeur n.
+ * $ARGS$ int n
+ * $PRE$ n > 0
+ * $POST$
+ * 		getValue() == n
+ * 		forall int i: ! canTakeValue(i)
+ * 
+ * @cons
+ * $DESC$ Une cellule modifiable qui peut prendre comme valeur 
+ * 		les elements de l.
+ * $ARGS$ List<Integer> l
+ * $PRE$ forall Integer i in l : i > 0
+ * $POST$
+ * 		getValue() == 0
+ * 		forall Integer i in l : ! canTakeValue(i)
  */
 public interface IModifiableCell extends ICell {
 	// REQUETES
-	/**
-	 * Renvoie un tableau de booleens qui specifie les valeurs que peut
-	 * prendre la cellule.
-	 */
-	boolean[] getPossibilities();
 	
 	/**
 	 * Renvoie vrai si la cellule peut prendre la valeur n.
@@ -37,48 +38,4 @@ public interface IModifiableCell extends ICell {
 	 * Renvoie faux sinon.
 	 */
 	boolean haveValue();
-	
-	// COMMANDES
-	/**
-	 * Change la valeur de la cellule.
-	 * @pre
-	 * 	0 < n <= getPossibilities().size
-	 * 	canTakeValue(n)
-	 * @post
-	 * 	getValue() == n
-	 */
-	void takeValue(int n);
-	
-	/**
-	 * Supprime la valeur de la cellule.
-	 * @post
-	 * 	!haveValue()
-	 */
-	void removeValue();
-	
-	/**
-	 * Ajoute n comme possibilite si la cellule ne la possede pas deja.
-	 * @pre
-	 * 	0 < n <= getPossibilities().size
-	 * @post
-	 * 	canTakeValue(n);
-	 */
-	void addPossibility(int n);
-	
-	/**
-	 * Supprime la possibilite n si la cellule la possede.
-	 * @pre
-	 * 	0 < n <= getPossibilities().size
-	 * @post
-	 * 	!canTakeValue(n);
-	 */
-	void removePossibility(int n);
-	
-	/**
-	 * Met a vrai toutes les possibilites.
-	 * @post
-	 * 	pour tout i de 0 a getPossibilities().size - 1:
-	 * 		canTakeValue(n)
-	 */
-	void resetPossibilities();
 }

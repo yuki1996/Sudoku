@@ -1,4 +1,4 @@
-package appli_info;
+package Sudoku;
 import java.util.Set;
 
 /**
