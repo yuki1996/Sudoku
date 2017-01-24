@@ -7,8 +7,9 @@ import sudoku.util.ICoord;
  * @inv <pre>
  *	    size() > 0
  * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
- * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow]
+ * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
  * 		size() == cells().size()
+ * 
  *      </pre>
  * @cons <pre>
  *     $DESC$ Une grille de taille n et avec les valeurs de départ
@@ -16,7 +17,7 @@ import sudoku.util.ICoord;
  *     $ARGS$ int n, Map map<ICoord, Integer>
  *     
  *     $PRE$ 
- *         n != null && map != null 
+ *         map != null && n > 0
  *         
  *     $POST$ 
  *         size() == n
@@ -30,11 +31,10 @@ import sudoku.util.ICoord;
  *     $ARGS$ int n
  *     
  *     $PRE$ 
- *         n != null 
+ *         n > 0
  *         
  *     $POST$ 
  *         size() == n
- * 		   cells() == null       CONTREDIT L'INVARIANT
  *    </pre>
  *    
  * @cons <pre>
@@ -42,12 +42,13 @@ import sudoku.util.ICoord;
  *         
  *     $POST$ 
  *         size() == DEFAULT_SIZE
- * 		   cells() == null
  *    </pre>
  */
 public interface IGrid {
 	
 	int DEFAULT_SIZE = 9;
+	int DEFAULT_WIDTH = 3;
+	int DEFAULT_HEIGHT = 3;
 	
 	//REQUÊTE
 	/**
