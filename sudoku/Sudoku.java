@@ -57,6 +57,8 @@ public class Sudoku {
 	private JMenuItem save;
 	private JMenuItem resetMenu;
 	private JMenuItem tuto;
+	private JMenuItem resolveMenu;
+	private JMenuItem switchMenu;
 	
 	// CONSTRUCTEURS
 	public Sudoku() {
@@ -109,92 +111,75 @@ public class Sudoku {
     	text.setSize(500, 50);
     	
     	newGame = new JMenuItem("Nouveau");
-    	open = new JMenuItem("Ouvrir");;
-    	save = new JMenuItem("Sauvegarder");;
-    	resetMenu = new JMenuItem("Réinitialiser");;
-    	tuto = new JMenuItem("Tutoriel");;
+    	open = new JMenuItem("Ouvrir");
+    	save = new JMenuItem("Sauvegarder");
+    	resetMenu = new JMenuItem("Réinitialiser");
+    	tuto = new JMenuItem("Tutoriel");
+    	resolveMenu = new JMenuItem("Résoudre");
+    	switchMenu = new JMenuItem("Possibilités");
 	}
 	
-	private void placeComponents() {		
+	private void placeComponents() {
+		// barre de menu
 		mainFrame.setJMenuBar(createJMenuBar());
 		
 		// JPanel contenant la grille de sudoku
-		JPanel p = new JPanel(new GridLayout(NUMBER_VALUES, NUMBER_VALUES)); {
-			for (int i = 0; i < NUMBER_VALUES; ++i) {
-	  			for (int j = 0; j < NUMBER_VALUES; ++j) {
-	  				JPanel r = new JPanel(); {
-	  					r.add(grid[i][j]);
-	  					r.setBorder(BorderFactory.createLineBorder(Color.black));
-	  					r.setMaximumSize(new Dimension(1, 1));
-	  				}
-	  				p.add(r);
-	  			}
-	  		}
+		int n = NUMBER_VALUES / 3;
+		JPanel p = new JPanel(new GridLayout(n, n)); {
+			JPanel[][] q = new JPanel[n][n]; {
+				// disposition des régions
+				for (int i = 0; i < n; ++i) {
+					for (int j = 0; j < n; ++j) {
+						q[i][j] = new JPanel(new GridLayout(n, n)); {
+							// disposition des cellules
+							for (int k = 0; k < n; ++k) {
+					  			for (int l = 0; l < n; ++l) {
+					  				JPanel r = new JPanel(); {
+					  					r.add(grid[k][l]);
+					  					r.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+					  				}
+					  				q[i][j].add(r);
+					  				q[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+					  			}
+							}
+							p.add(q[i][j]);
+						}
+					}
+				}
+				
+			}
 		}
         mainFrame.add(p);
         
+        // Partie Est, les différentes actions possibles
         p = new JPanel(new GridLayout(4, 2)); {
-        	JPanel q = new JPanel(); {
-        		q.add(reset);
-        	}
-        	p.add(q);
-        	
-        	q = new JPanel(); {
-        		q.add(resolve);
-        	}
-        	p.add(q);
+       		// remise à zéro
+        	p.add(reset);
+        	// résoudre
+       		p.add(resolve);
         	
         	// timer
-        	q = new JPanel(); {
-        		q.add(new JLabel("Temps :"));
-        	}
-        	p.add(q);
-        	
-        	q = new JPanel(); {
-            	// TODO
-            	// timer à rajouter       	
-            	q.add(new JLabel("00:00"));
-        	}
-        	p.add(q);
-        	
-        	// progression
-        	q = new JPanel(); {
-            	q.add(new JLabel("progression : "));
-        	}
-        	p.add(q);
-        	
-        	q = new JPanel(); {
-            	q.add(new JLabel("" + progression + "%"));
-        	}
-        	p.add(q);
+    		p.add(new JLabel("Temps :"));
+    		// TODO
+        	// timer à rajouter       	
+        	p.add(new JLabel("00:00"));
+        	p.add(new JLabel("progression : "));
+    	 	p.add(new JLabel("" + progression + "%"));
+  
         	
         	// boutons
-        	q = new JPanel(new GridLayout(2, 1)); {
-        		JPanel r = new JPanel(); {
-        			r.add(switchCandidates);
-        		}
-        		q.add(r);
-        		
-        		r = new JPanel(); {
-        			r.add(help);
-        		}
-        		q.add(r);
-        	}	
-        	p.add(q);
+   			p.add(switchCandidates);
         	
-        	q = new JPanel(); {
-            	JPanel r = new JPanel(new GridLayout(NUMBER_VALUES / 3, NUMBER_VALUES / 3)); {
-            		for (int k = 0; k < NUMBER_VALUES; ++k) {
-              			r.add(digitButton[k]);
-              		}
-            	}
-            	q.add(r);
+        	JPanel q = new JPanel(new GridLayout(NUMBER_VALUES / 3, NUMBER_VALUES / 3)); {
+        		for (int k = 0; k < NUMBER_VALUES; ++k) {
+              		q.add(digitButton[k]);
+           		}            	
         	}
         	p.add(q);
         }
         mainFrame.add(p, BorderLayout.EAST);
         
-        
+        // zone de texte pour l'aide, au Sud
         JScrollPane scroll = new JScrollPane(text);
         
         mainFrame.add(scroll, BorderLayout.SOUTH);
@@ -210,11 +195,25 @@ public class Sudoku {
 				// pour l'exemple :
 				if (switchCandidates.getText().compareTo("candidats") == 0) {
 					switchCandidates.setText("possibilités");
+					switchMenu.setText("Candidats");
 				} else {
 					switchCandidates.setText("candidats");
+					switchMenu.setText("Possibilités");
 				}
 			}
 		});
+		
+		switchMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	if (switchMenu.getText().compareTo("Candidats") == 0) {
+					switchCandidates.setText("candidats");
+					switchMenu.setText("possibilités");
+				} else {
+					switchCandidates.setText("possibilités");
+					switchMenu.setText("Candidats");
+				}
+            }
+        });
 	}
   
 	/**
@@ -240,6 +239,8 @@ public class Sudoku {
             
             m = new JMenu("Édition"); {
                 m.add(resetMenu);
+                m.add(resolveMenu);
+                m.add(switchMenu);
             }
             bar.add(m);
             
