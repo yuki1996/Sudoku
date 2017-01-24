@@ -38,36 +38,36 @@ interface ICell {
 	 *      canTakeValue(n)
 	 *      isModifiable()
 	 * @post
-	 * 	    getValue() == n
+	 *      getValue() == n
 	 */
 	void setValue(int n);
 	
 	/**
 	 * Met la valeur de la cellule à 0 si elle est modifiable.
 	 * @pre
-	 * 	    isModifiable()
+	 *      isModifiable()
 	 * @post
-	 * 	    getValue() == 0
+	 *      getValue() == 0
 	 */
 	void removeValue();
 	
 	/**
 	 * Ajoute n comme possibilite si la cellule ne la posséde pas déjà.
 	 * @pre
-	 * 	    0 < n
+	 *      0 < n
 	 *      isModifiable()
 	 * @post
-	 * 	    canTakeValue(n);
+	 *      canTakeValue(n);
 	 */
 	void addPossibility(int n);
 	
 	/**
 	 * Supprime la possibilité n si la cellule la posséde.
 	 * @pre
-	 * 	    0 < n
+	 *      0 < n
 	 *      isModifiable()
 	 * @post
-	 * 	    !canTakeValue(n);
+	 *      !canTakeValue(n);
 	 */
 	void removePossibility(int n);
 }
