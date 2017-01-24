@@ -2,8 +2,8 @@ package sudoku.model;
 /**
  * Type d'une cellule.
  * @inv
- * 	    0 <= getValue()
- * 	    getValue() != 0 <==> hasValue()
+ *      0 <= getValue()
+ *      getValue() != 0 <==> hasValue()
  */
 interface ICell {
 	//REQUETES
@@ -34,8 +34,8 @@ interface ICell {
 	/**
 	 * Change la valeur de la cellule.
 	 * @pre
-	 * 	    0 <= n
-	 * 	    canTakeValue(n)
+	 *      0 <= n
+	 *      canTakeValue(n)
 	 *      isModifiable()
 	 * @post
 	 * 	    getValue() == n
