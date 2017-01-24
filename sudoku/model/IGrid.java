@@ -1,5 +1,7 @@
-package Sudoku;
+package sudoku.model;
 import java.util.Set;
+
+import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
@@ -64,7 +66,7 @@ public interface IGrid {
 	 * 		c != null
 	 * </pre>
 	 */
-	ICell getCell(Coord c);
+	ICell getCell(ICoord c);
 	
 	/**
 	 * Retourne si la grille est complète
@@ -175,3 +177,4 @@ public interface IGrid {
 	 */
 	void changeCells(ICell[][] tabCells);
 }
+

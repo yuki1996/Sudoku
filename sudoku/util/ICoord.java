@@ -1,4 +1,4 @@
-package Sudoku;
+package sudoku.util;
 
 /**
  * Type des coordonnées (non mutables).

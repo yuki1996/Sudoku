@@ -1,4 +1,4 @@
-package Sudoku;
+package sudoku.util;
 
 public final class Coord implements ICoord {
     
