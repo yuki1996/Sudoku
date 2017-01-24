@@ -2,8 +2,8 @@ package sudoku.model;
 /**
  * Type d'une cellule.
  * @inv
- * 	0 <= getValue()
- * 	getValue() != 0 <==> hasValue()
+ * 	    0 <= getValue()
+ * 	    getValue() != 0 <==> hasValue()
  */
 interface ICell {
 	//REQUETES
@@ -34,40 +34,40 @@ interface ICell {
 	/**
 	 * Change la valeur de la cellule.
 	 * @pre
-	 * 	0 <= n
-	 * 	canTakeValue(n)
-	 *  isModifiable()
+	 * 	    0 <= n
+	 * 	    canTakeValue(n)
+	 *      isModifiable()
 	 * @post
-	 * 	getValue() == n
+	 * 	    getValue() == n
 	 */
 	void setValue(int n);
 	
 	/**
 	 * Met la valeur de la cellule à 0 si elle est modifiable.
 	 * @pre
-	 * 	isModifiable()
+	 * 	    isModifiable()
 	 * @post
-	 * 	getValue() == 0
+	 * 	    getValue() == 0
 	 */
 	void removeValue();
 	
 	/**
 	 * Ajoute n comme possibilite si la cellule ne la posséde pas déjà.
 	 * @pre
-	 * 	0 < n
-	 *  isModifiable()
+	 * 	    0 < n
+	 *      isModifiable()
 	 * @post
-	 * 	canTakeValue(n);
+	 * 	    canTakeValue(n);
 	 */
 	void addPossibility(int n);
 	
 	/**
 	 * Supprime la possibilité n si la cellule la posséde.
 	 * @pre
-	 * 	0 < n
-	 *  isModifiable()
+	 * 	    0 < n
+	 *      isModifiable()
 	 * @post
-	 * 	!canTakeValue(n);
+	 * 	    !canTakeValue(n);
 	 */
 	void removePossibility(int n);
 }
