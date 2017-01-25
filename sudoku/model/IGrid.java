@@ -1,15 +1,18 @@
 package sudoku.model;
-import java.util.Set;
 
+import java.util.Set;
 import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    width() > 0  && height() > 0 && size() ==  width() * height()
+ *	    getWidth() > 0  && getHeight() > 0 && size() ==  width() * height()
  * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
  * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
- * 		size() == cells().size()
- * 
+ * 		size() == getHeight() * getWidth()
+ * 		cells().size() == size() 
+ * 		numberPossibility() == size()
+ * 		getWidthSector() == getHeight()
+ * 		getHeightSector() == getWidth()
  *      </pre>
  * @cons <pre>
  *     $DESC$ Une grille de taille width * height et avec les valeurs de départ
@@ -20,7 +23,8 @@ import sudoku.util.ICoord;
  *         map != null && width > 0  && height > 0
  *         
  *     $POST$ 
- *         size() == width * height
+ *     	   getWidth() == width
+ *         getHeight() == height
  * 		   forall coord : map, getCell(coord).value() == value
  * 								&& cells.contains(getCell(coord))
  *    </pre>
@@ -34,7 +38,8 @@ import sudoku.util.ICoord;
  *         width > 0  && height > 0
  *         
  *     $POST$ 
- *         size() == width * height
+ *         getWidth() == width
+ *         getHeight() == height
  *         forall int i,j : cells[i][j].value() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
@@ -43,7 +48,8 @@ import sudoku.util.ICoord;
  *     $DESC$ Une grille de taille standard DEFAULT_WIDTH * DEFAULT_HEIGHT 
  *         
  *     $POST$ 
- *         size() == DEFAULT_WIDTH * DEFAULT_HEIGHT;
+ *         getWidth() == DEFAULT_WIDTH 
+ *         getHeight() == DEFAULT_HEIGHT
  *         forall int i,j : cells[i][j].value() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
@@ -60,14 +66,29 @@ public interface IGrid {
 	int size();
 	
 	/**
-	 * Retourne la lageur de la grille
+	 * Retourne le nombre de régions par largeur  
 	 */
 	int getWidth();
 	
 	/**
-	 * Retourne la hauteur de la grille
+	 * Retourne le nombre de régions par hauteur
 	 */
 	int getHeight();
+	
+	/**
+	 * Retourne le nombre de possibilité de la grille
+	 */
+	int numberPossibility();
+	
+	/**
+	 * Retourne la largeur d'une région
+	 */
+	int getWidthSector();
+	
+	/**
+	 * Retourne la hauteur d'une région
+	 */
+	int getHeightSector();
 	
 	/**
 	 * Retourne le tableau de cellules

@@ -73,6 +73,19 @@ public class Grid implements IGrid {
 		return height;
 	}
 	
+	public int numberPossibility() {
+		return size();
+	}
+	
+	public int getWidthSector() {
+		return getHeight();
+	}
+	
+	public int getHeightSector() {
+		return getWidth();
+	}
+	
+	
 	public ICell[][] cells() {
 		return cells.clone();
 	}
@@ -115,11 +128,10 @@ public class Grid implements IGrid {
 		Set<ICell> set = new HashSet<ICell>();
 		int col = coord.getCol();
 		int row = coord.getRow();
-		for (int j = 0; j < getHeight(); j++) {
-			set.add(cells()[(col /getHeight()) * getHeight() + j][row]);
-		}
-		for (int j = 0; j < getWidth(); j++) {
-			set.add(cells()[col] [(row / getWidth())* getWidth() + j]);
+		for (int i = 0; i < getWidth(); i++) {
+			for (int j = 0; j < getHeight(); j++) {
+				set.add(cells()[(col /getHeight()) * getHeight() + j][(row / getWidth())* getWidth() + i]);
+			}
 		}
 		return set;
 	}
