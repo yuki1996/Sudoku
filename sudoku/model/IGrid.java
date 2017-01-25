@@ -13,6 +13,7 @@ import sudoku.util.ICoord;
  * 		numberPossibility() == size()
  * 		getWidthSector() == getHeight()
  * 		getHeightSector() == getWidth()
+ * 		cells() != null
  *      </pre>
  * @cons <pre>
  *     $DESC$ Une grille de taille width * height et avec les valeurs de départ
@@ -142,13 +143,15 @@ public interface IGrid {
 	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
 	 * départ
 	 * @post
+	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].value() == 0
 	 */
 	void reset();
 	
 	/**
 	 * Efface toutes les valeurs de la grille.
 	 * @post :<pre>
-	 * 		cells == null
+	 * 		forall int i,j : cells[i][j].value() == 0 &&
+	 *         				 cells[i][j].isModifiable()
 	 * </pre>
 	 */
 	void clear();
