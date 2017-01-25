@@ -25,6 +25,13 @@ public class Grid implements IGrid {
 		for (ICoord c : map.keySet()) {
 			cells[c.getCol()][c.getRow()] = new Cell(map.get(c).intValue(),false, size);
 		}
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (cells[i][j] == null) {
+					cells[i][j] = new Cell(size);
+				}
+			}
+		}
 	}
 	
 	public Grid(int width, int height)  {
@@ -33,6 +40,11 @@ public class Grid implements IGrid {
 		this.height = height;
 		int size = width * height;
 		cells = new ICell[size][size];
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				cells[i][j] = new Cell(size);
+			}
+		}
 	}
 	
 	public Grid() {
@@ -40,6 +52,11 @@ public class Grid implements IGrid {
 		height = IGrid.DEFAULT_HEIGHT;
 		int size = width * height;
 		cells = new ICell[size][size];
+		for (int i = 0; i < size(); i++) {
+			for (int j = 0; j < size; j++) {
+				cells[i][j] = new Cell(size);
+			}
+		}
 	}
 	
 	// REQUÊTES
@@ -55,6 +72,7 @@ public class Grid implements IGrid {
 	public int getHeight() {
 		return height;
 	}
+	
 	public ICell[][] cells() {
 		return cells.clone();
 	}
@@ -92,61 +110,82 @@ public class Grid implements IGrid {
 		return set;
 	}
 	
-	//À REVOIR
 	public Set<ICell> getSector(ICoord coord) {
 		Contract.checkCondition(coord != null);
 		Set<ICell> set = new HashSet<ICell>();
 		int col = coord.getCol();
 		int row = coord.getRow();
-		for (int j = 0; j < getWidth(); j++) {
-			set.add(cells()[(col / getWidth()* getWidth()) + j][row]);
-		}
 		for (int j = 0; j < getHeight(); j++) {
-			set.add(cells()[col] [(row / getHeight()) * getHeight() + j]);
+			set.add(cells()[(col /getHeight()) * getHeight() + j][row]);
+		}
+		for (int j = 0; j < getWidth(); j++) {
+			set.add(cells()[col] [(row / getWidth())* getWidth() + j]);
 		}
 		return set;
 	}
 
-	@Override
+	// COMMANDES
 	public void reset() {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < size(); i++) {
+			for (int j = 0; j < size(); j++) {
+				if (cells[i][j].isModifiable()) {
+					cells[i][j].removeValue();
+				}
+			}
+		}
 	}
 
-	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		cells = null;
 	}
-
-	@Override
+	
 	public void changeValue(ICoord coord, int value) {
-		// TODO Auto-generated method stub
-
+		Contract.checkCondition(coord != null && 1 <= value  && value <= size());
+		cells[coord.getCol()][coord.getRow()].setValue(value);
 	}
 
-	@Override
 	public void resetValue(ICoord coord) {
-		// TODO Auto-generated method stub
-
+		Contract.checkCondition(coord != null);
+		cells[coord.getCol()][coord.getRow()].removeValue();
 	}
 
-	@Override
 	public void addPossibility(ICoord coord, int value) {
-		// TODO Auto-generated method stub
-
+		Contract.checkCondition(coord != null && 1 <= value  && value <= size());
+		cells[coord.getCol()][coord.getRow()].addPossibility(value);
 	}
 
-	@Override
 	public void removePossibility(ICoord coord, int value) {
-		// TODO Auto-generated method stub
-
+		Contract.checkCondition(coord != null && 1 <= value  && value <= size());
+		cells[coord.getCol()][coord.getRow()].removePossibility(value);
 	}
 
-	@Override
 	public void changeCells(ICell[][] tabCells) {
-		// TODO Auto-generated method stub
+		Contract.checkCondition(tabCells != null && tabCells.length == size() 
+								&& checkTab(tabCells));
+		for (int i = 0; i < size(); i++) {
+			for (int j = 0; j < size(); j++) {
+				cells[i][j] = tabCells[i][j];
+			}
+		}
 
+	}
+	
+	//OUTILS
+	/**
+	 * Retourne vrai si toutes les cellues du tableau nt sont pas nulles.
+	 * @pre <pre>
+	 * 		tabCells != null
+	 * </pre>
+	 */
+	private boolean checkTab(ICell[][] tabCells) {
+		Contract.checkCondition(tabCells != null);
+		boolean bool = true;
+		for (ICell[] cell: cells()) {
+			for (ICell c: cell) {
+				bool &= (c != null);
+			}
+		}
+		return bool;
 	}
 
 }
