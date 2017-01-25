@@ -98,11 +98,13 @@ public interface IGrid {
 	
 	/**
 	 * Retourne la cellule à coordonnée c.
-	 * @pre: <pre>
-	 * 		c != null
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 */
-	ICell getCell(ICoord c);
+	ICell getCell(ICoord coord);
 	
 	/**
 	 * Retourne si la grille est complète
@@ -114,6 +116,8 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 */
 	Set<ICell> getRow(ICoord coord);
@@ -123,8 +127,10 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
-	 */
+	 */ 
 	Set<ICell> getCol(ICoord coord);
 	
 	/**
@@ -132,6 +138,8 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 */
 	Set<ICell> getSector(ICoord coord);
@@ -158,9 +166,11 @@ public interface IGrid {
 	
 	/**
 	 * Change la valeur de la cellule de coord par value.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
-	 * 		1 <= value <= size()
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
+	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).value == value
@@ -170,8 +180,10 @@ public interface IGrid {
 	
 	/**
 	 * Réinitialise la valeur de la cellule de coord par 0.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).value == 0
@@ -181,9 +193,11 @@ public interface IGrid {
 	
 	/**
 	 * Ajoute la valeur value dans les possibilités la cellule de coord.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
-	 * 		1 <= value <= size()
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
+	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).possibility[value]
@@ -193,9 +207,11 @@ public interface IGrid {
 	
 	/**
 	 * Supprime la valeur value dans les possibilités la cellule de coord.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
-	 * 		1 <= value <= size()
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
+	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
 	 * 		!getCell(coord).possibility[value]
