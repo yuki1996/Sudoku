@@ -21,7 +21,7 @@ public class Grid implements IGrid {
 		this.width = width;
 		this.height = height;
 		int size = width * height;
-		cells = new ICell[size()][size];
+		cells = new ICell[size][size];
 		for (ICoord c : map.keySet()) {
 			cells[c.getCol()][c.getRow()] = new Cell(map.get(c).intValue(),false, size);
 		}
