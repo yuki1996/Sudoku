@@ -52,7 +52,7 @@ public class Grid implements IGrid {
 		height = IGrid.DEFAULT_HEIGHT;
 		int size = width * height;
 		cells = new ICell[size][size];
-		for (int i = 0; i < size(); i++) {
+		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				cells[i][j] = new Cell(size);
 			}
@@ -148,7 +148,11 @@ public class Grid implements IGrid {
 	}
 
 	public void clear() {
-		cells = null;
+		for (int i = 0; i < size(); i++) {
+			for (int j = 0; j < size(); j++) {
+				cells[i][j] = new Cell(size());
+			}
+		}
 	}
 	
 	public void changeValue(ICoord coord, int value) {
