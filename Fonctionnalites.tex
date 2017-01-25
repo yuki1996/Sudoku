@@ -10,37 +10,70 @@
 \begin{document}
 \maketitle
 
-\section*{Obligatoires}
+\chapter*{Fonctionnalités}
+\section*{Modèle}
 
-\begin{enumerate}
+\begin{itemize}
+ \item prise en charge de grilles de dimensions variables
  \item fichier de chargement pour une nouvelle grille
  \item sauvegarde/chargement d'une partie
- \item réinitialisation
- \item vérification automatique des erreurs et de la victoire
- \item modifier cellule
- \begin{enumerate}
+ \item réinitialisation de la grille
+ \item vérification de la victoire automatique
+ \item vérification des conflits à la demande de l'utilisateur
+ \item modification d'une cellule
+ \begin{itemize}
   \item valeur définitive
+  \begin{itemize}
+   \item élimination des possibilité pour la valeur sur
+   la ligne, colonne et région sur lesquels se trouve la cellule
+  \end{itemize}
   \item possibilités
   \item effacement
- \end{enumerate}
+ \end{itemize}
  \item demander l'aide
- \begin{enumerate}
-  \item montrer/expliquer la règle
-  \item séléctionner la/les case(s)
- \end{enumerate}
- \item résoudre la grille (d'un seul coup ou par étape)
- \item classement par dificulté
+ \begin{itemize}
+  \item expliquer la règle
+  \item appliquer la règle
+ \end{itemize}
+ \item résoudre la grille pas à pas
+ \item résoudre complètement
+ \begin{itemize}
+  \item si la grille ne peut pas être résolue,
+  proposer une réinitialisation avant résolution
+ \end{itemize}
+ \item classement par dificulté (en fonction des heuristiques nécessaires)
+ \item timer - Optionnel
+ \item pause - Optionnel
+ \item compteur de coups - Optionnel
+ \item éditeur/générateur (par difficulté?) - Optionnel
+ \item samourai - Optionnel
+\end{itemize}
+
+\section*{Vue}
+
+\begin{itemize}
  \item raccourcis clavier
-\end{enumerate}
-
-\section*{Optionnelles}
-
-\begin{enumerate}
- \item timer
- \item compteur de coups
- \item éditeur/générateur (par difficulté?)
- \item tutoriel
- \item samourai
-\end{enumerate}
+ \item modification d'une cellule
+ \begin{itemize}
+  \item clic droit :
+  \begin{itemize}
+   \item sur une possibilité, met la valeur de la cellule à cette possibilité
+   \item sur une valeur, efface la valeur et affiche les possibilités
+  \end{itemize}
+  \item clic gauche :
+  \begin{itemize}
+   \item sur une possibilité, active/desactive la possibilité
+   \item sur une valeur, rien
+  \end{itemize}
+ \end{itemize}
+ \item demande d'aide
+ \begin{itemize}
+  \item mettre en surbrillance la/les case(s) concernées
+ \end{itemize}
+ \item surface de la grille fixe
+ \item tutoriel - Optionnel
+ \item masquer la grille pendant la pause - Optionnel
+ 
+\end{itemize}
 
 \end{document}          
