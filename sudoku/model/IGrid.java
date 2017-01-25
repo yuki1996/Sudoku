@@ -5,55 +5,69 @@ import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    size() > 0
+ *	    width() > 0  && height() > 0 && size() ==  width() * height()
  * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
- * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow]
+ * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
  * 		size() == cells().size()
+ * 
  *      </pre>
  * @cons <pre>
- *     $DESC$ Une grille de taille n et avec les valeurs de départ
+ *     $DESC$ Une grille de taille width * height et avec les valeurs de départ
  *     
- *     $ARGS$ int n, Map map<ICoord, Integer>
+ *     $ARGS$ int width, int height, Map map<ICoord, Integer>
  *     
  *     $PRE$ 
- *         n != null && map != null 
+ *         map != null && width > 0  && height > 0
  *         
  *     $POST$ 
- *         size() == n
+ *         size() == width * height
  * 		   forall coord : map, getCell(coord).value() == value
  * 								&& cells.contains(getCell(coord))
  *    </pre>
  * 
  * @cons <pre>
- *     $DESC$ Une grille de taille n
+ *     $DESC$ Une grille de taille width * height
  *     
- *     $ARGS$ int n
+ *     $ARGS$ int width, int height
  *     
  *     $PRE$ 
- *         n != null 
+ *         width > 0  && height > 0
  *         
  *     $POST$ 
- *         size() == n
- * 		   cells() == null       CONTREDIT L'INVARIANT
+ *         size() == width * height
+ *         forall int i,j : cells[i][j].value() == 0 &&
+ *         				    cells[i][j].isModifiable()
  *    </pre>
  *    
  * @cons <pre>
- *     $DESC$ Une grille de taille standard 9 
+ *     $DESC$ Une grille de taille standard DEFAULT_WIDTH * DEFAULT_HEIGHT 
  *         
  *     $POST$ 
- *         size() == DEFAULT_SIZE
- * 		   cells() == null
+ *         size() == DEFAULT_WIDTH * DEFAULT_HEIGHT;
+ *         forall int i,j : cells[i][j].value() == 0 &&
+ *         				    cells[i][j].isModifiable()
  *    </pre>
  */
 public interface IGrid {
 	
-	int DEFAULT_SIZE = 9;
+	int DEFAULT_WIDTH = 3;
+	int DEFAULT_HEIGHT = 3;
 	
-	//REQUÊTE
+	//REQUÊTES
 	/**
 	 * Retourne la taille de la grille
 	 */
 	int size();
+	
+	/**
+	 * Retourne la lageur de la grille
+	 */
+	int getWidth();
+	
+	/**
+	 * Retourne la hauteur de la grille
+	 */
+	int getHeight();
 	
 	/**
 	 * Retourne le tableau de cellules
@@ -100,7 +114,8 @@ public interface IGrid {
 	 */
 	Set<ICell> getSector(ICoord coord);
 	
-	//COMMANDE
+	
+	//COMMANDES
 	
 	/**
 	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
