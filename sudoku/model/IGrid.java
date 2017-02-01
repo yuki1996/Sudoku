@@ -2,6 +2,7 @@ package sudoku.model;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import sudoku.util.ICoord;
 
 /**
