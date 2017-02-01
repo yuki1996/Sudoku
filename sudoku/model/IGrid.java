@@ -1,15 +1,19 @@
 package sudoku.model;
-import java.util.Set;
 
+import java.util.Set;
 import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    width() > 0  && height() > 0 && size() ==  width() * height()
+ *	    getWidth() > 0  && getHeight() > 0 && size() ==  width() * height()
  * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
  * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
- * 		size() == cells().size()
- * 
+ * 		size() == getHeight() * getWidth()
+ * 		cells().size() == size() 
+ * 		numberPossibility() == size()
+ * 		getWidthSector() == getHeight()
+ * 		getHeightSector() == getWidth()
+ * 		cells() != null
  *      </pre>
  * @cons <pre>
  *     $DESC$ Une grille de taille width * height et avec les valeurs de départ
@@ -20,7 +24,8 @@ import sudoku.util.ICoord;
  *         map != null && width > 0  && height > 0
  *         
  *     $POST$ 
- *         size() == width * height
+ *     	   getWidth() == width
+ *         getHeight() == height
  * 		   forall coord : map, getCell(coord).value() == value
  * 								&& cells.contains(getCell(coord))
  *    </pre>
@@ -34,7 +39,8 @@ import sudoku.util.ICoord;
  *         width > 0  && height > 0
  *         
  *     $POST$ 
- *         size() == width * height
+ *         getWidth() == width
+ *         getHeight() == height
  *         forall int i,j : cells[i][j].value() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
@@ -43,7 +49,8 @@ import sudoku.util.ICoord;
  *     $DESC$ Une grille de taille standard DEFAULT_WIDTH * DEFAULT_HEIGHT 
  *         
  *     $POST$ 
- *         size() == DEFAULT_WIDTH * DEFAULT_HEIGHT;
+ *         getWidth() == DEFAULT_WIDTH 
+ *         getHeight() == DEFAULT_HEIGHT
  *         forall int i,j : cells[i][j].value() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
@@ -60,14 +67,29 @@ public interface IGrid {
 	int size();
 	
 	/**
-	 * Retourne la lageur de la grille
+	 * Retourne le nombre de régions par largeur  
 	 */
 	int getWidth();
 	
 	/**
-	 * Retourne la hauteur de la grille
+	 * Retourne le nombre de régions par hauteur
 	 */
 	int getHeight();
+	
+	/**
+	 * Retourne le nombre de possibilité de la grille
+	 */
+	int numberPossibility();
+	
+	/**
+	 * Retourne la largeur d'une région
+	 */
+	int getWidthSector();
+	
+	/**
+	 * Retourne la hauteur d'une région
+	 */
+	int getHeightSector();
 	
 	/**
 	 * Retourne le tableau de cellules
@@ -76,11 +98,13 @@ public interface IGrid {
 	
 	/**
 	 * Retourne la cellule à coordonnée c.
-	 * @pre: <pre>
-	 * 		c != null
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 */
-	ICell getCell(ICoord c);
+	ICell getCell(ICoord coord);
 	
 	/**
 	 * Retourne si la grille est complète
@@ -92,6 +116,8 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 */
 	Set<ICell> getRow(ICoord coord);
@@ -101,8 +127,10 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
-	 */
+	 */ 
 	Set<ICell> getCol(ICoord coord);
 	
 	/**
@@ -110,6 +138,8 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 */
 	Set<ICell> getSector(ICoord coord);
@@ -121,22 +151,26 @@ public interface IGrid {
 	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
 	 * départ
 	 * @post
+	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].value() == 0
 	 */
 	void reset();
 	
 	/**
 	 * Efface toutes les valeurs de la grille.
 	 * @post :<pre>
-	 * 		cells == null
+	 * 		forall int i,j : cells[i][j].value() == 0 &&
+	 *         				 cells[i][j].isModifiable()
 	 * </pre>
 	 */
 	void clear();
 	
 	/**
 	 * Change la valeur de la cellule de coord par value.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
-	 * 		1 <= value <= size()
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
+	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).value == value
@@ -146,8 +180,10 @@ public interface IGrid {
 	
 	/**
 	 * Réinitialise la valeur de la cellule de coord par 0.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).value == 0
@@ -157,9 +193,11 @@ public interface IGrid {
 	
 	/**
 	 * Ajoute la valeur value dans les possibilités la cellule de coord.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
-	 * 		1 <= value <= size()
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
+	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).possibility[value]
@@ -169,9 +207,11 @@ public interface IGrid {
 	
 	/**
 	 * Supprime la valeur value dans les possibilités la cellule de coord.
-	 * @pre <pre>
+	 * @pre : <pre>
 	 * 		coord != null
-	 * 		1 <= value <= size()
+	 * 		0 <= coord.getCol() < size()
+	 * 		0 <= coord.getRow() < size()
+	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
 	 * 		!getCell(coord).possibility[value]
