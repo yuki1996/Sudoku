@@ -192,7 +192,7 @@ public class Grid implements IGrid {
 
 	//OUTILS
 	/**
-	 * Retourne vrai si toutes les cellues du tableau nt sont pas nulles.
+	 * Retourne vrai si toutes les cellules du tableau ne sont pas nulles.
 	 * @pre <pre>
 	 * 		tabCells != null
 	 * </pre>

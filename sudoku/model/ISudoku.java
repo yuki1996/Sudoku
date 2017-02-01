@@ -2,8 +2,8 @@ package sudoku.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
+
 import sudoku.util.ICoord;
 
 /**
@@ -36,7 +36,7 @@ import sudoku.util.ICoord;
  *    </pre>
  *    
  */
-interface ISudoku extends Serializable {
+interface ISudoku {
 	
 	//REQUÊTES
 	/**

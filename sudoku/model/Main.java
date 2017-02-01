@@ -8,14 +8,18 @@ import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
 
-public class main {
+public final class Main {
+	
+	private Main() {
+		// rien
+	}
 
-	public static void main(String arg[]) {
+	public static void main(String[] args) {
 		
 		//Creation
 		Map<ICoord, Integer> map = new HashMap<ICoord, Integer>();
 		ajout(map);
-		IGrid grille = new Grid(3, 3, map);
+		IGrid grille = new Grid(3, 3);
 		
 		//affichage de la création
 		affiche_grille(grille);
