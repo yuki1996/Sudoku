@@ -1,6 +1,8 @@
 package sudoku.model;
 
+import java.io.Serializable;
 import java.util.Set;
+
 import sudoku.util.ICoord;
 
 /**
@@ -55,7 +57,7 @@ import sudoku.util.ICoord;
  *         				    cells[i][j].isModifiable()
  *    </pre>
  */
-public interface IGrid {
+public interface IGrid extends Serializable {
 	
 	int DEFAULT_WIDTH = 3;
 	int DEFAULT_HEIGHT = 3;
