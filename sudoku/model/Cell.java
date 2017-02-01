@@ -21,7 +21,7 @@ public class Cell implements ICell {
 	}
 	
 	public Cell(int value, boolean modifiable, int cardinal) {
-		Contract.checkCondition(cardinal > 0, "value doit être strictement positif.");
+		Contract.checkCondition(cardinal > 0, "cardinal doit être strictement positif.");
 		Contract.checkCondition(value > 0 && value <= cardinal, 
 				"value doit être strictement positif.");
 		this.value = value;
@@ -34,7 +34,7 @@ public class Cell implements ICell {
 	
 	public Cell(boolean []possibilities) {
 		Contract.checkCondition(possibilities.length > 0, 
-				"value doit être strictement positif.");
+				"le tableau doit être strictement positif.");
 		value = 0;
 		modifiable = true;
 		this.possibilities = possibilities.clone();

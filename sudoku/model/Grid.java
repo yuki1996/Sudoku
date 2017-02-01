@@ -1,7 +1,6 @@
 package sudoku.model;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import sudoku.util.ICoord;
 import util.Contract;
@@ -15,14 +14,7 @@ public class Grid implements IGrid {
 	
 	
 	// CONSTRUCTEURS
-	
-	public Grid(int width, int height, Map<ICoord, Integer> map) {
-		Contract.checkCondition(map != null && width > 0 && height > 0);
-		this.width = width;
-		this.height = height;
-		int size = width * height;
-		cells = new ICell[size][size];
-		for (ICoord c : map.keySet()) {
+		/*for (ICoord c : map.keySet()) {
 			cells[c.getCol()][c.getRow()] = new Cell(map.get(c).intValue(),false, size);
 		}
 		for (int i = 0; i < size; i++) {
@@ -31,25 +23,12 @@ public class Grid implements IGrid {
 					cells[i][j] = new Cell(size);
 				}
 			}
-		}
-	}
+		}*/
 	
 	public Grid(int width, int height)  {
 		Contract.checkCondition(width > 0 && height > 0);
 		this.width = width;
 		this.height = height;
-		int size = width * height;
-		cells = new ICell[size][size];
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				cells[i][j] = new Cell(size);
-			}
-		}
-	}
-	
-	public Grid() {
-		width = IGrid.DEFAULT_WIDTH;
-		height = IGrid.DEFAULT_HEIGHT;
 		int size = width * height;
 		cells = new ICell[size][size];
 		for (int i = 0; i < size; i++) {
@@ -92,8 +71,7 @@ public class Grid implements IGrid {
 
 	public ICell getCell(ICoord coord) {
 		Contract.checkCondition(coord != null 
-			&& 0 <= coord.getCol() && coord.getCol() < size()
-			&& 0 <= coord.getRow() && coord.getRow() < size());
+			&& isValidCoord(coord));
 		return cells[coord.getCol()][coord.getRow()];
 	}
 
@@ -109,8 +87,7 @@ public class Grid implements IGrid {
 
 	public Set<ICell> getRow(ICoord coord) {
 		Contract.checkCondition(coord != null
-			&& 0 <= coord.getCol() && coord.getCol() < size()
-			&& 0 <= coord.getRow() && coord.getRow() < size());
+			&& isValidCoord(coord));
 		Set<ICell> set = new HashSet<ICell>();
 		for (int i = 0; i < size(); i++) {
 			set.add(cells()[i][coord.getRow()]);
@@ -120,8 +97,7 @@ public class Grid implements IGrid {
 
 	public Set<ICell> getCol(ICoord coord) {
 		Contract.checkCondition(coord != null
-				&& 0 <= coord.getCol() && coord.getCol() < size()
-				&& 0 <= coord.getRow() && coord.getRow() < size());
+				&& isValidCoord(coord));
 		Set<ICell> set = new HashSet<ICell>();
 		for (int i = 0; i < size(); i++) {
 			set.add(cells()[coord.getCol()][i]);
@@ -131,8 +107,7 @@ public class Grid implements IGrid {
 	
 	public Set<ICell> getSector(ICoord coord) {
 		Contract.checkCondition(coord != null
-				&& 0 <= coord.getCol() && coord.getCol() < size()
-				&& 0 <= coord.getRow() && coord.getRow() < size());
+				&& isValidCoord(coord));
 		Set<ICell> set = new HashSet<ICell>();
 		int col = coord.getCol();
 		int row = coord.getRow();
@@ -143,7 +118,23 @@ public class Grid implements IGrid {
 		}
 		return set;
 	}
+	
+	public boolean isValidCoord(ICoord coord) {
+		Contract.checkCondition(coord != null);
+		return 0 <= coord.getCol() && coord.getCol() < size()
+				&& 0 <= coord.getRow() && coord.getRow() < size();
+				
+	}
 
+	public Set<ICell> getUnitCells(ICoord coord) {
+		Contract.checkCondition(coord != null
+				&& isValidCoord(coord));
+		Set<ICell> set = getRow(coord);
+		set.addAll(getSector(coord));
+		set.addAll(getCol(coord));
+		return set;
+	}
+	
 	// COMMANDES
 	public void reset() {
 		for (int i = 0; i < size(); i++) {
@@ -165,16 +156,14 @@ public class Grid implements IGrid {
 	
 	public void changeValue(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
-				&& 0 <= coord.getCol() && coord.getCol() < size()
-				&& 0 <= coord.getRow() && coord.getRow() < size()
+				&& isValidCoord(coord)
 				&& 1 <= value  && value < numberPossibility());
 		cells[coord.getCol()][coord.getRow()].setValue(value);
 	}
 
 	public void resetValue(ICoord coord) {
 		Contract.checkCondition(coord != null
-				&& 0 <= coord.getCol() && coord.getCol() < size()
-				&& 0 <= coord.getRow() && coord.getRow() < size());
+				&& isValidCoord(coord));
 		cells[coord.getCol()][coord.getRow()].removeValue();
 	}
 
@@ -185,8 +174,7 @@ public class Grid implements IGrid {
 
 	public void removePossibility(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
-				&& 0 <= coord.getCol() && coord.getCol() < size()
-				&& 0 <= coord.getRow() && coord.getRow() < size()
+				&& isValidCoord(coord)
 				&& 1 <= value  && value <= numberPossibility());
 		cells[coord.getCol()][coord.getRow()].removePossibility(value);
 	}
@@ -201,7 +189,7 @@ public class Grid implements IGrid {
 		}
 
 	}
-	
+
 	//OUTILS
 	/**
 	 * Retourne vrai si toutes les cellues du tableau nt sont pas nulles.
