@@ -4,6 +4,12 @@ import java.util.List;
 
 import sudoku.util.ICoord;
 
+/**
+ * @inv <pre>
+ * 		isWin() <==> getGrid().isFull() && check().isEmpty()
+ * 		isModifiableCell(c) <==> getGrid().getCell(c).isModifiable()
+ * </pre>
+ */
 interface ISudoku {
 	
 	//REQUÊTES
@@ -18,7 +24,7 @@ interface ISudoku {
 	boolean isWin();
 	
 	/**
-	 * Retourne si une cellule à coordonnée coord est modifiable.
+	 * Retourne si la cellule de coordonnée coord est modifiable.
 	 * 
 	 * @pre <pre>
 	 * 		coord != null
@@ -29,13 +35,14 @@ interface ISudoku {
 	boolean isModifiableCell(ICoord coord);
 	
 	/**
-	 * Retourne la liste des conflits par coordonnées.
+	 * Retourne la liste des coordonnées des cellules ayant une valeur différente
+	 * de la solution.
 	 */
 	List<ICoord> check(); 
 	
 	//COMMANDES
 	/**
-	 * Mise à jour possibilités par rapport ajout de valeur.
+	 * Mise à jour des possibilités par méthode triviale.
 	 */
 	void updateEasyPossibilities();
 	
@@ -46,9 +53,11 @@ interface ISudoku {
 	 * 		0 <= c.getCol() < getGrid().size()
 	 * 		0 <= c.getRow() < getGrid().size()
 	 * 		1 <= n <= getGrid().numberPossibility()
+	 * 		isModifiableCell(c);
+	 * 		getGrid().getCell(c).canTakeValue(n)
 	 * </pre>
 	 * @post <pre>
-	 * 		getGrid().getCell(c).value() == n
+	 * 		getGrid().getCell(c).getValue() == n
 	 * </pre>
 	 */
 	void setValue(ICoord c, int n);
@@ -59,9 +68,10 @@ interface ISudoku {
 	 * 		c != null
 	 * 		0 <= c.getCol() < getGrid().getGridsize()
 	 * 		0 <= c.getRow() < getGrid().size()
+	 * 		isModifiableCell(c);
 	 * </pre>
 	 * @post <pre>
-	 * 		getGrid().getCell(c).value() == 0
+	 * 		! getGrid().getCell(c).hasValue()
 	 * </pre>
 	 */
 	void removeValue(ICoord c);
@@ -73,6 +83,7 @@ interface ISudoku {
 	 * 		0 <= c.getCol() < getGrid().size()
 	 * 		0 <= c.getRow() < getGrid().size()
 	 * 		1 <= n <= getGrid().numberPossibility()
+	 * 		isModifiableCell(c);
 	 * </pre>
 	 * @post <pre>
 	 * 		getGrid().getCell(c).possibility[n]
@@ -87,6 +98,7 @@ interface ISudoku {
 	 * 		0 <= c.getCol() < getGrid().size()
 	 * 		0 <= c.getRow() < getGrid().size()
 	 * 		1 <= n <= getGrid().numberPossibility()
+	 * 		isModifiableCell(c);
 	 * </pre>
 	 * @post <pre>
 	 * 		! getGrid().getCell(c).possibility[n]
@@ -107,7 +119,7 @@ interface ISudoku {
 	/**
 	 * Résous pas à pas la grille
 	 */
-	void Resolve();
+	void resolve();
 	
 	/**
 	 * Enregistre la grille.
@@ -122,6 +134,10 @@ interface ISudoku {
 	
 	/**
 	 * Réinitialise la grille.
+	 * @post <pre>
+	 * 		forall ICell cell in getGrid().cells():
+	 * 			cell.isModifiable() ==> ! cell.hasValue()
+	 * </pre>
 	 */
 	void reset();
 }
