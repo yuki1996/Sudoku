@@ -41,14 +41,14 @@ public class Grid implements IGrid {
 	// REQUÊTES
 	
 	public int size() {
-		return getWidth() * getHeight();
+		return getNumberSectorByWidth() * getNumberSectorByHeight();
 	}
 
-	public int getWidth() {
+	public int getNumberSectorByWidth() {
 		return width;
 	}
 	
-	public int getHeight() {
+	public int getNumberSectorByHeight() {
 		return height;
 	}
 	
@@ -57,11 +57,11 @@ public class Grid implements IGrid {
 	}
 	
 	public int getWidthSector() {
-		return getHeight();
+		return getNumberSectorByHeight();
 	}
 	
 	public int getHeightSector() {
-		return getWidth();
+		return getNumberSectorByWidth();
 	}
 	
 	
@@ -111,9 +111,10 @@ public class Grid implements IGrid {
 		Set<ICell> set = new HashSet<ICell>();
 		int col = coord.getCol();
 		int row = coord.getRow();
-		for (int i = 0; i < getWidth(); i++) {
-			for (int j = 0; j < getHeight(); j++) {
-				set.add(cells()[(col /getHeight()) * getHeight() + j][(row / getWidth())* getWidth() + i]);
+		for (int i = 0; i < getNumberSectorByWidth(); i++) {
+			for (int j = 0; j < getNumberSectorByHeight(); j++) {
+				set.add(cells()[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]
+						[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]);
 			}
 		}
 		return set;
