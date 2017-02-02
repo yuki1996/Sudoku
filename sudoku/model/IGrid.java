@@ -2,18 +2,19 @@ package sudoku.model;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    getWidth() > 0  && getHeight() > 0 && size() ==  width() * height()
- * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
+ *	    getNumberSectorByWidth() > 0  && getNumberSectorByHeight() > 0 && size() ==  getNumberSectorByWidth() * getNumberSectorByHeight()
+ * 		isFull() <==> forall ICell cell in cells() : cell.hasValue()
  * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
- * 		size() == getHeight() * getWidth()
+ * 		size() == getNumberSectorByHeight() * getNumberSectorByWidth()
  * 		cells().size() == size() 
  * 		numberPossibility() == size()
- * 		getWidthSector() == getHeight()
- * 		getHeightSector() == getWidth()
+ * 		getWidthSector() == getNumberSectorByHeight()
+ * 		getHeightSector() == getNumberSectorByWidth()
  * 		cells() != null
  * 		getUnitCells(c) = getCol(c) U  getRow(c) U getSector(c)
  *      </pre>
@@ -27,14 +28,14 @@ import sudoku.util.ICoord;
  *         width > 0  && height > 0
  *         
  *     $POST$ 
- *         getWidth() == width
- *         getHeight() == height
- *         forall int i,j : cells[i][j].value() == 0 &&
+ *         getNumberSectorByWidth() == width
+ *         getNumberSectorByHeight() == height
+ *         forall int i,j : cells[i][j].getValue() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
  *    
  */
-public interface IGrid extends Serializable {
+public interface IGrid extends Serializable, Cloneable {
 	
 	//REQUÊTES
 	/**
@@ -45,12 +46,12 @@ public interface IGrid extends Serializable {
 	/**
 	 * Retourne le nombre de régions par largeur  
 	 */
-	int getWidth();
+	int getNumberSectorByWidth();
 	
 	/**
 	 * Retourne le nombre de régions par hauteur
 	 */
-	int getHeight();
+	int getNumberSectorByHeight();
 	
 	/**
 	 * Retourne le nombre de possibilité de la grille
@@ -139,14 +140,14 @@ public interface IGrid extends Serializable {
 	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
 	 * départ
 	 * @post
-	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].value() == 0
+	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].getValue() == 0
 	 */
 	void reset();
 	
 	/**
 	 * Efface toutes les valeurs de la grille.
 	 * @post :<pre>
-	 * 		forall int i,j : cells[i][j].value() == 0 &&
+	 * 		forall int i,j : cells[i][j].getValue() == 0 &&
 	 *         				 cells[i][j].isModifiable()
 	 * </pre>
 	 */
@@ -160,7 +161,7 @@ public interface IGrid extends Serializable {
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).value == value
+	 * 		getCell(coord).getValue() == value
 	 * </pre>
 	 */
 	void changeValue(ICoord coord, int value);
@@ -172,7 +173,7 @@ public interface IGrid extends Serializable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).value == 0
+	 * 		getCell(coord).getValue() == 0
 	 * </pre>
 	 */
 	void resetValue(ICoord coord);
@@ -185,7 +186,7 @@ public interface IGrid extends Serializable {
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).possibility[value]
+	 * 		getCell(coord).possibility()[value - 1]
 	 * </pre>
 	 */
 	void addPossibility(ICoord coord, int value);
@@ -198,7 +199,7 @@ public interface IGrid extends Serializable {
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
-	 * 		!getCell(coord).possibility[value]
+	 * 		! getCell(coord).possibility()[value - 1]
 	 * </pre>
 	 */
 	void removePossibility(ICoord coord, int value);	

@@ -40,6 +40,14 @@ public class Cell implements ICell {
 		this.possibilities = possibilities.clone();
 	}
 	
+	public Cell(ICell src) {
+		Contract.checkCondition(src != null, 
+				"la source doit être différente de null.");
+		value = src.getValue();
+		modifiable = src.isModifiable();
+		possibilities = src.possibilities().clone();
+	}
+	
 	//REQUETES
 
 	/**

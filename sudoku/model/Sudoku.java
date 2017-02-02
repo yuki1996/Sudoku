@@ -1,11 +1,14 @@
 package sudoku.model;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +20,8 @@ import util.Contract;
 public class Sudoku implements ISudoku {
 
 	//ATTRIBUTS
+	public static final String SEPARATOR = " ";
+	
 	private IGrid gridPlayer;
 	private IGrid gridSoluce;
 
@@ -25,6 +30,35 @@ public class Sudoku implements ISudoku {
 		Contract.checkCondition(width > 0 && height > 0);
 		gridPlayer = new Grid(width, height);
 		gridSoluce = new Grid(width, height);
+	}
+	
+	public Sudoku(File textFile) throws IOException {
+		BufferedReader fr = new BufferedReader(new FileReader(textFile));
+		try {
+			String line = fr.readLine();
+			String[] tokens = line.split(SEPARATOR);
+			final int width = Integer.parseInt(tokens[0]);
+			final int height = Integer.parseInt(tokens[1]);
+			gridSoluce = new Grid(width, height);
+			gridPlayer = new Grid(width, height);
+			for (int k = 0; k < width * height; ++k) {
+				line = fr.readLine();
+				tokens = line.split(SEPARATOR);
+				ICell[] gridPlayerLine = gridSoluce.cells()[k];
+				ICell[] gridSoluceLine = gridSoluce.cells()[k];
+				for (int j = 0; j < width * height; ++j) {
+					int value = Integer.parseInt(tokens[j]);
+					ICell gridPlayerCell = gridPlayerLine[j];
+					gridPlayerCell.setValue(value);
+					// gridPlayerCell.setModifiable(false);
+					ICell gridSoluceCell = gridSoluceLine[j];
+					gridSoluceCell.setValue(value);
+					// gridPlayerCell.setModifiable(false);
+				}
+			}
+		} finally {
+			fr.close();
+		}
 	}
 
 	//REQUETES
@@ -91,7 +125,9 @@ public class Sudoku implements ISudoku {
 		int n = getGridPlayer().getCell(c).getValue();
 		Set<ICell> set = getGridPlayer().getUnitCells(c);
 		for (ICell cell : set) {
-			cell.removePossibility(n);
+			if (cell.isModifiable()) {
+				cell.removePossibility(n);
+			}
 		}
 	}
 
@@ -100,6 +136,7 @@ public class Sudoku implements ISudoku {
 				&& isValidCoord(c) && n > 0
 				&& 1 <= n  && n <= getGridPlayer().numberPossibility());
 		getGridPlayer().changeValue(c, n);
+		// updateEasyPossibilities(c); // ???
 	}
 
 	public void removeValue(ICoord c) {
@@ -141,12 +178,83 @@ public class Sudoku implements ISudoku {
 		Contract.checkCondition(name != null && !name.equals(""));
 		File fichier =  new File(name);
 		ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
-		oos.writeObject(getGridPlayer());
+		try {
+			oos.writeObject(getGridPlayer());
+		} finally {
+			oos.close();
+		}
 	}
 
 	public void load(File fichier) throws ClassNotFoundException, IOException {
 		Contract.checkCondition(fichier != null);
 		ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
-		gridPlayer = (Grid) ois.readObject();
+		try {
+			gridPlayer = (Grid) ois.readObject();
+		} finally {
+			ois.close();
+		}
 	}
+	
+	//OUTILS
+	
+	/**
+	 * fait les mise à jour simple pour la grille g
+	 */
+	private void updateEasyGrid(IGrid g) {
+		assert g != null;
+		for (int i = 0; i < g.size(); ++i) {
+			for (int j = 0; j < g.size(); ++j) {
+				Coord c = new Coord(i,j);
+				if (g.getCell(c).hasValue()) {
+					updateEasyPossibilities(g, c);
+				}
+			}
+		}
+	}
+	
+	private void updateEasyPossibilities(IGrid g, ICoord c) {
+		assert c != null;
+		assert isValidCoord(c) ;
+		assert g.getCell(c).hasValue();
+		int n = g.getCell(c).getValue();
+		Set<ICell> set = g.getUnitCells(c);
+		for (ICell cell : set) {
+			if (cell.isModifiable()) {
+				cell.removePossibility(n);
+			}
+		}
+	}
+	
+	/**
+	 * premier algo de résolution
+	 */
+	
+	private void angle(IGrid g, ICoord c) {
+		assert c != null;
+		assert g != null;
+		assert g.isValidCoord(c);
+		ICell src = g.getCell(c);
+		assert src.isModifiable();
+		updateEasyGrid(g);
+
+		Set<ICell> sector = g.getSector(c);
+		int sectorCellsNb = sector.size();
+		int i = 1;
+		while (! src.hasValue() && i <= src.getCardinalPossibilities()) {
+			int n = sectorCellsNb;
+			if (src.canTakeValue(i)) {
+				for (ICell cell : sector) {
+					if (cell.isModifiable() && cell.canTakeValue(i)) {
+						break;
+					}
+					--n;
+				}
+				if (n == 0) {
+					src.setValue(i);
+				}
+			}
+			++i;
+		}
+	}
+	
 }
