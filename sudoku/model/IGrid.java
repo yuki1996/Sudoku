@@ -7,8 +7,8 @@ import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    getWidth() > 0  && getHeight() > 0 && size() ==  width() * height()
- * 		isFull() <==> forall ICell cell in cells() : cell.getValue() != 0
+ *	    getWidth() > 0  && getHeight() > 0 && size() ==  getWidth() * getHeight()
+ * 		isFull() <==> forall ICell cell in cells() : cell.hasValue()
  * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
  * 		size() == getHeight() * getWidth()
  * 		cells().size() == size() 
@@ -30,12 +30,12 @@ import sudoku.util.ICoord;
  *     $POST$ 
  *         getWidth() == width
  *         getHeight() == height
- *         forall int i,j : cells[i][j].value() == 0 &&
+ *         forall int i,j : cells[i][j].getValue() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
  *    
  */
-public interface IGrid extends Serializable {
+public interface IGrid extends Serializable, Cloneable {
 	
 	//REQUÊTES
 	/**
@@ -140,14 +140,14 @@ public interface IGrid extends Serializable {
 	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
 	 * départ
 	 * @post
-	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].value() == 0
+	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].getValue() == 0
 	 */
 	void reset();
 	
 	/**
 	 * Efface toutes les valeurs de la grille.
 	 * @post :<pre>
-	 * 		forall int i,j : cells[i][j].value() == 0 &&
+	 * 		forall int i,j : cells[i][j].getValue() == 0 &&
 	 *         				 cells[i][j].isModifiable()
 	 * </pre>
 	 */
@@ -161,7 +161,7 @@ public interface IGrid extends Serializable {
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).value == value
+	 * 		getCell(coord).getValue() == value
 	 * </pre>
 	 */
 	void changeValue(ICoord coord, int value);
@@ -173,7 +173,7 @@ public interface IGrid extends Serializable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).value == 0
+	 * 		getCell(coord).getValue() == 0
 	 * </pre>
 	 */
 	void resetValue(ICoord coord);
@@ -186,7 +186,7 @@ public interface IGrid extends Serializable {
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).possibility[value]
+	 * 		getCell(coord).possibility()[value - 1]
 	 * </pre>
 	 */
 	void addPossibility(ICoord coord, int value);
@@ -199,7 +199,7 @@ public interface IGrid extends Serializable {
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
-	 * 		!getCell(coord).possibility[value]
+	 * 		! getCell(coord).possibility()[value - 1]
 	 * </pre>
 	 */
 	void removePossibility(ICoord coord, int value);	

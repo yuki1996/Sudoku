@@ -135,6 +135,18 @@ public class Grid implements IGrid {
 		return set;
 	}
 	
+	public Grid clone() {
+		Grid r = new Grid(width, height);
+		ICell tab[][] = new ICell[size()][size()];
+		for (int i = 0; i < size() ; ++i) {
+			for (int j = 0; j < size() ; ++j) {
+				tab[i][j] = new Cell(cells[i][j]);
+			}
+		}
+		r.changeCells(tab);
+		return r;
+	}
+	
 	// COMMANDES
 	public void reset() {
 		for (int i = 0; i < size(); i++) {
@@ -198,7 +210,7 @@ public class Grid implements IGrid {
 	 * </pre>
 	 */
 	private boolean checkTab(ICell[][] tabCells) {
-		Contract.checkCondition(tabCells != null);
+		assert tabCells != null;
 		boolean bool = true;
 		for (ICell[] cell: cells()) {
 			for (ICell c: cell) {

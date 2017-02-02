@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -124,7 +125,9 @@ public class Sudoku implements ISudoku {
 		int n = getGridPlayer().getCell(c).getValue();
 		Set<ICell> set = getGridPlayer().getUnitCells(c);
 		for (ICell cell : set) {
-			cell.removePossibility(n);
+			if (cell.isModifiable()) {
+				cell.removePossibility(n);
+			}
 		}
 	}
 
@@ -191,4 +194,67 @@ public class Sudoku implements ISudoku {
 			ois.close();
 		}
 	}
+	
+	//OUTILS
+	
+	/**
+	 * fait les mise à jour simple pour la grille g
+	 */
+	private void updateEasyGrid(IGrid g) {
+		assert g != null;
+		for (int i = 0; i < g.size(); ++i) {
+			for (int j = 0; j < g.size(); ++j) {
+				Coord c = new Coord(i,j);
+				if (g.getCell(c).hasValue()) {
+					updateEasyPossibilities(g, c);
+				}
+			}
+		}
+	}
+	
+	private void updateEasyPossibilities(IGrid g, ICoord c) {
+		assert c != null;
+		assert isValidCoord(c) ;
+		assert g.getCell(c).hasValue();
+		int n = g.getCell(c).getValue();
+		Set<ICell> set = g.getUnitCells(c);
+		for (ICell cell : set) {
+			if (cell.isModifiable()) {
+				cell.removePossibility(n);
+			}
+		}
+	}
+	
+	/**
+	 * premier algo de résolution
+	 */
+	
+	private void angle(IGrid g, ICoord c) {
+		assert c != null;
+		assert g != null;
+		assert g.isValidCoord(c);
+		ICell src = g.getCell(c);
+		assert src.isModifiable();
+		updateEasyGrid(g);
+
+		Set<ICell> sector = g.getSector(c);
+		int sectorCellsNb = sector.size();
+		int i = 1;
+		while (! src.hasValue() && i <= src.getCardinalPossibilities()) {
+			int n = sectorCellsNb;
+			if (src.canTakeValue(i)) {
+				for (ICell cell : sector) {
+					if (cell.isModifiable() && cell.canTakeValue(i)) {
+						break;
+					}
+					--n;
+				}
+				if (n == 0) {
+					src.setValue(i);
+				}
+			}
+			++i;
+		}
+	}
+	
 }
