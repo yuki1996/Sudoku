@@ -1,8 +1,6 @@
-isudoku: pour check(), un sudoku n'a qu'une solution, il suffit donc de mettre la liste des cellules n'ayant pas la bonne valeur 
 compte-rendu: mettre la definition d'un sudoku (demande de Mr Guesnet)
 interface: possibilité/candidats
-igrid: requete getWidth() et getHeight() (faut en parler)
-igrid: ajouté une fonction isValidCoord(coord)
 igrid: ajouté load(f) et save(f)
 isudoku: ajouté canTakeValue(coord, value)
 isudoku: différence entre help() et resolve()?
+interface: NUMBER_VALUES == NUMBER_POSSIBILITIES
