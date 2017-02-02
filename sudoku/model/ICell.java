@@ -1,5 +1,7 @@
 package sudoku.model;
 
+import java.io.Serializable;
+
 /**
  * Type d'une cellule.
  * @inv
@@ -51,7 +53,7 @@ package sudoku.model;
  *          getCardinalPossibilities() == possibilities.length
  *    </pre>
  */
-interface ICell {
+interface ICell extends Serializable  {
 	
 	//REQUETES
 	

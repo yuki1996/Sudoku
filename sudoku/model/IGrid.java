@@ -1,6 +1,8 @@
 package sudoku.model;
 
+import java.io.Serializable;
 import java.util.Set;
+
 import sudoku.util.ICoord;
 
 /**
@@ -14,21 +16,8 @@ import sudoku.util.ICoord;
  * 		getWidthSector() == getHeight()
  * 		getHeightSector() == getWidth()
  * 		cells() != null
+ * 		getUnitCells(c) = getCol(c) U  getRow(c) U getSector(c)
  *      </pre>
- * @cons <pre>
- *     $DESC$ Une grille de taille width * height et avec les valeurs de départ
- *     
- *     $ARGS$ int width, int height, Map map<ICoord, Integer>
- *     
- *     $PRE$ 
- *         map != null && width > 0  && height > 0
- *         
- *     $POST$ 
- *     	   getWidth() == width
- *         getHeight() == height
- * 		   forall coord : map, getCell(coord).value() == value
- * 								&& cells.contains(getCell(coord))
- *    </pre>
  * 
  * @cons <pre>
  *     $DESC$ Une grille de taille width * height
@@ -45,20 +34,8 @@ import sudoku.util.ICoord;
  *         				    cells[i][j].isModifiable()
  *    </pre>
  *    
- * @cons <pre>
- *     $DESC$ Une grille de taille standard DEFAULT_WIDTH * DEFAULT_HEIGHT 
- *         
- *     $POST$ 
- *         getWidth() == DEFAULT_WIDTH 
- *         getHeight() == DEFAULT_HEIGHT
- *         forall int i,j : cells[i][j].value() == 0 &&
- *         				    cells[i][j].isModifiable()
- *    </pre>
  */
-public interface IGrid {
-	
-	int DEFAULT_WIDTH = 3;
-	int DEFAULT_HEIGHT = 3;
+public interface IGrid extends Serializable {
 	
 	//REQUÊTES
 	/**
@@ -100,8 +77,7 @@ public interface IGrid {
 	 * Retourne la cellule à coordonnée c.
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
 	ICell getCell(ICoord coord);
@@ -116,8 +92,7 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
 	Set<ICell> getRow(ICoord coord);
@@ -127,8 +102,7 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * </pre>
 	 */ 
 	Set<ICell> getCol(ICoord coord);
@@ -138,12 +112,27 @@ public interface IGrid {
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
 	Set<ICell> getSector(ICoord coord);
 	
+	/**
+	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et size().
+	 * @pre : <pre>
+	 * 		coord != null
+	 * </pre>
+	 */
+	boolean isValidCoord(ICoord coord);
+	
+	/**
+	 * Retourne l'ensemble des cellules  présentes sur la ligne, colonne et région de la coordonnée.
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		isValidCoord(coord)
+	 * </pre>
+	 */
+	Set<ICell> getUnitCells(ICoord coord);
 	
 	//COMMANDES
 	
@@ -168,8 +157,7 @@ public interface IGrid {
 	 * Change la valeur de la cellule de coord par value.
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
@@ -182,8 +170,7 @@ public interface IGrid {
 	 * Réinitialise la valeur de la cellule de coord par 0.
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).value == 0
@@ -195,8 +182,7 @@ public interface IGrid {
 	 * Ajoute la valeur value dans les possibilités la cellule de coord.
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
@@ -209,8 +195,7 @@ public interface IGrid {
 	 * Supprime la valeur value dans les possibilités la cellule de coord.
 	 * @pre : <pre>
 	 * 		coord != null
-	 * 		0 <= coord.getCol() < size()
-	 * 		0 <= coord.getRow() < size()
+	 * 		isValidCoord(coord)
 	 * 		1 <= value <= numberPossibility()
 	 * </pre>
 	 * @post <pre>
