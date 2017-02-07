@@ -9,6 +9,7 @@ import java.io.Serializable;
  *      getValue() != 0 <==> hasValue()
  *      getCardinalPossibilities() > 0
  *      possibilities().length == getCardinalPossibilities()
+ *      forall int i : canTakeValue(i) <==> possibilities()[i - 1] && isModifiable()
  *      
  * @cons <pre>
  *     $DESC$ Une cellule modifiable sans valeur.
@@ -86,6 +87,17 @@ interface ICell extends Serializable, Cloneable  {
 	 * Renvoie un clone de la cellule.
 	 */
 	Object clone();
+	
+	/**
+	 * Renvoie si une cellule est égale à une autre
+	 */
+	boolean equals(Object obj);
+	
+	/**
+	 * Renvoie vrai si la cellule peut prendre la valeur n.
+	 * Renvoie faux sinon.
+	 */
+	boolean canTakeValue(int n);
 	
 	//COMMANDES
 	/**

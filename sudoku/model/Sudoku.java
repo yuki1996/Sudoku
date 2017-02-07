@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -52,8 +51,7 @@ public class Sudoku implements ISudoku {
 				for (int j = 0; j < width * height; ++j) {
 					int value = Integer.parseInt(tokens[j]);
 					ICell gridPlayerCell = gridPlayerLine[j];
-					
-					if (value == 0 ){
+					if (value == 0){
 						gridPlayerCell.reset();
 					} else {
 						gridPlayerCell.setValue(value);
@@ -79,6 +77,9 @@ public class Sudoku implements ISudoku {
 	public boolean isWin() {
 		ICell[][] tabPlayer  = getGridPlayer().cells();
 		ICell[][] tabSoluce  = getGridSoluce().cells();
+		if (!getGridPlayer().isFull()) {
+			return false;
+		}
 		for (int i = 0 ; i < tabPlayer.length; i++) {
 			for (int j = 0 ; j < tabPlayer[i].length; j++) {
 				if (tabPlayer[i][j].getValue() != tabSoluce[i][j].getValue()) {
@@ -92,7 +93,7 @@ public class Sudoku implements ISudoku {
 	public boolean isModifiableCell(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
-		return getGridPlayer().getCell(coord).isModifiable();
+		return getGridSoluce().getCell(coord).isModifiable();
 	}
 
 	public List<ICoord> check() {
@@ -130,11 +131,15 @@ public class Sudoku implements ISudoku {
 				&& getGridPlayer().getCell(c).getValue() > 0);
 		int n = getGridPlayer().getCell(c).getValue();
 		Set<ICell> set = getGridPlayer().getUnitCells(c);
-		for (ICell cell : set) {
-			if (cell.isModifiable()) {
-				cell.removePossibility(n);
+		for (int i = 0 ; i < getGridPlayer().numberPossibility(); i++) {
+			for (int j = 0 ; j < getGridPlayer().numberPossibility(); j++) {
+				if (set.contains(getGridPlayer().cells()[i][j]) && getGridPlayer().cells()[i][j].isModifiable()) {
+					System.out.println("c ="+ i +" r ="+j);
+					getGridPlayer().cells()[i][j].removePossibility(n);
+				}
 			}
-		}
+		} 
+		
 	}
 
 	public void setValue(ICoord c, int n) {
@@ -244,7 +249,6 @@ public class Sudoku implements ISudoku {
 		ICell src = g.getCell(c);
 		assert src.isModifiable();
 		updateEasyGrid(g);
-
 		Set<ICell> sector = g.getSector(c);
 		int sectorCellsNb = sector.size();
 		int i = 1;
