@@ -5,25 +5,12 @@ import java.util.Set;
 import sudoku.util.ICoord;
 import util.Contract;
 
-public class Grid implements IGrid {
+public class Grid implements IGrid, Cloneable {
 	
 	// ATTRIBUTS
 	private int width;
 	private int height;
 	private ICell[][] cells;
-	
-	
-	// CONSTRUCTEURS
-		/*for (ICoord c : map.keySet()) {
-			cells[c.getCol()][c.getRow()] = new Cell(map.get(c).intValue(),false, size);
-		}
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				if (cells[i][j] == null) {
-					cells[i][j] = new Cell(size);
-				}
-			}
-		}*/
 	
 	public Grid(int width, int height)  {
 		Contract.checkCondition(width > 0 && height > 0);
@@ -41,14 +28,14 @@ public class Grid implements IGrid {
 	// REQUÊTES
 	
 	public int size() {
-		return getWidth() * getHeight();
+		return getNumberSectorByWidth() * getNumberSectorByHeight();
 	}
 
-	public int getWidth() {
+	public int getNumberSectorByWidth() {
 		return width;
 	}
 	
-	public int getHeight() {
+	public int getNumberSectorByHeight() {
 		return height;
 	}
 	
@@ -57,11 +44,11 @@ public class Grid implements IGrid {
 	}
 	
 	public int getWidthSector() {
-		return getHeight();
+		return getNumberSectorByHeight();
 	}
 	
 	public int getHeightSector() {
-		return getWidth();
+		return getNumberSectorByWidth();
 	}
 	
 	
@@ -111,9 +98,10 @@ public class Grid implements IGrid {
 		Set<ICell> set = new HashSet<ICell>();
 		int col = coord.getCol();
 		int row = coord.getRow();
-		for (int i = 0; i < getWidth(); i++) {
-			for (int j = 0; j < getHeight(); j++) {
-				set.add(cells()[(col /getHeight()) * getHeight() + j][(row / getWidth())* getWidth() + i]);
+		for (int i = 0; i < getNumberSectorByWidth(); i++) {
+			for (int j = 0; j < getNumberSectorByHeight(); j++) {
+				set.add(cells()[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]
+						[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]);
 			}
 		}
 		return set;
@@ -135,16 +123,22 @@ public class Grid implements IGrid {
 		return set;
 	}
 	
-	public Grid clone() {
-		Grid r = new Grid(width, height);
-		ICell tab[][] = new ICell[size()][size()];
+	public Object clone() {
+		Grid clone = null;
+		try {
+			clone = (Grid) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError("echec clonage");
+		}
+		clone.height = this.height;
+		clone.width = this.width;
+		clone.cells = new ICell[size()][size()];
 		for (int i = 0; i < size() ; ++i) {
 			for (int j = 0; j < size() ; ++j) {
-				tab[i][j] = new Cell(cells[i][j]);
+				clone.cells[i][j] = (Cell) cells[i][j].clone();
 			}
 		}
-		r.changeCells(tab);
-		return r;
+		return clone;
 	}
 	
 	// COMMANDES

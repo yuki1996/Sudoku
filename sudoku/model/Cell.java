@@ -2,10 +2,10 @@ package sudoku.model;
 
 import util.Contract;
 
-public class Cell implements ICell {
+public class Cell implements ICell, Cloneable {
 	//ATTRIBUTS
 	private int value;
-	private final boolean modifiable;
+	private boolean modifiable;
 	private boolean[] possibilities;
 	
 	//CONSTRUCTEURS
@@ -40,19 +40,8 @@ public class Cell implements ICell {
 		this.possibilities = possibilities.clone();
 	}
 	
-	public Cell(ICell src) {
-		Contract.checkCondition(src != null, 
-				"la source doit être différente de null.");
-		value = src.getValue();
-		modifiable = src.isModifiable();
-		possibilities = src.possibilities().clone();
-	}
-	
 	//REQUETES
 
-	/**
-	 * Renvoie le nombre de possibilité.
-	 */
 	public int getCardinalPossibilities() {
 		return possibilities.length;
 	}
@@ -60,12 +49,6 @@ public class Cell implements ICell {
 	@Override
 	public int getValue() {
 		return  value;
-	}
-
-	@Override
-	public boolean canTakeValue(int n) {
-		Contract.checkCondition(n > 0 && n < possibilities.length);
-		return possibilities[n - 1];
 	}
 
 	@Override
@@ -83,11 +66,24 @@ public class Cell implements ICell {
 		return possibilities.clone();
 	}
 	
+	public Object clone() {
+		Cell clone = null;
+		try {
+			clone = (Cell) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError("echec clonage");
+		}
+		clone.value = this.getValue();
+		clone.modifiable = this.isModifiable();
+		clone.possibilities = this.possibilities();
+		return clone;
+		
+	}
+	
 	//COMMANDES
 	@Override
 	public void setValue(int n) {
-		Contract.checkCondition(n > 0 && n < possibilities.length);
-		Contract.checkCondition(canTakeValue(n));
+		Contract.checkCondition(n > 0 && n <= possibilities.length);
 		value = n;
 	}
 
@@ -99,16 +95,28 @@ public class Cell implements ICell {
 
 	@Override
 	public void addPossibility(int n) {
-		Contract.checkCondition(n > 0 && n < possibilities.length);
+		Contract.checkCondition(n > 0 && n <= possibilities.length);
 		Contract.checkCondition(modifiable);
 		possibilities[n - 1] = true;
 	}
 
 	@Override
 	public void removePossibility(int n) {
-		Contract.checkCondition(n > 0 && n < possibilities.length);
+		Contract.checkCondition(n > 0 && n <= possibilities.length);
 		Contract.checkCondition(modifiable);
 		possibilities[n - 1] = false;
+	}
+	
+	public void setModifiable(boolean bool) {
+		modifiable = bool;
+	}
+	
+	public void reset() {
+		for (int i = 1; i <= possibilities.length; i++) {
+			addPossibility(i);
+		}
+		modifiable = true;
+		value = 0;
 	}
 
 }

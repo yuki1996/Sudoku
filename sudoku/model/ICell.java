@@ -7,7 +7,6 @@ import java.io.Serializable;
  * @inv
  *      0 <= getValue()
  *      getValue() != 0 <==> hasValue()
- *      forall int i : canTakeValue(i) <==> possibilities()[i - 1] && isModifiable()
  *      getCardinalPossibilities() > 0
  *      possibilities().length == getCardinalPossibilities()
  *      
@@ -65,7 +64,7 @@ import java.io.Serializable;
  *         	possibilities().equals(src.possibilities())
  *    </pre>
  */
-interface ICell extends Serializable  {
+interface ICell extends Serializable, Cloneable  {
 	
 	//REQUETES
 	
@@ -78,12 +77,6 @@ interface ICell extends Serializable  {
 	 * Donne la valeur actuel de la cellule.
 	 */
 	int getValue();
-	
-	/**
-	 * Renvoie vrai si la cellule peut prendre la valeur n.
-	 * Renvoie faux sinon.
-	 */
-	boolean canTakeValue(int n);
 	
 	/**
 	 * Renvoie vrai si la cellule a une valeur (differente de 0).
@@ -101,12 +94,16 @@ interface ICell extends Serializable  {
 	 */
 	boolean[] possibilities();
 	
+	/**
+	 * Renvoie un clone de la cellule.
+	 */
+	Object clone();
+	
 	//COMMANDES
 	/**
 	 * Change la valeur de la cellule.
 	 * @pre
 	 *      0 < n <= getCardinalPossibilities()
-	 *      canTakeValue(n)
 	 * @post
 	 *      getValue() == n
 	 */
@@ -128,7 +125,6 @@ interface ICell extends Serializable  {
 	 *      isModifiable()
 	 * @post
 	 * 		possibilities()[n - 1]
-	 *      canTakeValue(n);
 	 */
 	void addPossibility(int n);
 	
@@ -139,7 +135,22 @@ interface ICell extends Serializable  {
 	 *      isModifiable()
 	 * @post
 	 * 		! possibilities()[n - 1]
-	 *      ! canTakeValue(n);
 	 */
 	void removePossibility(int n);
+	
+	/**
+	 * Modifie la modifiabilité de la cellule
+	 * @post
+	 * 		isModifiable() == bool
+	 */
+	void setModifiable(boolean bool);
+	
+	/**
+	 * Met la cellule comme étant modifiable avec comme valeur nulle et posséde toute possibilité
+	 * @post
+	 *     	    getValue() == 0
+	 *         	isModifiable() == true
+	 *         	forall int i : possibilities()[i]
+	 */
+	void reset();
 }

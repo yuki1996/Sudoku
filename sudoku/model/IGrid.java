@@ -7,14 +7,14 @@ import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    getWidth() > 0  && getHeight() > 0 && size() ==  getWidth() * getHeight()
+ *	    getNumberSectorByWidth() > 0  && getNumberSectorByHeight() > 0 && size() ==  getNumberSectorByWidth() * getNumberSectorByHeight()
  * 		isFull() <==> forall ICell cell in cells() : cell.hasValue()
  * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
- * 		size() == getHeight() * getWidth()
+ * 		size() == getNumberSectorByHeight() * getNumberSectorByWidth()
  * 		cells().size() == size() 
  * 		numberPossibility() == size()
- * 		getWidthSector() == getHeight()
- * 		getHeightSector() == getWidth()
+ * 		getWidthSector() == getNumberSectorByHeight()
+ * 		getHeightSector() == getNumberSectorByWidth()
  * 		cells() != null
  * 		getUnitCells(c) = getCol(c) U  getRow(c) U getSector(c)
  *      </pre>
@@ -28,8 +28,8 @@ import sudoku.util.ICoord;
  *         width > 0  && height > 0
  *         
  *     $POST$ 
- *         getWidth() == width
- *         getHeight() == height
+ *         getNumberSectorByWidth() == width
+ *         getNumberSectorByHeight() == height
  *         forall int i,j : cells[i][j].getValue() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
@@ -46,12 +46,12 @@ public interface IGrid extends Serializable, Cloneable {
 	/**
 	 * Retourne le nombre de régions par largeur  
 	 */
-	int getWidth();
+	int getNumberSectorByWidth();
 	
 	/**
 	 * Retourne le nombre de régions par hauteur
 	 */
-	int getHeight();
+	int getNumberSectorByHeight();
 	
 	/**
 	 * Retourne le nombre de possibilité de la grille
@@ -133,6 +133,11 @@ public interface IGrid extends Serializable, Cloneable {
 	 * </pre>
 	 */
 	Set<ICell> getUnitCells(ICoord coord);
+	
+	/**
+	 * Retourne un clone de la grille.
+	 */
+	Object clone();
 	
 	//COMMANDES
 	
