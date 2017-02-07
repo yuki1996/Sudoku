@@ -5,7 +5,7 @@ import java.util.Set;
 import sudoku.util.ICoord;
 import util.Contract;
 
-public class Grid implements IGrid, Cloneable {
+public class Grid implements IGrid {
 	
 	// ATTRIBUTS
 	private int width;
@@ -59,7 +59,7 @@ public class Grid implements IGrid, Cloneable {
 	public ICell getCell(ICoord coord) {
 		Contract.checkCondition(coord != null 
 			&& isValidCoord(coord));
-		return cells[coord.getRow()][coord.getCol()];
+		return cells()[coord.getRow()][coord.getCol()];
 	}
 
 	public boolean isFull() {

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import util.Contract;
 
-public class Cell implements ICell, Cloneable {
+public class Cell implements ICell {
 	//ATTRIBUTS
 	private int value;
 	private boolean modifiable;
@@ -50,7 +50,7 @@ public class Cell implements ICell, Cloneable {
 	
 	@Override
 	public int getValue() {
-		return  value;
+		return value;
 	}
 
 	@Override
