@@ -134,6 +134,11 @@ public interface IGrid extends Serializable, Cloneable {
 	 */
 	Set<ICell> getUnitCells(ICoord coord);
 	
+	/**
+	 * Retourne un clone de la grille.
+	 */
+	Object clone();
+	
 	//COMMANDES
 	
 	/**

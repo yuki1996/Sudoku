@@ -1,5 +1,7 @@
 package sudoku.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,19 +16,22 @@ public final class Main {
 		// rien
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		//Creation
-		Map<ICoord, Integer> map = new HashMap<ICoord, Integer>();
-		ajout(map);
-		IGrid grille = new Grid(3, 3);
-		
+		Sudoku sudo = new Sudoku(new File("./test.txt"));;
+
+		System.out.println("grille joueur ");
 		//affichage de la création
-		affiche_grille(grille);
+		affiche_grille(sudo);
+		
+		System.out.println("grille soluce ");
+		//affichage de la création
+		affiche_grille_soluce(sudo);
 
 		//test colonne
 		System.out.print("\ncol2 ");
-		Set<ICell> col2 = grille.getCol(new Coord(1,2));
+		Set<ICell> col2 = sudo.getGridPlayer().getCol(new Coord(1,2));
 		for (ICell cell : col2) {
 			System.out.print(cell.getValue()+" ");
 			
@@ -34,7 +39,7 @@ public final class Main {
 		
 		//test ligne
 		System.out.print("\nlig2 ");
-		Set<ICell> lig2 = grille.getRow(new Coord(6,1));
+		Set<ICell> lig2 = sudo.getGridPlayer().getRow(new Coord(6,1));
 		for (ICell cell : lig2) {
 			System.out.print(cell.getValue()+" ");
 			
@@ -42,7 +47,7 @@ public final class Main {
 
 		//test région
 		System.out.print("\nreg9 ");
-		Set<ICell> reg9 = grille.getSector(new Coord(7,7));
+		Set<ICell> reg9 = sudo.getGridPlayer().getSector(new Coord(7,7));
 		for (ICell cell : reg9) {
 			System.out.print(cell.getValue()+" ");
 			
@@ -50,49 +55,82 @@ public final class Main {
 
 		//test ajout valeur
 		System.out.println("\n\najout 2 dans coord(3,2)");
-		grille.changeValue(new Coord(3,2), 2);
-		affiche_grille(grille);
+		sudo.getGridPlayer().changeValue(new Coord(3,2), 2);
+		affiche_grille(sudo);
 		
 
 		//test supprime valeur modifiable
 		System.out.println("\nsupprimer valeur dans coord(3,2)");
-		grille.resetValue(new Coord(3,2));
-		affiche_grille(grille);
+		sudo.getGridPlayer().resetValue(new Coord(3,2));
+		affiche_grille(sudo);
 		
 
 		//test réinitilisation
 		System.out.println("\najout 2 dans coord(3,2)");
-		grille.changeValue(new Coord(3,2), 2);
-		affiche_grille(grille);
+		sudo.getGridPlayer().changeValue(new Coord(3,2), 2);
+		affiche_grille(sudo);
 		System.out.println("\nreset");
-		grille.reset();
-		affiche_grille(grille);
+		sudo.getGridPlayer().reset();
+		affiche_grille(sudo);
 		
 		//test réinitilisation
 		System.out.println("\najout 2 dans coord(3,2)");
-		grille.changeValue(new Coord(3,2), 2);
-		affiche_grille(grille);
+		sudo.getGridPlayer().changeValue(new Coord(3,2), 2);
+		affiche_grille(sudo);
 		System.out.println("\nclear");
-		grille.clear();
-		affiche_grille(grille);
+		sudo.getGridPlayer().clear();
+		affiche_grille(sudo);
 		
 		//test grille pleine
 		System.out.println("\ngrille pleine ?");
-		if (grille.isFull()) {
+		if (sudo.isWin()) {
 			System.out.println("C'est bien tu as fini mais est-elle correcte???");
 		} else {
 			System.out.println("T'as pas fini !!! bosse plus!!");
 		}
+
+		System.out.println("grille soluce ");
+		//affichage de la création
+		affiche_grille_soluce(sudo);
+		
+		sudo.save("test2.txt");
+		
+		Sudoku sudo2 = new Sudoku(3,3);
+		try {
+			sudo2.load(new File("test2.txt"));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("grille joueur ");
+		//affichage de la création
+		affiche_grille(sudo2);
+		
+		System.out.println("grille soluce ");
+		//affichage de la création
+		affiche_grille_soluce(sudo2);
 		
 		
 	}
 
 	//OUTILS
-	private static void affiche_grille(IGrid grille) {
-		Contract.checkCondition(grille != null);
-		for (int i = 0; i < grille.size(); i++) {
-			for (int j = 0; j < grille.size(); j++) {
-				System.out.print(grille.cells()[j][i].getValue()+" ");
+	private static void affiche_grille(ISudoku sudo) {
+		Contract.checkCondition(sudo != null);
+		for (int i = 0; i < sudo.getGridPlayer().size(); i++) {
+			for (int j = 0; j < sudo.getGridPlayer().size(); j++) {
+				System.out.print(sudo.getGridPlayer().cells()[j][i].getValue()+" ");
+				
+			}
+			System.out.println("");
+		}
+	}
+	
+	private static void affiche_grille_soluce(ISudoku sudo) {
+		Contract.checkCondition(sudo != null);
+		for (int i = 0; i < sudo.getGridSoluce().size(); i++) {
+			for (int j = 0; j < sudo.getGridSoluce().size(); j++) {
+				System.out.print(sudo.getGridSoluce().cells()[j][i].getValue()+" ");
 				
 			}
 			System.out.println("");

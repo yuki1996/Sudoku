@@ -39,23 +39,29 @@ public class Sudoku implements ISudoku {
 			String[] tokens = line.split(SEPARATOR);
 			final int width = Integer.parseInt(tokens[0]);
 			final int height = Integer.parseInt(tokens[1]);
+
+			System.out.println("w =" + width);
+
+			System.out.println("h =" + height);
 			gridSoluce = new Grid(width, height);
 			gridPlayer = new Grid(width, height);
 			for (int k = 0; k < width * height; ++k) {
 				line = fr.readLine();
 				tokens = line.split(SEPARATOR);
-				ICell[] gridPlayerLine = gridSoluce.cells()[k];
-				ICell[] gridSoluceLine = gridSoluce.cells()[k];
+				ICell[] gridPlayerLine = gridPlayer.cells()[k];
 				for (int j = 0; j < width * height; ++j) {
 					int value = Integer.parseInt(tokens[j]);
 					ICell gridPlayerCell = gridPlayerLine[j];
-					gridPlayerCell.setValue(value);
-					// gridPlayerCell.setModifiable(false);
-					ICell gridSoluceCell = gridSoluceLine[j];
-					gridSoluceCell.setValue(value);
-					// gridPlayerCell.setModifiable(false);
+					
+					if (value == 0 ){
+						gridPlayerCell.reset();
+					} else {
+						gridPlayerCell.setValue(value);
+						gridPlayerCell.setModifiable(false);
+					}
 				}
 			}
+			gridSoluce = (Grid) gridPlayer.clone();
 		} finally {
 			fr.close();
 		}
@@ -180,6 +186,7 @@ public class Sudoku implements ISudoku {
 		ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
 		try {
 			oos.writeObject(getGridPlayer());
+			oos.writeObject(getGridSoluce());
 		} finally {
 			oos.close();
 		}
@@ -190,6 +197,7 @@ public class Sudoku implements ISudoku {
 		ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
 		try {
 			gridPlayer = (Grid) ois.readObject();
+			gridSoluce = (Grid) ois.readObject();
 		} finally {
 			ois.close();
 		}
@@ -242,13 +250,8 @@ public class Sudoku implements ISudoku {
 		int i = 1;
 		while (! src.hasValue() && i <= src.getCardinalPossibilities()) {
 			int n = sectorCellsNb;
-			if (src.canTakeValue(i)) {
-				for (ICell cell : sector) {
-					if (cell.isModifiable() && cell.canTakeValue(i)) {
-						break;
-					}
-					--n;
-				}
+			for (ICell cell : sector) {
+				--n;
 				if (n == 0) {
 					src.setValue(i);
 				}
