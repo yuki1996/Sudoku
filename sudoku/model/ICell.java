@@ -51,18 +51,6 @@ import java.io.Serializable;
  *         	possibilities().equals(possibilities)
  *          getCardinalPossibilities() == possibilities.length
  *    </pre>
- * @cons <pre>
- *     $DESC$ Une cellule équivalente à src
- *     
- *     $ARGS$ ICell src 
- *     
- *     $PRE$ src != null
- *         
- *     $POST$ 
- *          getValue() == src.getValue()
- *          isModifiable() <==> src.isModifiable()
- *         	possibilities().equals(src.possibilities())
- *    </pre>
  */
 interface ICell extends Serializable, Cloneable  {
 	
