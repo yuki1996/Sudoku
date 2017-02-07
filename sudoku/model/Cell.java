@@ -1,8 +1,10 @@
 package sudoku.model;
 
+import java.util.Arrays;
+
 import util.Contract;
 
-public class Cell implements ICell, Cloneable {
+public class Cell implements ICell {
 	//ATTRIBUTS
 	private int value;
 	private boolean modifiable;
@@ -48,7 +50,7 @@ public class Cell implements ICell, Cloneable {
 	
 	@Override
 	public int getValue() {
-		return  value;
+		return value;
 	}
 
 	@Override
@@ -66,6 +68,12 @@ public class Cell implements ICell, Cloneable {
 		return possibilities.clone();
 	}
 	
+
+	public boolean canTakeValue(int n) {
+		Contract.checkCondition(n > 0 && n < possibilities.length);
+		return possibilities[n - 1];
+	}
+	
 	public Object clone() {
 		Cell clone = null;
 		try {
@@ -77,6 +85,17 @@ public class Cell implements ICell, Cloneable {
 		clone.modifiable = this.isModifiable();
 		clone.possibilities = this.possibilities();
 		return clone;
+		
+	}
+	
+	public boolean equals(Object obj) {
+		if ((obj != null) && (obj.getClass() == this.getClass())) {
+			Cell o = (Cell) obj;
+			return this.isModifiable() == o.isModifiable() 
+					&& this.getValue() == o.getValue()
+					&& Arrays.equals(this.possibilities(),o.possibilities());
+		}
+		return false;
 		
 	}
 	
