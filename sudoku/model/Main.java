@@ -22,20 +22,19 @@ public final class Main {
 		//affichage de la création
 		affiche_grille(sudo);
 		
-		System.out.println("\n grille soluce \n");
-		//affichage de la création
-		affiche_grille_soluce(sudo);
+		System.out.println("\n possibilité en (3,4) \n");
+		affiche_possibilite(new Coord(3, 4), sudo);
 		
-
-		System.out.println("\npossibilté en (5,2) \n");
+		System.out.println("\n possibilité en (5,2) \n");
 		affiche_possibilite(new Coord(5, 2), sudo);
-		sudo.updateEasyPossibilities(new Coord(6, 2));
-		
-
-		System.out.println("\n possibilté en (5,2) \n");
-		affiche_possibilite(new Coord(5, 2), sudo);
-		
-		
+		/*
+		for (int i = 0; i < sudo.getGridPlayer().size(); i++) {
+			for (int j = 0; j < sudo.getGridPlayer().size(); j++) {
+				System.out.println("\n possibilité en ("+i+","+j+") \n");
+				affiche_possibilite(new Coord(j, i), sudo);
+			}
+			System.out.println("");
+		}*/
 	}
 
 	//OUTILS

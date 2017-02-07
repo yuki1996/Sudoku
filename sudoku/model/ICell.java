@@ -89,11 +89,6 @@ interface ICell extends Serializable, Cloneable  {
 	Object clone();
 	
 	/**
-	 * Renvoie si une cellule est égale à une autre
-	 */
-	boolean equals(Object obj);
-	
-	/**
 	 * Renvoie vrai si la cellule peut prendre la valeur n.
 	 * Renvoie faux sinon.
 	 */

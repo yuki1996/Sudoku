@@ -38,10 +38,7 @@ public class Sudoku implements ISudoku {
 			String[] tokens = line.split(SEPARATOR);
 			final int width = Integer.parseInt(tokens[0]);
 			final int height = Integer.parseInt(tokens[1]);
-
-			System.out.println("w =" + width);
-
-			System.out.println("h =" + height);
+			
 			gridSoluce = new Grid(width, height);
 			gridPlayer = new Grid(width, height);
 			for (int k = 0; k < width * height; ++k) {
@@ -56,6 +53,13 @@ public class Sudoku implements ISudoku {
 					} else {
 						gridPlayerCell.setValue(value);
 						gridPlayerCell.setModifiable(false);
+					}
+				}
+			}
+			for (int i = 0; i < gridPlayer.size(); i++) {
+				for (int j = 0; j < gridPlayer.size(); j++) {
+					if (gridPlayer.cells()[i][j].hasValue()) {
+						updateEasyPossibilities(new Coord(j, i));
 					}
 				}
 			}
@@ -75,8 +79,8 @@ public class Sudoku implements ISudoku {
 	}
 	
 	public boolean isWin() {
-		ICell[][] tabPlayer  = getGridPlayer().cells();
-		ICell[][] tabSoluce  = getGridSoluce().cells();
+		ICell[][] tabPlayer = getGridPlayer().cells();
+		ICell[][] tabSoluce = getGridSoluce().cells();
 		if (!getGridPlayer().isFull()) {
 			return false;
 		}
@@ -134,7 +138,6 @@ public class Sudoku implements ISudoku {
 		for (int i = 0 ; i < getGridPlayer().numberPossibility(); i++) {
 			for (int j = 0 ; j < getGridPlayer().numberPossibility(); j++) {
 				if (set.contains(getGridPlayer().cells()[i][j]) && getGridPlayer().cells()[i][j].isModifiable()) {
-					System.out.println("c ="+ i +" r ="+j);
 					getGridPlayer().cells()[i][j].removePossibility(n);
 				}
 			}
@@ -147,7 +150,7 @@ public class Sudoku implements ISudoku {
 				&& isValidCoord(c) && n > 0
 				&& 1 <= n  && n <= getGridPlayer().numberPossibility());
 		getGridPlayer().changeValue(c, n);
-		// updateEasyPossibilities(c); // ???
+		updateEasyPossibilities(c); 
 	}
 
 	public void removeValue(ICoord c) {
