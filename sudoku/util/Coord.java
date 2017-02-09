@@ -39,4 +39,12 @@ public final class Coord implements ICoord {
     public int hashCode() {
         return getRow() + getCol();
     }
+    
+    public boolean isOnSameRow(ICoord c) {
+    	return row == c.getRow();
+    }
+    
+    public boolean isOnSameCol(ICoord c) {
+    	return col == c.getCol();
+    }
 }

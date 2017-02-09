@@ -22,14 +22,14 @@ import sudoku.util.ICoord;
  * @cons <pre>
  *     $DESC$ Une grille de taille width * height
  *     
- *     $ARGS$ int width, int height
+ *     $ARGS$ int sectorWidth, int sectorHeight
  *     
  *     $PRE$ 
  *         width > 0  && height > 0
  *         
  *     $POST$ 
- *         getNumberSectorByWidth() == width
- *         getNumberSectorByHeight() == height
+ *         getNumberSectorByWidth() == numberSectorByWidth
+ *         getNumberSectorByHeight() == numberSectorByHeight
  *         forall int i,j : cells[i][j].getValue() == 0 &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
@@ -116,6 +116,32 @@ public interface IGrid extends Serializable, Cloneable {
 	 * </pre>
 	 */
 	Set<ICell> getSector(ICoord coord);
+	
+	/**
+	 * Retourne l'ensemble des cellules de la ligne a la position rowNum
+	 * @pre : <pre>
+	 * 		0 <= rowNum < size()
+	 * </pre>
+	 */
+	Set<ICell> getRow(int rowNum);
+	
+	/**
+	 * Retourne l'ensemble des cellules de la colonne a la position colNum
+	 * @pre : <pre>
+	 * 		0 <= colNum < size()
+	 * </pre>
+	 */ 
+	Set<ICell> getCol(int colNum);
+	
+	/**
+	 * Retourne l'ensemble des cellules de la region situé a la ligne de secteur
+	 * sectorRowNum et a la colonne de secteur sectorColNum
+	 * @pre : <pre>
+	 * 		0 <= sectorRowNum < getNumberSectorByHeight()
+	 * 		0 <= sectorColNum < getNumberSectorByWidth()
+	 * </pre>
+	 */
+	Set<ICell> getSector(int sectorRowNum, int sectorColNum);
 	
 	/**
 	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et size().

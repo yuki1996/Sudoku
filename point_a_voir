@@ -1,6 +1,5 @@
-compte-rendu: mettre la definition d'un sudoku (demande de Mr Guesnet)
 interface: possibilité/candidats
-igrid: ajouté load(f) et save(f)
-isudoku: ajouté canTakeValue(coord, value)
-isudoku: différence entre help() et resolve()?
 interface: NUMBER_VALUES == NUMBER_POSSIBILITIES
+cell: Mr Andary etait pas contre une seule classe avec booleen
+icell: reset(), j'aimerai qu'on parle de son fonctionnement
+icell: hasValue() en pré-condition?

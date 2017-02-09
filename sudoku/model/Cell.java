@@ -83,6 +83,7 @@ public class Cell implements ICell, Cloneable {
 	//COMMANDES
 	@Override
 	public void setValue(int n) {
+		Contract.checkCondition(isModifiable());
 		Contract.checkCondition(n > 0 && n <= possibilities.length);
 		value = n;
 	}

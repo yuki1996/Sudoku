@@ -40,4 +40,14 @@ public interface ICoord {
      * Une représentation textuelle de cette coordonnée.
      */
     String toString();
+    
+    /**
+     * Indique si la coordonnée est sur la meme ligne que c.
+     */
+    boolean isOnSameRow(ICoord c);
+    
+    /**
+     * Indique si la coordonnée est sur la meme colonne que c.
+     */
+    boolean isOnSameCol(ICoord c);
 }
