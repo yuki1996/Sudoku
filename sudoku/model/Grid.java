@@ -6,17 +6,16 @@ import sudoku.util.ICoord;
 import util.Contract;
 
 public class Grid implements IGrid {
-	
 	// ATTRIBUTS
-	private int width;
-	private int height;
+	private int numberSectorByWidth;
+	private int numberSectorByHeight;
 	private ICell[][] cells;
 	
-	public Grid(int width, int height)  {
-		Contract.checkCondition(width > 0 && height > 0);
-		this.width = width;
-		this.height = height;
-		int size = width * height;
+	public Grid(int numberSectorByWidth, int numberSectorByHeight)  {
+		Contract.checkCondition(numberSectorByWidth > 0 && numberSectorByHeight > 0);
+		this.numberSectorByWidth = numberSectorByWidth;
+		this.numberSectorByHeight = numberSectorByHeight;
+		int size = numberSectorByWidth * numberSectorByHeight;
 		cells = new ICell[size][size];
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
@@ -32,11 +31,11 @@ public class Grid implements IGrid {
 	}
 
 	public int getNumberSectorByWidth() {
-		return width;
+		return numberSectorByWidth;
 	}
 	
 	public int getNumberSectorByHeight() {
-		return height;
+		return numberSectorByHeight;
 	}
 	
 	public int numberPossibility() {
@@ -107,11 +106,41 @@ public class Grid implements IGrid {
 		return set;
 	}
 	
+	public Set<ICell> getRow(int rowNum) {
+		Contract.checkCondition(0 <= rowNum && rowNum < size());
+		Set<ICell> set = new HashSet<ICell>();
+		for (int i = 0; i < size(); i++) {
+			set.add(cells()[i][rowNum]);
+		}
+		return set;
+	}
+	
+	public Set<ICell> getCol(int colNum) {
+		Contract.checkCondition(0 <= colNum && colNum < size());
+		Set<ICell> set = new HashSet<ICell>();
+		for (int i = 0; i < size(); i++) {
+			set.add(cells()[colNum][i]);
+		}
+		return set;
+	}
+	
+	public Set<ICell> getSector(int sectorRowNum, int sectorColNum) {
+		Contract.checkCondition(0 <= sectorRowNum && sectorRowNum < getNumberSectorByHeight());
+		Contract.checkCondition(0 <= sectorColNum && sectorColNum < getNumberSectorByWidth());
+		Set<ICell> set = new HashSet<ICell>();
+		for (int i = 0; i < getNumberSectorByWidth(); i++) {
+			for (int j = 0; j < getNumberSectorByHeight(); j++) {
+				set.add(cells()[sectorColNum * getWidthSector() + j]
+						[sectorRowNum * getHeightSector() + i]);
+			}
+		}
+		return set;
+	}
+	
 	public boolean isValidCoord(ICoord coord) {
 		Contract.checkCondition(coord != null);
 		return 0 <= coord.getCol() && coord.getCol() < size()
 				&& 0 <= coord.getRow() && coord.getRow() < size();
-				
 	}
 
 	public Set<ICell> getUnitCells(ICoord coord) {
@@ -130,8 +159,8 @@ public class Grid implements IGrid {
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError("echec clonage");
 		}
-		clone.height = this.height;
-		clone.width = this.width;
+		clone.numberSectorByHeight = this.numberSectorByHeight;
+		clone.numberSectorByWidth = this.numberSectorByWidth;
 		clone.cells = new ICell[size()][size()];
 		for (int i = 0; i < size() ; ++i) {
 			for (int j = 0; j < size() ; ++j) {

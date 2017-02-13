@@ -98,6 +98,7 @@ interface ICell extends Serializable, Cloneable  {
 	/**
 	 * Change la valeur de la cellule.
 	 * @pre
+	 * 		isModifiable()
 	 *      0 < n <= getCardinalPossibilities()
 	 * @post
 	 *      getValue() == n
