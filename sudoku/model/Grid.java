@@ -58,7 +58,7 @@ public class Grid implements IGrid {
 	public ICell getCell(ICoord coord) {
 		Contract.checkCondition(coord != null 
 			&& isValidCoord(coord));
-		return cells[coord.getCol()][coord.getRow()];
+		return cells()[coord.getRow()][coord.getCol()];
 	}
 
 	public boolean isFull() {
@@ -76,7 +76,7 @@ public class Grid implements IGrid {
 			&& isValidCoord(coord));
 		Set<ICell> set = new HashSet<ICell>();
 		for (int i = 0; i < size(); i++) {
-			set.add(cells()[i][coord.getRow()]);
+			set.add(cells()[coord.getRow()][i]);
 		}
 		return set;
 	}
@@ -86,7 +86,7 @@ public class Grid implements IGrid {
 				&& isValidCoord(coord));
 		Set<ICell> set = new HashSet<ICell>();
 		for (int i = 0; i < size(); i++) {
-			set.add(cells()[coord.getCol()][i]);
+			set.add(cells()[i][coord.getCol()]);
 		}
 		return set;
 	}
@@ -99,8 +99,8 @@ public class Grid implements IGrid {
 		int row = coord.getRow();
 		for (int i = 0; i < getNumberSectorByWidth(); i++) {
 			for (int j = 0; j < getNumberSectorByHeight(); j++) {
-				set.add(cells()[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]
-						[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]);
+				set.add(cells()[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]
+						[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]);
 			}
 		}
 		return set;
@@ -193,25 +193,25 @@ public class Grid implements IGrid {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
 				&& 1 <= value  && value < numberPossibility());
-		cells[coord.getCol()][coord.getRow()].setValue(value);
+		cells[coord.getRow()][coord.getCol()].setValue(value);
 	}
 
 	public void resetValue(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
-		cells[coord.getCol()][coord.getRow()].removeValue();
+		cells[coord.getRow()][coord.getCol()].removeValue();
 	}
 
 	public void addPossibility(ICoord coord, int value) {
 		Contract.checkCondition(coord != null && 1 <= value  && value <= numberPossibility());
-		cells[coord.getCol()][coord.getRow()].addPossibility(value);
+		cells[coord.getRow()][coord.getCol()].addPossibility(value);
 	}
 
 	public void removePossibility(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
 				&& 1 <= value  && value <= numberPossibility());
-		cells[coord.getCol()][coord.getRow()].removePossibility(value);
+		cells[coord.getRow()][coord.getCol()].removePossibility(value);
 	}
 
 	public void changeCells(ICell[][] tabCells) {

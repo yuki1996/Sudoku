@@ -9,7 +9,7 @@ import sudoku.util.ICoord;
  * @inv <pre>
  *	    getNumberSectorByWidth() > 0  && getNumberSectorByHeight() > 0 && size() ==  getNumberSectorByWidth() * getNumberSectorByHeight()
  * 		isFull() <==> forall ICell cell in cells() : cell.hasValue()
- * 		forall ICoord c : getCell(c) <==> cells[c.getCol()][c.getRow()]
+ * 		forall ICoord c : getCell(c) <==> cells[c.getRow()][c.getCol()]
  * 		size() == getNumberSectorByHeight() * getNumberSectorByWidth()
  * 		cells().size() == size() 
  * 		numberPossibility() == size()
