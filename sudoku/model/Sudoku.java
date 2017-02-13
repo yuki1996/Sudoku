@@ -245,26 +245,108 @@ public class Sudoku implements ISudoku {
 	 * premier algo de résolution
 	 */
 	
-	private void angle(IGrid g, ICoord c) {
+	private void singleCandidate(IGrid g, ICoord c) {
+		/*
+		 * a revoir
+		 */
 		assert c != null;
 		assert g != null;
 		assert g.isValidCoord(c);
 		ICell src = g.getCell(c);
 		assert src.isModifiable();
-		updateEasyGrid(g);
 		Set<ICell> sector = g.getSector(c);
+		sector.remove(src);
 		int sectorCellsNb = sector.size();
 		int i = 1;
-		while (! src.hasValue() && i <= src.getCardinalPossibilities()) {
-			int n = sectorCellsNb;
-			for (ICell cell : sector) {
-				--n;
+		while (i <= src.getCardinalPossibilities()) {
+			if (src.canTakeValue(i)) {
+				int n = sectorCellsNb;
+				for (ICell cell : sector) {
+					if (! cell.isModifiable() || ! cell.canTakeValue(i)) {
+						--n;
+					} else {
+						break;
+					}
+				}
 				if (n == 0) {
 					src.setValue(i);
+					return;
 				}
+				++i;
 			}
-			++i;
+		}
+		
+		sector = g.getRow(c);
+		sector.remove(src);
+		i = 1;
+		while (i <= src.getCardinalPossibilities()) {
+			if (src.canTakeValue(i)) {
+				int n = sectorCellsNb;
+				for (ICell cell : sector) {
+					if (! cell.isModifiable() || ! cell.canTakeValue(i)) {
+						--n;
+					}
+				}
+				if (n == 0) {
+					src.setValue(i);
+					return;
+				}
+				++i;
+			}
+		}
+		
+		sector = g.getCol(c);
+		sector.remove(src);
+		i = 1;
+		while (i <= src.getCardinalPossibilities()) {
+			if (src.canTakeValue(i)) {
+				int n = sectorCellsNb;
+				for (ICell cell : sector) {
+					if (! cell.isModifiable() || ! cell.canTakeValue(i)) {
+						--n;
+					}
+				}
+				if (n == 0) {
+					src.setValue(i);
+					return;
+				}
+				++i;
+			}
 		}
 	}
 	
+	/**
+	 * deuxieme algo de resolution
+	 */
+	
+	private void oneCandidate(IGrid g, ICoord c) {
+		/*
+		 * a revoir
+		 */
+		assert c != null;
+		assert g != null;
+		assert g.isValidCoord(c);
+		ICell src = g.getCell(c);
+		assert src.isModifiable();
+		
+		int v = 0;
+		for (int i = 0; i < src.possibilities().length; ++i) {
+			if (src.possibilities()[i]) {
+				if (v == 0) {
+					v = i + 1;
+				} else {
+					return;
+				}
+			}
+		}
+		src.setValue(v);
+	}
+	
+	/**
+	 * troisieme algo de resolution
+	 */
+	
+	private void siblings(IGrid g, ICoord c) {
+		
+	}
 }
