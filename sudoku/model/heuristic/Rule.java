@@ -52,7 +52,7 @@ enum Rule {
 
   public abstract String describe(int report);
 
-  public abstract Report generate();
+  public abstract Report generate(IGrid grid);
 
   public abstract void execute(Report report);
 
