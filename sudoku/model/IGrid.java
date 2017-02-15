@@ -7,12 +7,13 @@ import sudoku.util.ICoord;
 
 /**
  * @inv <pre>
- *	    getNumberSectorByWidth() > 0  && getNumberSectorByHeight() > 0 && size() ==  getNumberSectorByWidth() * getNumberSectorByHeight()
+ *	    getNumberSectorByWidth() > 0  && getNumberSectorByHeight() > 0 && size() 
+ *			<==>  getNumberSectorByWidth() * getNumberSectorByHeight()
  * 		isFull() <==> forall ICell cell in cells() : cell.hasValue()
  * 		forall ICoord c : getCell(c) <==> cells[c.getRow()][c.getCol()]
  * 		size() == getNumberSectorByHeight() * getNumberSectorByWidth()
  * 		cells().size() == size() 
- * 		numberPossibility() == size()
+ * 		numberCandidates() == size()
  * 		getWidthSector() == getNumberSectorByHeight()
  * 		getHeightSector() == getNumberSectorByWidth()
  * 		cells() != null
@@ -54,9 +55,9 @@ public interface IGrid extends Serializable, Cloneable {
 	int getNumberSectorByHeight();
 	
 	/**
-	 * Retourne le nombre de possibilité de la grille
+	 * Retourne le nombre de candidates de la grille
 	 */
-	int numberPossibility();
+	int numberCandidates();
 	
 	/**
 	 * Retourne la largeur d'une région
@@ -189,7 +190,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
-	 * 		1 <= value <= numberPossibility()
+	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
 	 * 		getCell(coord).getValue() == value
@@ -210,30 +211,30 @@ public interface IGrid extends Serializable, Cloneable {
 	void resetValue(ICoord coord);
 	
 	/**
-	 * Ajoute la valeur value dans les possibilités la cellule de coord.
+	 * Ajoute la valeur value dans les candidates la cellule de coord.
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
-	 * 		1 <= value <= numberPossibility()
+	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).possibility()[value - 1]
+	 * 		getCell(coord).Candidates()[value - 1]
 	 * </pre>
 	 */
-	void addPossibility(ICoord coord, int value);
+	void addCandidate(ICoord coord, int value);
 	
 	/**
-	 * Supprime la valeur value dans les possibilités la cellule de coord.
+	 * Supprime la valeur value dans les candidates la cellule de coord.
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
-	 * 		1 <= value <= numberPossibility()
+	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		! getCell(coord).possibility()[value - 1]
+	 * 		! getCell(coord).Candidates()[value - 1]
 	 * </pre>
 	 */
-	void removePossibility(ICoord coord, int value);	
+	void removeCandidate(ICoord coord, int value);	
 	
 	/**
 	 * Change le tableau de cellules par tabCells.

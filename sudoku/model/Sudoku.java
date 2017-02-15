@@ -135,10 +135,10 @@ public class Sudoku implements ISudoku {
 				&& getGridPlayer().getCell(c).getValue() > 0);
 		int n = getGridPlayer().getCell(c).getValue();
 		Set<ICell> set = getGridPlayer().getUnitCells(c);
-		for (int i = 0 ; i < getGridPlayer().numberPossibility(); i++) {
-			for (int j = 0 ; j < getGridPlayer().numberPossibility(); j++) {
+		for (int i = 0 ; i < getGridPlayer().numberCandidates(); i++) {
+			for (int j = 0 ; j < getGridPlayer().numberCandidates(); j++) {
 				if (set.contains(getGridPlayer().cells()[i][j]) && getGridPlayer().cells()[i][j].isModifiable()) {
-					getGridPlayer().cells()[i][j].removePossibility(n);
+					getGridPlayer().cells()[i][j].removeCandidate(n);
 				}
 			}
 		} 
@@ -148,7 +148,7 @@ public class Sudoku implements ISudoku {
 	public void setValue(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && n > 0
-				&& 1 <= n  && n <= getGridPlayer().numberPossibility());
+				&& 1 <= n  && n <= getGridPlayer().numberCandidates());
 		getGridPlayer().changeValue(c, n);
 		updateEasyPossibilities(c); 
 	}
@@ -162,15 +162,14 @@ public class Sudoku implements ISudoku {
 	public void addPossibility(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
-				&& n <= getGridPlayer().numberPossibility());
-		getGridPlayer().addPossibility(c, n);
+				&& n <= getGridPlayer().numberCandidates());
+		getGridPlayer().addCandidate(c, n);
 	}
 
 	public void removePossibility(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
-				&& n <= getGridPlayer().numberPossibility());
-		getGridPlayer().removePossibility(c, n);
+				&& n <= getGridPlayer().numberCandidates());
 	}
 
 	public void finish() {
@@ -236,7 +235,7 @@ public class Sudoku implements ISudoku {
 		Set<ICell> set = g.getUnitCells(c);
 		for (ICell cell : set) {
 			if (cell.isModifiable()) {
-				cell.removePossibility(n);
+				cell.removeCandidate(n);
 			}
 		}
 	}
@@ -258,7 +257,7 @@ public class Sudoku implements ISudoku {
 		sector.remove(src);
 		int sectorCellsNb = sector.size();
 		int i = 1;
-		while (i <= src.getCardinalPossibilities()) {
+		while (i <= src.getCardinalCandidates()) {
 			if (src.canTakeValue(i)) {
 				int n = sectorCellsNb;
 				for (ICell cell : sector) {
@@ -279,7 +278,7 @@ public class Sudoku implements ISudoku {
 		sector = g.getRow(c);
 		sector.remove(src);
 		i = 1;
-		while (i <= src.getCardinalPossibilities()) {
+		while (i <= src.getCardinalCandidates()) {
 			if (src.canTakeValue(i)) {
 				int n = sectorCellsNb;
 				for (ICell cell : sector) {
@@ -298,7 +297,7 @@ public class Sudoku implements ISudoku {
 		sector = g.getCol(c);
 		sector.remove(src);
 		i = 1;
-		while (i <= src.getCardinalPossibilities()) {
+		while (i <= src.getCardinalCandidates()) {
 			if (src.canTakeValue(i)) {
 				int n = sectorCellsNb;
 				for (ICell cell : sector) {
@@ -330,8 +329,8 @@ public class Sudoku implements ISudoku {
 		assert src.isModifiable();
 		
 		int v = 0;
-		for (int i = 0; i < src.possibilities().length; ++i) {
-			if (src.possibilities()[i]) {
+		for (int i = 0; i < src.candidates().length; ++i) {
+			if (src.candidates()[i]) {
 				if (v == 0) {
 					v = i + 1;
 				} else {

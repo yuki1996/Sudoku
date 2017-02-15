@@ -27,14 +27,6 @@ public final class Main {
 		
 		System.out.println("\n possibilité en (5,2) \n");
 		affiche_possibilite(new Coord(5, 2), sudo);
-		/*
-		for (int i = 0; i < sudo.getGridPlayer().size(); i++) {
-			for (int j = 0; j < sudo.getGridPlayer().size(); j++) {
-				System.out.println("\n possibilité en ("+i+","+j+") \n");
-				affiche_possibilite(new Coord(j, i), sudo);
-			}
-			System.out.println("");
-		}*/
 	}
 
 	//OUTILS
@@ -64,13 +56,13 @@ public final class Main {
 		Contract.checkCondition(sudo != null || coord != null);
 		ICell c = sudo.getGridPlayer().getCell(coord);
 	
-		for (int i = 0; i < c.getCardinalPossibilities(); i++) {
+		for (int i = 0; i < c.getCardinalCandidates(); i++) {
 			System.out.print(i + 1 + " ");
 		}
 
 		System.out.println("");
-		for (int i = 0; i < c.getCardinalPossibilities(); i++) {
-			System.out.print(c.possibilities()[i] ? 1 : 0);
+		for (int i = 0; i < c.getCardinalCandidates(); i++) {
+			System.out.print(c.candidates()[i] ? 1 : 0);
 			System.out.print(" ");
 		}
 		System.out.println("");
