@@ -38,7 +38,7 @@ public class Grid implements IGrid {
 		return numberSectorByHeight;
 	}
 	
-	public int numberPossibility() {
+	public int numberCandidates() {
 		return size();
 	}
 	
@@ -192,7 +192,7 @@ public class Grid implements IGrid {
 	public void changeValue(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
-				&& 1 <= value  && value < numberPossibility());
+				&& 1 <= value  && value < numberCandidates());
 		cells[coord.getRow()][coord.getCol()].setValue(value);
 	}
 
@@ -202,16 +202,16 @@ public class Grid implements IGrid {
 		cells[coord.getRow()][coord.getCol()].removeValue();
 	}
 
-	public void addPossibility(ICoord coord, int value) {
-		Contract.checkCondition(coord != null && 1 <= value  && value <= numberPossibility());
-		cells[coord.getRow()][coord.getCol()].addPossibility(value);
+	public void addCandidate(ICoord coord, int value) {
+		Contract.checkCondition(coord != null && 1 <= value  && value <= numberCandidates());
+		cells[coord.getRow()][coord.getCol()].addCandidate(value);
 	}
 
-	public void removePossibility(ICoord coord, int value) {
+	public void removeCandidate(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
-				&& 1 <= value  && value <= numberPossibility());
-		cells[coord.getRow()][coord.getCol()].removePossibility(value);
+				&& 1 <= value  && value <= numberCandidates());
+		cells[coord.getRow()][coord.getCol()].removeCandidate(value);
 	}
 
 	public void changeCells(ICell[][] tabCells) {

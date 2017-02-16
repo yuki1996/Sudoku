@@ -8,7 +8,7 @@ public class Cell implements ICell {
 	//ATTRIBUTS
 	private int value;
 	private boolean modifiable;
-	private boolean[] possibilities;
+	private boolean[] candidates;
 	
 	//CONSTRUCTEURS
 	
@@ -16,9 +16,9 @@ public class Cell implements ICell {
 		Contract.checkCondition(cardinal > 0, "value doit être strictement positif.");
 		value = 0;
 		modifiable = true;
-		possibilities = new boolean[cardinal];
+		candidates = new boolean[cardinal];
 		for (int i = 0; i < cardinal; ++i) {
-			possibilities[i] = true;
+			candidates[i] = true;
 		}
 	}
 	
@@ -28,9 +28,9 @@ public class Cell implements ICell {
 				"value doit être strictement positif.");
 		this.value = value;
 		this.modifiable = modifiable;
-		possibilities = new boolean[cardinal];
+		candidates = new boolean[cardinal];
 		for (int i = 0; i < cardinal; ++i) {
-			possibilities[i] = true;
+			candidates[i] = true;
 		}
 	}
 	
@@ -39,13 +39,13 @@ public class Cell implements ICell {
 				"le tableau doit être strictement positif.");
 		value = 0;
 		modifiable = true;
-		this.possibilities = possibilities.clone();
+		this.candidates = possibilities.clone();
 	}
 	
 	//REQUETES
 
-	public int getCardinalPossibilities() {
-		return possibilities.length;
+	public int getCardinalCandidates() {
+		return candidates.length;
 	}
 	
 	@Override
@@ -64,14 +64,14 @@ public class Cell implements ICell {
 	}
 
 	@Override
-	public boolean[] possibilities() {
-		return possibilities.clone();
+	public boolean[] candidates() {
+		return candidates.clone();
 	}
 	
 
 	public boolean canTakeValue(int n) {
-		Contract.checkCondition(n > 0 && n < possibilities.length);
-		return possibilities[n - 1];
+		Contract.checkCondition(n > 0 && n < candidates.length);
+		return candidates[n - 1];
 	}
 	
 	public Object clone() {
@@ -83,7 +83,7 @@ public class Cell implements ICell {
 		}
 		clone.value = this.getValue();
 		clone.modifiable = this.isModifiable();
-		clone.possibilities = this.possibilities();
+		clone.candidates = this.candidates();
 		return clone;
 		
 	}
@@ -93,7 +93,7 @@ public class Cell implements ICell {
 			Cell o = (Cell) obj;
 			return this.isModifiable() == o.isModifiable() 
 					&& this.getValue() == o.getValue()
-					&& Arrays.equals(this.possibilities(),o.possibilities());
+					&& Arrays.equals(this.candidates(),o.candidates());
 		}
 		return false;
 		
@@ -103,7 +103,7 @@ public class Cell implements ICell {
 	@Override
 	public void setValue(int n) {
 		Contract.checkCondition(isModifiable());
-		Contract.checkCondition(n > 0 && n <= possibilities.length);
+		Contract.checkCondition(n > 0 && n <= candidates.length);
 		value = n;
 	}
 
@@ -114,17 +114,17 @@ public class Cell implements ICell {
 	}
 
 	@Override
-	public void addPossibility(int n) {
-		Contract.checkCondition(n > 0 && n <= possibilities.length);
+	public void addCandidate(int n) {
+		Contract.checkCondition(n > 0 && n <= candidates.length);
 		Contract.checkCondition(modifiable);
-		possibilities[n - 1] = true;
+		candidates[n - 1] = true;
 	}
 
 	@Override
-	public void removePossibility(int n) {
-		Contract.checkCondition(n > 0 && n <= possibilities.length);
+	public void removeCandidate(int n) {
+		Contract.checkCondition(n > 0 && n <= candidates.length);
 		Contract.checkCondition(modifiable);
-		possibilities[n - 1] = false;
+		candidates[n - 1] = false;
 	}
 	
 	public void setModifiable(boolean bool) {
@@ -132,8 +132,8 @@ public class Cell implements ICell {
 	}
 	
 	public void reset() {
-		for (int i = 1; i <= possibilities.length; i++) {
-			addPossibility(i);
+		for (int i = 1; i <= candidates.length; i++) {
+			addCandidate(i);
 		}
 		modifiable = true;
 		value = 0;

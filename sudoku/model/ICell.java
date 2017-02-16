@@ -1,15 +1,17 @@
 package sudoku.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Type d'une cellule.
  * @inv
  *      0 <= getValue()
  *      getValue() != 0 <==> hasValue()
- *      getCardinalPossibilities() > 0
- *      possibilities().length == getCardinalPossibilities()
- *      forall int i : canTakeValue(i) <==> possibilities()[i - 1] && isModifiable()
+ *      getCardinalCandidates() > 0
+ *      candidates().length == getCardinalCandidates()
+ *      forall int i : canTakeValue(i) <==> candidates()[i - 1] && isModifiable()
  *      
  * @cons <pre>
  *     $DESC$ Une cellule modifiable sans valeur.
@@ -19,10 +21,10 @@ import java.io.Serializable;
  *     $PRE$ cardinal > 0
  *      
  *     $POST$ 
- *     		getCardinalPossibilities() == cardinal
+ *     		getCardinalCandidates() == cardinal
  *     		! hasValue()
  *      	isModifiable()
- *         	forall int i : possibilities()[i]
+ *         	forall int i : candidates()[i]
  *    </pre>
  *    
  * @cons <pre>
@@ -35,22 +37,22 @@ import java.io.Serializable;
  *     $POST$
  *     	    getValue() == value
  *         	isModifiable() == modifiable
- *          forall int i : possibilities()[i]
- *          getCardinalPossibilities() == cardinal
+ *          forall int i : candidates()[i]
+ *          getCardinalCandidates() == cardinal
  *    </pre>
  *    
  * @cons <pre>
- *     $DESC$ Une cellule modifiable sans valeur ayant un tableau de possibilité.
+ *     $DESC$ Une cellule modifiable sans valeur ayant un tableau de candidats.
  *     
- *     $ARGS$ boolean[] possibilities 
+ *     $ARGS$ boolean[] Candidates 
  *     
- *     $PRE$ possibilities != null && possibilities.length > 0
+ *     $PRE$ candidates != null && candidates.length > 0
  *         
  *     $POST$ 
  *          ! hasValue()
  *          isModifiable()
- *         	possibilities().equals(possibilities)
- *          getCardinalPossibilities() == possibilities.length
+ *         	candidates().equals(candidates)
+ *          getCardinalCandidates() == Candidates.length
  *    </pre>
  */
 interface ICell extends Serializable, Cloneable  {
@@ -58,9 +60,9 @@ interface ICell extends Serializable, Cloneable  {
 	//REQUETES
 	
 	/**
-	 * Renvoie le nombre de possibilité.
+	 * Renvoie le nombre de candidats.
 	 */
-	int getCardinalPossibilities();
+	int getCardinalCandidates();
 	
 	/**
 	 * Donne la valeur actuel de la cellule.
@@ -81,7 +83,7 @@ interface ICell extends Serializable, Cloneable  {
 	/**
 	 * Renvoie le tableau des possibilités.
 	 */
-	boolean[] possibilities();
+	boolean[] candidates();
 	
 	/**
 	 * Renvoie un clone de la cellule.
@@ -99,7 +101,7 @@ interface ICell extends Serializable, Cloneable  {
 	 * Change la valeur de la cellule.
 	 * @pre
 	 * 		isModifiable()
-	 *      0 < n <= getCardinalPossibilities()
+	 *      0 < n <= getCardinalCandidates()
 	 * @post
 	 *      getValue() == n
 	 */
@@ -115,24 +117,24 @@ interface ICell extends Serializable, Cloneable  {
 	void removeValue();
 	
 	/**
-	 * Ajoute n comme possibilite si la cellule ne la posséde pas déjà.
+	 * Ajoute n comme candidat si la cellule ne la possède pas déjà.
 	 * @pre
-	 *      0 < n <= getCardinalPossibilities()
+	 *      0 < n <= getCardinalCandidates()
 	 *      isModifiable()
 	 * @post
-	 * 		possibilities()[n - 1]
+	 * 		candidates()[n - 1]
 	 */
-	void addPossibility(int n);
+	void addCandidate(int n);
 	
 	/**
-	 * Supprime la possibilité n si la cellule la posséde.
+	 * Supprime le candidat n si la cellule la possède.
 	 * @pre
-	 *      0 < n <= getCardinalPossibilities()
+	 *      0 < n <= getCardinalCandidates()
 	 *      isModifiable()
 	 * @post
-	 * 		! possibilities()[n - 1]
+	 * 		! candidates()[n - 1]
 	 */
-	void removePossibility(int n);
+	void removeCandidate(int n);
 	
 	/**
 	 * Modifie la modifiabilité de la cellule
@@ -142,11 +144,11 @@ interface ICell extends Serializable, Cloneable  {
 	void setModifiable(boolean bool);
 	
 	/**
-	 * Met la cellule comme étant modifiable avec comme valeur nulle et posséde toute possibilité
+	 * Met la cellule comme étant modifiable avec comme valeur nulle et possède tous les candidats
 	 * @post
 	 *     	    getValue() == 0
 	 *         	isModifiable() == true
-	 *         	forall int i : possibilities()[i]
+	 *         	forall int i : candidates()[i]
 	 */
 	void reset();
 }
