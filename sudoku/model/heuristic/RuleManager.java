@@ -2,6 +2,7 @@ package sudoku.model.heuristic;
 
 import java.util.Vector;
 import sudoku.model.IGrid;
+import sudoku.model.heuristic.Rule.Report;
 import util.Contract;
 
 public class RuleManager {
@@ -22,8 +23,10 @@ public class RuleManager {
   
   //REQUÊTES
   public void findRule() {
-	Report report = new Report();
-	for (int i = 0; i < Rule.values().length && report == null; i++) {
+	Report report = Rule.values()[0].generate(grid);
+	report.setRule(Rule.values()[0]);
+	for (int i = 1; i < Rule.values().length && report.describe(grid) == null; i++) {
+		report = Rule.values()[i].generate(grid);
 		report.setRule(Rule.values()[i]);
 	}
 	lastReport = report;
@@ -31,6 +34,7 @@ public class RuleManager {
 
   //COMMANDES
   public void executeRule() {
+	  lastReport.execute(grid);
   }
 
 }
