@@ -12,6 +12,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import sudoku.model.history.History;
+import sudoku.model.history.StdHistory;
+import sudoku.model.history.cmd.AddCandidate;
+import sudoku.model.history.cmd.AddValue;
+import sudoku.model.history.cmd.Command;
+import sudoku.model.history.cmd.RemoveCandidate;
+import sudoku.model.history.cmd.RemoveValue;
 import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
@@ -20,15 +27,19 @@ public class Sudoku implements ISudoku {
 
 	//ATTRIBUTS
 	public static final String SEPARATOR = " ";
+	public static final int HISTORY_SIZE = 1024;
 	
 	private IGrid gridPlayer;
 	private IGrid gridSoluce;
+	
+	private History<Command> history;
 
 	//CONSTRUCTEUR
 	public Sudoku(int width, int height)  {
 		Contract.checkCondition(width > 0 && height > 0);
 		gridPlayer = new Grid(width, height);
 		gridSoluce = new Grid(width, height);
+		history = new StdHistory<Command>(HISTORY_SIZE);
 	}
 	
 	public Sudoku(File textFile) throws IOException {
@@ -149,27 +160,27 @@ public class Sudoku implements ISudoku {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && n > 0
 				&& 1 <= n  && n <= getGridPlayer().numberCandidates());
-		getGridPlayer().changeValue(c, n);
-		updateEasyPossibilities(c); 
+		history.add(new AddValue(gridPlayer, c, n));
 	}
 
 	public void removeValue(ICoord c) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c));
-		getGridPlayer().resetValue(c);
+		history.add(new RemoveValue(gridPlayer, c));
 	}
 
 	public void addPossibility(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
-		getGridPlayer().addCandidate(c, n);
+		history.add(new AddCandidate(gridPlayer, c, n));
 	}
 
 	public void removePossibility(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
+		history.add(new RemoveCandidate(gridPlayer, c, n));
 	}
 
 	public void finish() {

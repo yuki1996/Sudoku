@@ -1,6 +1,6 @@
 package sudoku.model.history.cmd;
 
-import serie03.Text;
+import sudoku.model.IGrid;
 import util.Contract;
 
 /**
@@ -12,44 +12,49 @@ public abstract class AbstractCommand implements Command {
     
     private State state;
     
-    //private final Text text;
+    private final IGrid grid;
 
     // CONSTRUCTEURS
 
     /**
      * @pre <pre>
-     *     text != null </pre>
+     *     grid != null </pre>
      * @post <pre>
-     *     getText() == text
+     *     getGrid() == grid
      *     getState() == State.DO </pre>
      */
-    protected AbstractCommand(Text text) {
-        Contract.checkCondition(text != null, "le texte donné est null");
+    protected AbstractCommand(IGrid grid) {
+        Contract.checkCondition(grid != null, "la grille donné est null");
 
-        this.text = text;
+        this.grid = grid;
         state = State.DO;
     }
 
     // REQUETES
 
+	@Override
     public boolean canDo() {
         return state == State.DO;
     }
-    
+
+	@Override
     public boolean canUndo() {
         return state == State.UNDO;
     }
-    
-    public Text getText() {
-        return text;
+
+	@Override
+    public IGrid getGrid() {
+        return grid;
     }
-    
+
+	@Override
     public State getState() {
         return state;
     }
 
     // COMMANDES
-    
+
+	@Override
     public void act() {
         Contract.checkCondition(canDo() || canUndo());
 

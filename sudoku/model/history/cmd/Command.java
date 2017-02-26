@@ -1,15 +1,15 @@
 package sudoku.model.history.cmd;
 
-import serie03.Text;
+import sudoku.model.IGrid;
 
 /**
- * Une commande est un objet capable de modifier un texte selon certains 
+ * Une commande est un objet capable de modifier une grille selon certains 
  *  critères.
  * La sémantique de la commande ne pourra être complète que dans les classes
  *  qui implémenteront cette interface.
  * @inv <pre>
  *     getState() != null
- *     getText() != null
+ *     getGrid() != null
  *     canDo() ==> getState() == State.DO
  *     canUndo() ==> getState() == State.UNDO </pre>
  */
@@ -18,9 +18,9 @@ public interface Command {
     // REQUETES
     
     /**
-     * Le texte sur lequel la commande agit.
+     * La grille sur lequel la commande agit.
      */
-    Text getText();
+    IGrid getGrid();
     
     /**
      * L'état interne de la commande.
@@ -48,9 +48,9 @@ public interface Command {
      * @post <pre>
      *     getState() != old getState()
      *     old canDo()
-     *         ==> la commande a fait son action sur son texte
+     *         ==> la commande a fait son action sur sa grille
      *     old canUndo()
-     *         ==> la commande a défait son action sur son texte </pre>
+     *         ==> la commande a défait son action sur sa grille </pre>
      */
     void act();
 }
