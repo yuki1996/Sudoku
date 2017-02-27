@@ -1,453 +1,63 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.IGrid;
+import sudoku.model.heuristic.Report.ReportGenerator;
 
 enum Rule {
 	
-	ONE_CANDIDATE {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	ONE_CANDIDATE(null),
 	
-	ONLY_CANDIDATE {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	ONLY_CANDIDATE(null),
 	
-	PAIR_TRIPLET {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	PAIR_TRIPLET(null),
 	
-	INTERACTION_BETWEEN_SECTORS {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	INTERACTION_BETWEEN_SECTORS(null),
 	
-	IDENTICAL_CANDIDATES {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	IDENTICAL_CANDIDATES(null),
 	
-	ISOLATED_GROUPS {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	ISOLATED_GROUPS(null),
 	
-	MIXED_GROUPS {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	MIXED_GROUPS(null),
 	
-	X_WING {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	X_WING(null),
 	
-	XY_WING {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	XY_WING(null),
 	
-	XYZ_WING {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	XYZ_WING(null),
 	
-	UNITY {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	UNITY(null),
 	
-	SWORDFISH {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	SWORDFISH(null),
 	
-	JELLYFISH_AND_SQUIRMBAG {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	JELLYFISH_AND_SQUIRMBAG(null),
 	
-	BURMA {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	BURMA(null),
 	
-	COLORING {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	COLORING(null),
 	
-	TURBOT_FISH {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	TURBOT_FISH(null),
 	
-	XY_CHAIN {
-		@Override
-		public String describe(Report report) {
-				// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	XY_CHAIN(null),
 	
-	XY_COLORING {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	COLORED_XY(null),
 	
-	THREED_MEDUSA {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	XY_COLORING(null),
 	
-	CHAINED_FORCED_CANDIDATE {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	THREED_MEDUSA(null),
 	
-	NISHIO {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	},
+	CHAINED_FORCED_CANDIDATE(null),
 	
-	BRUTE_FORCE {
-		@Override
-		public String describe(Report report) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+	NISHIO(null),
+	
+	BRUTE_FORCE(null);
+	
+	private ReportGenerator generator;
+	
+	private Rule(ReportGenerator generator) {
 		
-		@Override
-		public Report generate(IGrid grid) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public void execute(Report report) {
-			// TODO Auto-generated method stub
-				
-		}
-	};
+	}
 	
-	public abstract String describe(Report report);
+	public ReportGenerator getGenerator() {
+		return generator;
+	}
 	
-	public abstract Report generate(IGrid grid);
-	
-	public abstract void execute(Report report);
-
 }
