@@ -84,6 +84,14 @@ public interface IGrid extends Serializable, Cloneable {
 	ICell getCell(ICoord coord);
 	
 	/**
+	 * Retourne la coordonnée correspondant à cell.
+	 * @pre : <pre>
+	 * 		cell != null
+	 * <pre>
+	 */
+	ICoord getCoord(ICell cell);
+	
+	/**
 	 * Retourne si la grille est complète
 	 */
 	boolean isFull();

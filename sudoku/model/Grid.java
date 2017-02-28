@@ -2,6 +2,8 @@ package sudoku.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
 
@@ -66,6 +68,18 @@ public class Grid implements IGrid {
 		Contract.checkCondition(coord != null 
 			&& isValidCoord(coord));
 		return cells()[coord.getRow()][coord.getCol()];
+	}
+	
+	@Override
+	public ICoord getCoord(ICell cell) {
+		for (int k = 0; k < size(); ++k) {
+			for (int j = 0; j < size(); ++j) {
+				if (cells[k][j] == cell) {
+					return new Coord(k, j);
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

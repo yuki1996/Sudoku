@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import sudoku.model.ICell;
-import sudoku.model.IGrid;
-import util.Contract;
 
 public class Report {
 
