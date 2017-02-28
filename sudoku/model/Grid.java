@@ -25,42 +25,50 @@ public class Grid implements IGrid {
 	}
 	
 	// REQUÊTES
-	
+	@Override
 	public int size() {
 		return getNumberSectorByWidth() * getNumberSectorByHeight();
 	}
 
+	@Override
 	public int getNumberSectorByWidth() {
 		return numberSectorByWidth;
 	}
-	
+
+	@Override
 	public int getNumberSectorByHeight() {
 		return numberSectorByHeight;
 	}
-	
+
+	@Override
 	public int numberCandidates() {
 		return size();
 	}
-	
+
+	@Override
 	public int getWidthSector() {
 		return getNumberSectorByHeight();
 	}
-	
+
+	@Override
 	public int getHeightSector() {
 		return getNumberSectorByWidth();
 	}
 	
-	
+
+	@Override
 	public ICell[][] cells() {
 		return cells.clone();
 	}
 
+	@Override
 	public ICell getCell(ICoord coord) {
 		Contract.checkCondition(coord != null 
 			&& isValidCoord(coord));
 		return cells()[coord.getRow()][coord.getCol()];
 	}
 
+	@Override
 	public boolean isFull() {
 		boolean bool = true;
 		for (ICell[] cell: cells()) {
@@ -71,6 +79,7 @@ public class Grid implements IGrid {
 		return bool;
 	}
 
+	@Override
 	public Set<ICell> getRow(ICoord coord) {
 		Contract.checkCondition(coord != null
 			&& isValidCoord(coord));
@@ -81,6 +90,7 @@ public class Grid implements IGrid {
 		return set;
 	}
 
+	@Override
 	public Set<ICell> getCol(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
@@ -90,7 +100,8 @@ public class Grid implements IGrid {
 		}
 		return set;
 	}
-	
+
+	@Override
 	public Set<ICell> getSector(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
@@ -105,7 +116,8 @@ public class Grid implements IGrid {
 		}
 		return set;
 	}
-	
+
+	@Override
 	public Set<ICell> getRow(int rowNum) {
 		Contract.checkCondition(0 <= rowNum && rowNum < size());
 		Set<ICell> set = new HashSet<ICell>();
@@ -114,7 +126,8 @@ public class Grid implements IGrid {
 		}
 		return set;
 	}
-	
+
+	@Override
 	public Set<ICell> getCol(int colNum) {
 		Contract.checkCondition(0 <= colNum && colNum < size());
 		Set<ICell> set = new HashSet<ICell>();
@@ -123,7 +136,8 @@ public class Grid implements IGrid {
 		}
 		return set;
 	}
-	
+
+	@Override
 	public Set<ICell> getSector(int sectorRowNum, int sectorColNum) {
 		Contract.checkCondition(0 <= sectorRowNum && sectorRowNum < getNumberSectorByHeight());
 		Contract.checkCondition(0 <= sectorColNum && sectorColNum < getNumberSectorByWidth());
@@ -136,13 +150,15 @@ public class Grid implements IGrid {
 		}
 		return set;
 	}
-	
+
+	@Override
 	public boolean isValidCoord(ICoord coord) {
 		Contract.checkCondition(coord != null);
 		return 0 <= coord.getCol() && coord.getCol() < size()
 				&& 0 <= coord.getRow() && coord.getRow() < size();
 	}
 
+	@Override
 	public Set<ICell> getUnitCells(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
@@ -151,7 +167,8 @@ public class Grid implements IGrid {
 		set.addAll(getCol(coord));
 		return set;
 	}
-	
+
+	@Override
 	public Object clone() {
 		Grid clone = null;
 		try {
@@ -171,6 +188,7 @@ public class Grid implements IGrid {
 	}
 	
 	// COMMANDES
+	@Override
 	public void reset() {
 		for (int i = 0; i < size(); i++) {
 			for (int j = 0; j < size(); j++) {
@@ -181,6 +199,7 @@ public class Grid implements IGrid {
 		}
 	}
 
+	@Override
 	public void clear() {
 		for (int i = 0; i < size(); i++) {
 			for (int j = 0; j < size(); j++) {
@@ -188,7 +207,8 @@ public class Grid implements IGrid {
 			}
 		}
 	}
-	
+
+	@Override
 	public void changeValue(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
@@ -196,17 +216,20 @@ public class Grid implements IGrid {
 		cells[coord.getRow()][coord.getCol()].setValue(value);
 	}
 
+	@Override
 	public void resetValue(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
 		cells[coord.getRow()][coord.getCol()].removeValue();
 	}
 
+	@Override
 	public void addCandidate(ICoord coord, int value) {
 		Contract.checkCondition(coord != null && 1 <= value  && value <= numberCandidates());
 		cells[coord.getRow()][coord.getCol()].addCandidate(value);
 	}
 
+	@Override
 	public void removeCandidate(ICoord coord, int value) {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
@@ -214,6 +237,7 @@ public class Grid implements IGrid {
 		cells[coord.getRow()][coord.getCol()].removeCandidate(value);
 	}
 
+	@Override
 	public void changeCells(ICell[][] tabCells) {
 		Contract.checkCondition(tabCells != null && tabCells.length == size() 
 								&& checkTab(tabCells));

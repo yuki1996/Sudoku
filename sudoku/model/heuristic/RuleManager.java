@@ -9,12 +9,12 @@ public class RuleManager {
 
   private Report lastReport;
 
-    public Vector  myReport;
-
   public void findRule() {
+	  
   }
 
   public void executeRule() {
+	  // à voir
   }
 
 }
