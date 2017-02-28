@@ -1,8 +1,6 @@
 package sudoku.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Type d'une cellule.
@@ -55,7 +53,7 @@ import java.util.Set;
  *          getCardinalCandidates() == Candidates.length
  *    </pre>
  */
-interface ICell extends Serializable, Cloneable  {
+public interface ICell extends Serializable, Cloneable  {
 	
 	//REQUETES
 	
