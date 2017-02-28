@@ -11,12 +11,12 @@ import util.Contract;
 
 public class Report {
 
-	private Rule rule;
-	private Map<YoloEnsembles, Set<ICell>> cellSets;
+	private String description;
+	private Map<CellSetName, Set<ICell>> cellSets;
 	private Set<Integer> values;
 
 	// pas nécessaire de le mettre ici : à voir
-	public enum YoloEnsembles {
+	public enum CellSetName {
 		DECISIVE_CELLS,
 		DECISIVE_UNITS,
 		DELETION_CELLS,
@@ -24,10 +24,9 @@ public class Report {
 	}
 	
 	// CONSTRUCTEUR
-	protected Report(Rule rule) {
-		Contract.checkCondition(rule != null, "rule est null");
-		this.rule = rule;
-		cellSets = new EnumMap<YoloEnsembles, Set<ICell>>(YoloEnsembles.class);
+	protected Report() {
+		description = null;
+		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
 		values = new HashSet<Integer>();
 	}
 	
@@ -35,8 +34,8 @@ public class Report {
 		return new HashSet<Integer>(values);
 	}
 	
-	public Set<ICell> getCellSet(YoloEnsembles ye) {
-		return new HashSet<ICell>(cellSets.get(ye));
+	public Set<ICell> getCellSet(CellSetName csn) {
+		return new HashSet<ICell>(cellSets.get(csn));
 	}
 	
 //	public String describe() {
@@ -47,18 +46,12 @@ public class Report {
 		// à voir
 	}
 	
-	protected abstract class ReportGenerator {
-		// methodes de modification des Report pour leur génération
-		protected void addValue(int val) {
-			values.add(val);
-		}
+	void addCell(CellSetName csn, ICell cell) {
 		
-		protected void addCell(YoloEnsembles ye, ICell cell) {
-			
-		}
-		
-		// génération des Report
-		protected abstract Report generate(IGrid grid);
 	}
-
+	
+	void addValue(int n) {
+		values.add(n);
+	}
+	
 }

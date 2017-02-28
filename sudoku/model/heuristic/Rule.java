@@ -1,7 +1,5 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.heuristic.Report.ReportGenerator;
-
 enum Rule {
 	
 	ONE_CANDIDATE(null),
