@@ -68,7 +68,7 @@ public interface ICell extends Serializable, Cloneable  {
 	int getValue();
 	
 	/**
-	 * Renvoie vrai si la cellule a une valeur (differente de 0).
+	 * Renvoie vrai si la cellule a une valeur.
 	 * Renvoie faux sinon.
 	 */
 	boolean hasValue();
