@@ -2,10 +2,15 @@ package sudoku.model.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.beans.IndexedPropertyChangeEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,8 +22,14 @@ import sudoku.model.ICell;
 public class GuiCell extends JPanel {
 	
 	// ATTRIBUTS
+	private static final Color DEFAULT_COLOR = Color.WHITE;
+	private static final Color HOVER_COLOR = Color.LIGHT_GRAY;
+	
 	private ICell model;
 	
+	// imperativement autre chose que des JLabel
+	// - probleme au niveau de la visibilité
+	// - flexibilité d'affichage (JComponent ?)
 	private JLabel value;
 	private JLabel[] candidates;
 	
@@ -36,11 +47,16 @@ public class GuiCell extends JPanel {
 	}
 	
 	private void createView() {
-		value = new JLabel("V");
+		value = new JLabel();
+		value.setOpaque(true);
+		value.setBackground(DEFAULT_COLOR);
 		candidates = new JLabel[model.getCardinalCandidates()];
 		for (int k = 0; k < candidates.length; ++k) {
 			candidates[k] = new JLabel(Integer.toString(k + 1));
+			candidates[k].setOpaque(true);
+			candidates[k].setBackground(DEFAULT_COLOR);
 		}
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
 	private void placeComponents() {
@@ -55,37 +71,93 @@ public class GuiCell extends JPanel {
 	}
 	
 	private void createController() {
-		this.addMouseListener(new MouseListener() {
+		value.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				flip();
+				if (model.isModifiable()) {
+					switch (e.getButton()) {
+						case MouseEvent.BUTTON1: // clique gauche
+							model.removeValue();
+							break;
+						default:;
+					}
+				}
 			}
 
-			@Override
-			public void mousePressed(MouseEvent e) {
+		});
+		
+		for (int k = 0; k < candidates.length; ++k) {
+			final int n = k;
+			candidates[n].addMouseListener(new MouseAdapter() {
 				
-			}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					System.out.println("clicked " + n);
+					if (model.isModifiable()) {
+						switch (e.getButton()) {
+							case MouseEvent.BUTTON1: // clique gauche
+								System.out.println("gauche");
+								model.setValue(n + 1);
+								break;
+							case MouseEvent.BUTTON3: // clique droit
+								System.out.println("droite");
+								model.toggleCandidate(n + 1);
+								break;
+							default:;
+						}
+					}
+				}
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				
-			}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					candidates[n].setBackground(HOVER_COLOR);
+				}
 
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-			}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					candidates[n].setBackground(DEFAULT_COLOR);
+				}
+			});
 			
+		}
+		
+		model.addPropertyChangeListener(ICell.VALUE, new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ((Integer) evt.getNewValue() != 0) {
+					value.setText(String.valueOf(model.getValue()));
+					swapToValue();
+				} else {
+					swapToCandidates();
+				}
+			}
+		});
+		
+		model.addPropertyChangeListener(ICell.CANDIDATE, new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IndexedPropertyChangeEvent ievt =
+						(IndexedPropertyChangeEvent) evt;
+				int index = ievt.getIndex() - 1;
+				System.out.println("recu " + index);
+				candidates[index].setVisible(model.isCandidate(index)); // pas bon setVisible(false) ne permet pas de recliquer dessus
+				candidates[index].repaint();
+			}
 		});
 	}
+
+	private void swapToValue() {
+		((CardLayout)this.getLayout()).last(this);;
+	}
+
+	private void swapToCandidates() {
+		((CardLayout)this.getLayout()).first(this);;
+	}
 	
-	private void flip() {
+	private void swap() {
 		((CardLayout)this.getLayout()).next(this);
 	}
 	
@@ -98,7 +170,7 @@ public class GuiCell extends JPanel {
 				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.NORTH);
 				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.SOUTH);
 				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.WEST);
-				mainFrame.add(new GuiCell(new Cell(8)), BorderLayout.EAST);
+				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.EAST);
 				mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 			
