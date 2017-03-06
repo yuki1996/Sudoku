@@ -1,17 +1,17 @@
 package sudoku.model.heuristic;
 
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import util.Contract;
 
 public class RuleManager {
 
-  private IGrid grid;
+  private GridModel grid;
 
   private Report lastReport;
 
-  public RuleManager(IGrid g) {
+  public RuleManager(GridModel g) {
 	  Contract.checkCondition(g != null);
 	  grid = g;
   }
@@ -36,7 +36,7 @@ public class RuleManager {
 	  return lastReport.describe();
   }
 
-  public static boolean solve(int i, int j, IGrid g) {
+  public static boolean solve(int i, int j, GridModel g) {
 	  if (g.isFull()) {	
 		  return true; 
 	  }
@@ -57,18 +57,18 @@ public class RuleManager {
 	  return false;
   }
   
-  private static boolean legal(int col, int row, int val, IGrid g) {
-	  for (ICell c : g.getRow(row)) {
+  private static boolean legal(int col, int row, int val, GridModel g) {
+	  for (CellModel c : g.getRow(row)) {
 		  if (val == c.getValue()) {
 			  return false;
 		  }
 	  }
-	  for (ICell c : g.getCol(col)) {
+	  for (CellModel c : g.getCol(col)) {
 		  if (val == c.getValue()) {
 			  return false;
 		  }
 	  }
-	  for (ICell c : g.getSector(row,col)) {
+	  for (CellModel c : g.getSector(row,col)) {
 		  if (val == c.getValue()) {
 			  return false;
 		  }

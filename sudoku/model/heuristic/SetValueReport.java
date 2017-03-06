@@ -2,9 +2,8 @@ package sudoku.model.heuristic;
 
 import java.util.Iterator;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
-import sudoku.util.Coord;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import util.Contract;
 
 public class SetValueReport extends Report {
@@ -13,10 +12,10 @@ public class SetValueReport extends Report {
 		super();
 	}
 	
-	public void execute(IGrid grid) {
+	public void execute(GridModel grid) {
 		Contract.checkCondition(grid != null);
-		Iterator<ICell> it = cellSets.get(CellSetName.DECISIVE_CELLS).iterator();
-		ICell c = it.next();
-		grid.SetValue(c, values.iterator().next());
+		Iterator<CellModel> it = cellSets.get(CellSetName.DECISIVE_CELLS).iterator();
+		CellModel c = it.next();
+		grid.setValue(c, values.iterator().next());
 	}
 }

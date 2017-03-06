@@ -1,6 +1,6 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.IGrid;
+import sudoku.model.GridModel;
 import util.Contract;
 
 public class RemoveReport extends Report {
@@ -9,7 +9,7 @@ public class RemoveReport extends Report {
 		super();
 	}
 
-	public void execute(IGrid grid) {
+	public void execute(GridModel grid) {
 		Contract.checkCondition(grid != null);
 		for (int i = 0; i < grid.size(); i++) {
 			for (int j = 0; j < grid.size(); j++) {

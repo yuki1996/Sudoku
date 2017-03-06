@@ -5,14 +5,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import util.Contract;
 
 public abstract class Report {
 
 	private String description;
-	protected Map<CellSetName, Set<ICell>> cellSets;
+	protected Map<CellSetName, Set<CellModel>> cellSets;
 	protected Set<Integer> values;
 
 	// pas nécessaire de le mettre ici : à voir
@@ -26,11 +26,11 @@ public abstract class Report {
 	// CONSTRUCTEUR
 	protected Report() {
 		description = null;
-		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
-		cellSets.put(CellSetName.DECISIVE_CELLS, new HashSet<ICell>());
-		cellSets.put(CellSetName.DECISIVE_UNITS, new HashSet<ICell>());
-		cellSets.put(CellSetName.DELETION_CELLS, new HashSet<ICell>());
-		cellSets.put(CellSetName.DELETION_UNITS, new HashSet<ICell>());	
+		cellSets = new EnumMap<CellSetName, Set<CellModel>>(CellSetName.class);
+		cellSets.put(CellSetName.DECISIVE_CELLS, new HashSet<CellModel>());
+		cellSets.put(CellSetName.DECISIVE_UNITS, new HashSet<CellModel>());
+		cellSets.put(CellSetName.DELETION_CELLS, new HashSet<CellModel>());
+		cellSets.put(CellSetName.DELETION_UNITS, new HashSet<CellModel>());	
 		values = new HashSet<Integer>();
 	}
 	
@@ -38,17 +38,17 @@ public abstract class Report {
 		return new HashSet<Integer>(values);
 	}
 	
-	public Set<ICell> getCellSet(CellSetName csn) {
-		return new HashSet<ICell>(cellSets.get(csn));
+	public Set<CellModel> getCellSet(CellSetName csn) {
+		return new HashSet<CellModel>(cellSets.get(csn));
 	}
 	
 	public String describe() {
 		return description;
 	}
 
-	public abstract void execute(IGrid grid);
+	public abstract void execute(GridModel grid);
 	
-	void addCell(CellSetName csn, ICell cell) {
+	void addCell(CellSetName csn, CellModel cell) {
 		Contract.checkCondition(cell != null);
 		cellSets.get(csn).add(cell);
 	}

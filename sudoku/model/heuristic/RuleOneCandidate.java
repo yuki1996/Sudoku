@@ -1,7 +1,7 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.Report.CellSetName;
 import util.Contract;
@@ -9,14 +9,14 @@ import util.Contract;
 public class RuleOneCandidate extends ReportGenerator {
 
 	@Override
-	protected Report generate(IGrid grid) {
+	protected Report generate(GridModel grid) {
 		Contract.checkCondition(grid != null);
-		ICell [][] tabC = grid.cells();
+		CellModel [][] tabC = grid.cells();
 		Contract.checkCondition(tabC != null);
 		Report r = new SetValueReport();
-		ICell c = null;
+		CellModel c = null;
 		Integer[] tabI = new Integer[grid.numberCandidates()];
-		ICell[] tabCell = new ICell[grid.numberCandidates()];
+		CellModel[] tabCell = new CellModel[grid.numberCandidates()];
 		//on regarde ligne par ligne
 		for (int i = 0; i < grid.size(); i++) {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
@@ -27,11 +27,10 @@ public class RuleOneCandidate extends ReportGenerator {
 				c = tabC[i][j];
 				//cellule modifiable sans valeur
 				if (!c.hasValue()) {
-					boolean [] tabB = c.candidates();
 					//parcourt tableau des candidats de la cellule
-					for (int k = 0; k < tabB.length; k++) {
+					for (int k = 0; k < grid.numberCandidates(); k++) {
 						//le candidat existe dans la cellule
-						if (tabB[k]) {
+						if (c.isCandidate(k)) {
 							tabI[k] += 1;
 							tabCell[k] = c;
 						}		
@@ -42,7 +41,7 @@ public class RuleOneCandidate extends ReportGenerator {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 				if ( tabI[k] == 1 && tabCell[k] != null) {
-					for (ICell cell : grid.getRow(i)) {
+					for (CellModel cell : grid.getRow(i)) {
 						r.addCell(CellSetName.DECISIVE_UNITS, cell);
 					}
 					r.addCell(CellSetName.DECISIVE_CELLS, tabCell[k]);
@@ -64,11 +63,10 @@ public class RuleOneCandidate extends ReportGenerator {
 				c = tabC[j][i];
 				//cellule modifiable sans valeur
 				if (c.isModifiable() && ! c.hasValue()) {
-					boolean [] tabB = c.candidates();
 					//parcourt tableau des candidats de la cellule
-					for (int k = 0; k < tabB.length; k++) {
+					for (int k = 0; k < grid.numberCandidates(); k++) {
 						//le candidat existe dans la cellule
-						if (tabB[k]) {
+						if (c.isCandidate(k)) {
 							tabI[k] += 1;
 							tabCell[k] = c;
 						}
@@ -80,7 +78,7 @@ public class RuleOneCandidate extends ReportGenerator {
 	
 				//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 				if (tabI[k] == 1 && tabCell[k] != null) {
-					for (ICell cell : grid.getCol(i)) {
+					for (CellModel cell : grid.getCol(i)) {
 						r.addCell(CellSetName.DECISIVE_UNITS, cell);
 					}
 					r.addCell(CellSetName.DECISIVE_CELLS, tabCell[k]);
@@ -106,11 +104,10 @@ public class RuleOneCandidate extends ReportGenerator {
 						c = tabC[m][n];
 						//cellule modifiable sans valeur
 						if (c.isModifiable() && ! c.hasValue()) {
-							boolean [] tabB = c.candidates();
 							//parcourt tableau des candidats de la cellule
-							for (int k = 0; k < tabB.length; k++) {
+							for (int k = 0; k < grid.numberCandidates(); k++) {
 								//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-								if (tabB[k]) {
+								if (c.isCandidate(k)) {
 									tabI[k] += 1; 
 									tabCell[k] = c;
 								}
@@ -123,7 +120,7 @@ public class RuleOneCandidate extends ReportGenerator {
 				for (int k = 0; k < grid.numberCandidates(); k++) {
 					//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 					if (tabI[k] == 1 && tabCell[k] != null) {
-						for (ICell cell : grid.getSector(j, i)) {
+						for (CellModel cell : grid.getSector(j, i)) {
 							r.addCell(CellSetName.DECISIVE_UNITS, cell);
 						}
 						r.addCell(CellSetName.DECISIVE_CELLS, tabCell[k]);
