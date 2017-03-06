@@ -17,4 +17,8 @@ public class RuleManager {
 	  // à voir
   }
 
+  //COMMANDES
+  public void executeRule() {
+	  lastReport.execute(grid);
+
 }
