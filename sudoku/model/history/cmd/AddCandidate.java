@@ -1,21 +1,21 @@
 package sudoku.model.history.cmd;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.util.ICoord;
 import util.Contract;
 
 public class AddCandidate extends AbstractCommand {
 	
 	// ATTRIBUTS
-	private ICell cell;
+	private CellModel cell;
 	private int value;
 
-	public AddCandidate(IGrid grid, ICoord coord, int value) {
+	public AddCandidate(GridModel grid, ICoord coord, int value) {
 		this(grid, grid.getCell(coord), value);
 	}
 
-	public AddCandidate(IGrid grid, ICell cell, int value) {
+	public AddCandidate(GridModel grid, CellModel cell, int value) {
 		super(grid);
 		Contract.checkCondition(grid != null, "la grille est null");
 		Contract.checkCondition(cell != null, "la coordonnée est null");

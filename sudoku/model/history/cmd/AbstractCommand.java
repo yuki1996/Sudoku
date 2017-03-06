@@ -1,6 +1,6 @@
 package sudoku.model.history.cmd;
 
-import sudoku.model.IGrid;
+import sudoku.model.GridModel;
 import util.Contract;
 
 /**
@@ -12,7 +12,7 @@ public abstract class AbstractCommand implements Command {
     
     private State state;
     
-    private final IGrid grid;
+    private final GridModel grid;
 
     // CONSTRUCTEURS
 
@@ -23,7 +23,7 @@ public abstract class AbstractCommand implements Command {
      *     getGrid() == grid
      *     getState() == State.DO </pre>
      */
-    protected AbstractCommand(IGrid grid) {
+    protected AbstractCommand(GridModel grid) {
         Contract.checkCondition(grid != null, "la grille donné est null");
 
         this.grid = grid;
@@ -43,7 +43,7 @@ public abstract class AbstractCommand implements Command {
     }
 
 	@Override
-    public IGrid getGrid() {
+    public GridModel getGrid() {
         return grid;
     }
 
