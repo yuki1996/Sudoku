@@ -16,14 +16,17 @@ public class AddValue extends AbstractCommand {
 	private Set<Command> sideEffects;
 
 	public AddValue(IGrid grid, ICoord coord, int value) {
+		this(grid, grid.getCell(coord), value);
+	}
+	
+	public AddValue(IGrid grid, ICell cell, int value) {
 		super(grid);
 		Contract.checkCondition(grid != null, "la grille est null");
-		Contract.checkCondition(coord != null, "la coordonnée est null");
-		Contract.checkCondition(grid.isValidCoord(coord), "mauvaise coordonnée");
-		cell = grid.getCell(coord);
+		Contract.checkCondition(cell != null, "la coordonnée est null");
+		this.cell = cell;
 		this.value = value;
 		sideEffects = new HashSet<Command>();
-		for (ICell c : grid.getUnitCells(coord)) {
+		for (ICell c : grid.getUnitCells(grid.getCoord(cell))) {
 			sideEffects.add(new RemoveCandidate(grid, c, value));
 		}
 	}

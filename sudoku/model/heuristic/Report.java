@@ -1,6 +1,12 @@
 package sudoku.model.heuristic;
 
 import util.Contract;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import sudoku.model.ICell;
 
 public abstract class Report {
 	//ATTRIBUTS
