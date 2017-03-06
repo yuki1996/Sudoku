@@ -1,5 +1,6 @@
 package sudoku.model.heuristic;
 
+import util.Contract;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,49 +8,29 @@ import java.util.Set;
 
 import sudoku.model.ICell;
 
-public class Report {
-
-	private String description;
-	private Map<CellSetName, Set<ICell>> cellSets;
-	private Set<Integer> values;
-
-	// pas nécessaire de le mettre ici : à voir
-	public enum CellSetName {
-		DECISIVE_CELLS,
-		DECISIVE_UNITS,
-		DELETION_CELLS,
-		DELETION_UNITS;
-	}
+public abstract class Report {
+	//ATTRIBUTS
+	/**
+	 * on pourrait mettre un objet et utilisé toString mais il faudrait le définir
+	 * pour chaque regle.
+	 * Remarque: Sa serait pas long.
+	 */
+	private String name; 
 	
 	// CONSTRUCTEUR
-	protected Report() {
-		description = null;
-		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
-		values = new HashSet<Integer>();
+	protected Report(String ruleName) {
+		Contract.checkCondition(ruleName != null);
+		name = ruleName;
 	}
 	
-	public Set<Integer> getValueSet() {
-		return new HashSet<Integer>(values);
+	//REQUETES
+	public String getRuleName() {
+		return name;
 	}
 	
-	public Set<ICell> getCellSet(CellSetName csn) {
-		return new HashSet<ICell>(cellSets.get(csn));
-	}
+	public abstract String describe();
 	
-//	public String describe() {
-//		return rule.getGenerator().describe(this);
-//	}
-
-	public void execute() {
-		// à voir
-	}
-	
-	void addCell(CellSetName csn, ICell cell) {
-		
-	}
-	
-	void addValue(int n) {
-		values.add(n);
-	}
+	//COMMANDES
+	public abstract void execute();
 	
 }
