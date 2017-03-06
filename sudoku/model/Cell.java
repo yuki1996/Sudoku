@@ -1,5 +1,7 @@
 package sudoku.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Arrays;
 
 import util.Contract;
@@ -10,21 +12,17 @@ public class Cell implements ICell {
 	private boolean modifiable;
 	private boolean[] candidates;
 	
+	private PropertyChangeSupport propertySupport;
+	
 	//CONSTRUCTEURS
 	
-	public Cell(int cardinal) {
-		Contract.checkCondition(cardinal > 0, "value doit être strictement positif.");
-		value = 0;
-		modifiable = true;
-		candidates = new boolean[cardinal];
-		for (int i = 0; i < cardinal; ++i) {
-			candidates[i] = true;
-		}
+	public Cell(int cardinal) {		
+		this(0, true, cardinal);
 	}
 	
 	public Cell(int value, boolean modifiable, int cardinal) {
 		Contract.checkCondition(cardinal > 0, "cardinal doit être strictement positif.");
-		Contract.checkCondition(value > 0 && value <= cardinal, 
+		Contract.checkCondition(0 <= value && value <= cardinal, 
 				"value doit être strictement positif.");
 		this.value = value;
 		this.modifiable = modifiable;
@@ -32,14 +30,8 @@ public class Cell implements ICell {
 		for (int i = 0; i < cardinal; ++i) {
 			candidates[i] = true;
 		}
-	}
-	
-	public Cell(boolean []possibilities) {
-		Contract.checkCondition(possibilities.length > 0, 
-				"le tableau doit être strictement positif.");
-		value = 0;
-		modifiable = true;
-		this.candidates = possibilities.clone();
+		
+		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	//REQUETES
@@ -64,13 +56,9 @@ public class Cell implements ICell {
 	}
 
 	@Override
-	public boolean[] candidates() {
-		return candidates.clone();
-	}
-	
-
-	public boolean canTakeValue(int n) {
-		Contract.checkCondition(n > 0 && n < candidates.length);
+	public boolean isCandidate(int n) {
+		Contract.checkCondition(isValid(n));
+		
 		return candidates[n - 1];
 	}
 	
@@ -83,7 +71,7 @@ public class Cell implements ICell {
 		}
 		clone.value = this.getValue();
 		clone.modifiable = this.isModifiable();
-		clone.candidates = this.candidates();
+		clone.candidates = this.candidates.clone();
 		return clone;
 		
 	}
@@ -93,7 +81,7 @@ public class Cell implements ICell {
 			Cell o = (Cell) obj;
 			return this.isModifiable() == o.isModifiable() 
 					&& this.getValue() == o.getValue()
-					&& Arrays.equals(this.candidates(),o.candidates());
+					&& Arrays.equals(this.candidates,o.candidates);
 		}
 		return false;
 		
@@ -103,28 +91,56 @@ public class Cell implements ICell {
 	@Override
 	public void setValue(int n) {
 		Contract.checkCondition(isModifiable());
-		Contract.checkCondition(n > 0 && n <= candidates.length);
+		Contract.checkCondition(isValid(n));
+		
+		int oldValue = value;
 		value = n;
+		propertySupport.firePropertyChange(VALUE, oldValue, value);
 	}
 
 	@Override
 	public void removeValue() {
 		Contract.checkCondition(modifiable);
+		
+		int oldValue = value;
 		value = 0;
+		propertySupport.firePropertyChange(VALUE, oldValue, value);
 	}
 
 	@Override
 	public void addCandidate(int n) {
-		Contract.checkCondition(n > 0 && n <= candidates.length);
+		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
+
+		System.out.println("add " + n);
+		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = true;
+		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
+				oldCandidate, candidates[n - 1]);
 	}
 
 	@Override
 	public void removeCandidate(int n) {
-		Contract.checkCondition(n > 0 && n <= candidates.length);
+		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
+
+		System.out.println("remove " + n);
+		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = false;
+		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
+				oldCandidate, candidates[n - 1]);
+	}
+	
+	@Override
+	public void toggleCandidate(int n) {
+		Contract.checkCondition(isValid(n));
+		Contract.checkCondition(modifiable);
+
+		System.out.println("toggle " + n + " =" + candidates[n-1]);
+		boolean oldCandidate = candidates[n - 1];
+		candidates[n - 1] = !candidates[n - 1];
+		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
+				oldCandidate, candidates[n - 1]);
 	}
 	
 	public void setModifiable(boolean bool) {
@@ -135,8 +151,19 @@ public class Cell implements ICell {
 		for (int i = 1; i <= candidates.length; i++) {
 			addCandidate(i);
 		}
+		setValue(0);
 		modifiable = true;
-		value = 0;
+	}
+	
+	public void addPropertyChangeListener(String property, PropertyChangeListener l) {
+		Contract.checkCondition(l != null, "l'écouteur est null");
+		
+		propertySupport.addPropertyChangeListener(property, l);
+	}
+	
+	// OUTILS
+	private boolean isValid(int value) {
+		return 0 < value && value <= getCardinalCandidates();
 	}
 
 }

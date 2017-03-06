@@ -1,8 +1,7 @@
 package sudoku.model;
 
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Type d'une cellule.
@@ -32,7 +31,7 @@ import java.util.Set;
  *     
  *     $ARGS$ int value, boolean modifiable, int cardinal
  *     
- *     $PRE$ value > 0 && cardinal > 0 && value <= cardinal
+ *     $PRE$ 0 <= value && value <= cardinal && cardinal > 0
  *         
  *     $POST$
  *     	    getValue() == value
@@ -55,7 +54,11 @@ import java.util.Set;
  *          getCardinalCandidates() == Candidates.length
  *    </pre>
  */
-interface ICell extends Serializable, Cloneable  {
+public interface ICell extends Serializable, Cloneable  {
+	
+	// PROPRIETES
+	String VALUE = "value";
+	String CANDIDATE = "candidate";
 	
 	//REQUETES
 	
@@ -74,6 +77,14 @@ interface ICell extends Serializable, Cloneable  {
 	 * Renvoie faux sinon.
 	 */
 	boolean hasValue();
+
+	/**
+	 * Renvoie vrai si n est une valeur candidate pour la cellule.
+	 * Renvoie faux sinon.
+	 * @pre
+	 * 		0 < n <= getCardinalCandidates()
+	 */
+	boolean isCandidate(int n);
 	
 	/**
 	 * Renvoie vrai si la case est modifiable.
@@ -81,20 +92,9 @@ interface ICell extends Serializable, Cloneable  {
 	boolean isModifiable();
 	
 	/**
-	 * Renvoie le tableau des possibilités.
-	 */
-	boolean[] candidates();
-	
-	/**
 	 * Renvoie un clone de la cellule.
 	 */
 	Object clone();
-	
-	/**
-	 * Renvoie vrai si la cellule peut prendre la valeur n.
-	 * Renvoie faux sinon.
-	 */
-	boolean canTakeValue(int n);
 	
 	//COMMANDES
 	/**
@@ -137,6 +137,17 @@ interface ICell extends Serializable, Cloneable  {
 	void removeCandidate(int n);
 	
 	/**
+	 * Alterne la présence du candidat n.
+	 * Supprime le candidat n s'il est présent, l'ajoute sinon.
+	 * @pre
+	 * 		0 < n <= getCandidates()
+	 * 		isModifiable()
+	 * @post
+	 * 		candidates()[n - 1] == old !candidates()[n - 1]
+	 */
+	void toggleCandidate(int n);
+	
+	/**
 	 * Modifie la modifiabilité de la cellule
 	 * @post
 	 * 		isModifiable() == bool
@@ -151,4 +162,6 @@ interface ICell extends Serializable, Cloneable  {
 	 *         	forall int i : candidates()[i]
 	 */
 	void reset();
+	
+	void addPropertyChangeListener(String property, PropertyChangeListener l);
 }

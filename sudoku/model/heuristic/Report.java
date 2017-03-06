@@ -1,30 +1,55 @@
 package sudoku.model.heuristic;
 
-import java.util.Vector;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-class Report {
+import sudoku.model.ICell;
 
-  private Rule rule;
+public class Report {
 
-  private Set decisiveCells;
+	private String description;
+	private Map<CellSetName, Set<ICell>> cellSets;
+	private Set<Integer> values;
 
-  private Set contextualCells;
+	// pas nécessaire de le mettre ici : à voir
+	public enum CellSetName {
+		DECISIVE_CELLS,
+		DECISIVE_UNITS,
+		DELETION_CELLS,
+		DELETION_UNITS;
+	}
+	
+	// CONSTRUCTEUR
+	protected Report() {
+		description = null;
+		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
+		values = new HashSet<Integer>();
+	}
+	
+	public Set<Integer> getValueSet() {
+		return new HashSet<Integer>(values);
+	}
+	
+	public Set<ICell> getCellSet(CellSetName csn) {
+		return new HashSet<ICell>(cellSets.get(csn));
+	}
+	
+//	public String describe() {
+//		return rule.getGenerator().describe(this);
+//	}
 
-  private Set deletionCells;
-
-  private Set actualDeletionCells;
-
-  private Set values;
-
-    public Vector  myRule;
-    public Vector  myRuleManager;
-
-  public String describe() {
-  return null;
-  }
-
-  public void execute() {
-  }
-
+	public void execute() {
+		// à voir
+	}
+	
+	void addCell(CellSetName csn, ICell cell) {
+		
+	}
+	
+	void addValue(int n) {
+		values.add(n);
+	}
+	
 }

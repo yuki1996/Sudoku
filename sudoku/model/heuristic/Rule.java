@@ -1,59 +1,61 @@
 package sudoku.model.heuristic;
 
-import java.util.Vector;
-
 enum Rule {
-
-  ONE_CANDIDATE,
-
-  ONLY_CANDIDATE,
-
-  PAIR_TRIPLET,
-
-  INTERACTION_BETWEEN_SECTORS,
-
-  IDENTICAL_CANDIDATES,
-
-  ISOLATED_GROUPS,
-
-  MIXED_GROUPS,
-
-  X_WING,
-
-  XY_WING,
-
-  XYZ_WING,
-
-  UNITY,
-
-  SWORDFISH,
-
-  JELLYFISH_AND_SQUIRMBAG,
-
-  BURMA,
-
-  COLORING,
-
-  TURBOT_FISH,
-
-  XY_CHAIN,
-
-  XY_COLORING,
-
-  THREED_MEDUSA,
-
-  CHAINED_FORCED_CANDIDATE,
-
-  NISHIO,
-
-  BRUTE_FORCE;
-
-    public Vector  myReport;
-
-  public abstract String describe(int report);
-
-  public abstract Report generate(IGrid grid);
-
-  public abstract void execute(Report report);
-
+	
+	ONE_CANDIDATE(null),
+	
+	ONLY_CANDIDATE(null),
+	
+	PAIR_TRIPLET(null),
+	
+	INTERACTION_BETWEEN_SECTORS(null),
+	
+	IDENTICAL_CANDIDATES(null),
+	
+	ISOLATED_GROUPS(null),
+	
+	MIXED_GROUPS(null),
+	
+	X_WING(null),
+	
+	XY_WING(null),
+	
+	XYZ_WING(null),
+	
+	UNITY(null),
+	
+	SWORDFISH(null),
+	
+	JELLYFISH_AND_SQUIRMBAG(null),
+	
+	BURMA(null),
+	
+	COLORING(null),
+	
+	TURBOT_FISH(null),
+	
+	XY_CHAIN(null),
+	
+	COLORED_XY(null),
+	
+	XY_COLORING(null),
+	
+	THREED_MEDUSA(null),
+	
+	CHAINED_FORCED_CANDIDATE(null),
+	
+	NISHIO(null),
+	
+	BRUTE_FORCE(null);
+	
+	private ReportGenerator generator;
+	
+	private Rule(ReportGenerator generator) {
+		
+	}
+	
+	public ReportGenerator getGenerator() {
+		return generator;
+	}
+	
 }
