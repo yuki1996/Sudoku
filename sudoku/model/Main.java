@@ -2,6 +2,8 @@ package sudoku.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import sudoku.util.Coord;
 import sudoku.util.ICoord;
@@ -18,37 +20,54 @@ public final class Main {
 		//Creation
 		Sudoku sudo = new Sudoku(new File("./grille1.txt"));;
 
-		System.out.println("grille joueur \n");
-		//affichage de la création
-		affiche_grille(sudo);
+		while (!sudo.getGridSoluce().isFull() ) {
+			sudo.resolve(sudo.getGridSoluce());
+		}
 		
-		System.out.println("\n possibilité en (3,4) \n");
-		affiche_possibilite(new Coord(3, 4), sudo);
-		
-		System.out.println("\n possibilité en (5,2) \n");
-		affiche_possibilite(new Coord(5, 2), sudo);
+		while (!sudo.getGridPlayer().isFull() ) {
+			System.out.println(sudo.help());
+			sudo.resolve(sudo.getGridPlayer());
+			affiche_grille(sudo);
+		}
+		System.out.println(sudo.isWin() ? "gagné" : "perdu");
 	}
 
 	//OUTILS
 	private static void affiche_grille(ISudoku sudo) {
 		Contract.checkCondition(sudo != null);
 		for (int i = 0; i < sudo.getGridPlayer().size(); i++) {
+			if (i % 3 == 0) {
+				System.out.println("  -------------------------");
+			}
 			for (int j = 0; j < sudo.getGridPlayer().size(); j++) {
+				if (j % 3 == 0) {
+					System.out.print(" | ");
+				}
 				System.out.print(sudo.getGridPlayer().cells()[i][j].getValue()+" ");
 				
 			}
 			System.out.println("");
 		}
+		System.out.println("  -------------------------");
+		
 	}
 	
 	private static void affiche_grille_soluce(ISudoku sudo) {
 		Contract.checkCondition(sudo != null);
 		for (int i = 0; i < sudo.getGridSoluce().size(); i++) {
+			if (i % 3 == 0) {
+				System.out.println("  -------------------------");
+			}
 			for (int j = 0; j < sudo.getGridSoluce().size(); j++) {
+				if (j % 3 == 0) {
+					System.out.print(" | ");
+				}
 				System.out.print(sudo.getGridSoluce().cells()[i][j].getValue()+" ");
+				
 			}
 			System.out.println("");
 		}
+		System.out.println("  -------------------------");
 	}
 	
 
@@ -66,5 +85,62 @@ public final class Main {
 			System.out.print(" ");
 		}
 		System.out.println("");
+	}
+	
+	private static void affiche_grille_region(ISudoku sudo) {
+		Contract.checkCondition(sudo != null);
+		IGrid grid = sudo.getGridPlayer();
+		int nbSW = grid.getNumberSectorByWidth();
+		int nbSH = grid.getNumberSectorByHeight();
+		for (int i = 0; i < grid.getWidthSector(); i++) {
+			for (int j = 0; j < grid.getHeightSector(); j++) {
+				for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
+					for (int n = j * nbSH; n < grid.getWidthSector() * (j + 1); n++) {
+						System.out.print(sudo.getGridPlayer().cells()[m][n].getValue()+" ");
+					}
+
+					System.out.println("");
+				}
+
+				System.out.println("-----");
+				
+			}
+		}
+	}
+	
+	private static void affiche_grille_region_ligne(ISudoku sudo) {
+		Contract.checkCondition(sudo != null);
+		IGrid grid = sudo.getGridPlayer();
+		int nbSW = grid.getNumberSectorByWidth();
+	
+		for (int i = 0; i < grid.getWidthSector(); i++) {
+			for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
+				for (int j = 0; j < grid.size(); j++) {
+					System.out.print(sudo.getGridPlayer().cells()[m][j].getValue()+" ");
+				}
+				System.out.println("");
+				
+			}
+
+			System.out.println("-----");
+		}
+	}
+	
+
+
+
+	private static void affiche_grille_region_colonne(ISudoku sudo) {
+		Contract.checkCondition(sudo != null);
+		IGrid grid = sudo.getGridPlayer();
+		int nbSH = grid.getNumberSectorByHeight();
+		for (int j = 0; j < grid.getHeightSector(); j++) {
+			for (int m = j * nbSH; m < grid.getWidthSector() * (j + 1); m++) {
+				for (int i = 0; i < grid.size(); i++) {
+					System.out.print(sudo.getGridPlayer().cells()[i][m].getValue()+" ");
+				}
+				System.out.println("");
+			}
+			System.out.println("-----");
+		}
 	}
 }

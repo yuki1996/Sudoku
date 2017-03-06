@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import sudoku.model.heuristic.RuleManager;
 import sudoku.model.history.History;
 import sudoku.model.history.StdHistory;
 import sudoku.model.history.cmd.AddCandidate;
@@ -31,7 +32,6 @@ public class Sudoku implements ISudoku {
 	
 	private IGrid gridPlayer;
 	private IGrid gridSoluce;
-	
 	private History<Command> history;
 
 	//CONSTRUCTEUR
@@ -40,7 +40,7 @@ public class Sudoku implements ISudoku {
 		gridPlayer = new Grid(width, height);
 		gridSoluce = new Grid(width, height);
 		history = new StdHistory<Command>(HISTORY_SIZE);
-	}
+		}
 	
 	public Sudoku(File textFile) throws IOException {
 		BufferedReader fr = new BufferedReader(new FileReader(textFile));
@@ -70,7 +70,7 @@ public class Sudoku implements ISudoku {
 			for (int i = 0; i < gridPlayer.size(); i++) {
 				for (int j = 0; j < gridPlayer.size(); j++) {
 					if (gridPlayer.cells()[i][j].hasValue()) {
-						updateEasyPossibilities(new Coord(j, i));
+						updateEasyPossibilities(new Coord(i, j));
 					}
 				}
 			}
@@ -134,16 +134,17 @@ public class Sudoku implements ISudoku {
 	}
 
 	public String help() {
-		// TODO ATTENDRE LES REGLES
-		return null;
+		RuleManager rm = new RuleManager(gridPlayer);
+		rm.findRule();
+		return rm.describe();
 	}
 
 
 	//COMMANDES
 	public void updateEasyPossibilities(ICoord c) {
-		Contract.checkCondition(c != null
-				&& isValidCoord(c) 
-				&& getGridPlayer().getCell(c).getValue() > 0);
+		Contract.checkCondition(c != null);
+		Contract.checkCondition(isValidCoord(c)); 
+		Contract.checkCondition(getGridPlayer().getCell(c).getValue() > 0);
 		int n = getGridPlayer().getCell(c).getValue();
 		Set<ICell> set = getGridPlayer().getUnitCells(c);
 		for (int i = 0 ; i < getGridPlayer().numberCandidates(); i++) {
@@ -153,8 +154,8 @@ public class Sudoku implements ISudoku {
 				}
 			}
 		} 
-		
 	}
+	
 
 	public void setValue(ICoord c, int n) {
 		Contract.checkCondition(c != null
@@ -188,10 +189,11 @@ public class Sudoku implements ISudoku {
 	}
 
 
-	@Override
-	public void resolve() {
-		// TODO Auto-generated method stub
-		
+	public void resolve(IGrid g) {
+		Contract.checkCondition(g != null);
+		RuleManager rm = new RuleManager(g);
+		rm.findRule();
+		rm.executeRule();
 	}
 
 	public void reset() {
@@ -251,112 +253,4 @@ public class Sudoku implements ISudoku {
 		}
 	}
 	
-	/**
-	 * premier algo de résolution
-	 */
-	
-	private void singleCandidate(IGrid g, ICoord c) {
-		/*
-		 * a revoir
-		 */
-		assert c != null;
-		assert g != null;
-		assert g.isValidCoord(c);
-		ICell src = g.getCell(c);
-		assert src.isModifiable();
-		Set<ICell> sector = g.getSector(c);
-		sector.remove(src);
-		int sectorCellsNb = sector.size();
-		int i = 1;
-		while (i <= src.getCardinalCandidates()) {
-			if (src.canTakeValue(i)) {
-				int n = sectorCellsNb;
-				for (ICell cell : sector) {
-					if (! cell.isModifiable() || ! cell.canTakeValue(i)) {
-						--n;
-					} else {
-						break;
-					}
-				}
-				if (n == 0) {
-					src.setValue(i);
-					return;
-				}
-				++i;
-			}
-		}
-		
-		sector = g.getRow(c);
-		sector.remove(src);
-		i = 1;
-		while (i <= src.getCardinalCandidates()) {
-			if (src.canTakeValue(i)) {
-				int n = sectorCellsNb;
-				for (ICell cell : sector) {
-					if (! cell.isModifiable() || ! cell.canTakeValue(i)) {
-						--n;
-					}
-				}
-				if (n == 0) {
-					src.setValue(i);
-					return;
-				}
-				++i;
-			}
-		}
-		
-		sector = g.getCol(c);
-		sector.remove(src);
-		i = 1;
-		while (i <= src.getCardinalCandidates()) {
-			if (src.canTakeValue(i)) {
-				int n = sectorCellsNb;
-				for (ICell cell : sector) {
-					if (! cell.isModifiable() || ! cell.canTakeValue(i)) {
-						--n;
-					}
-				}
-				if (n == 0) {
-					src.setValue(i);
-					return;
-				}
-				++i;
-			}
-		}
-	}
-	
-	/**
-	 * deuxieme algo de resolution
-	 */
-	
-	private void oneCandidate(IGrid g, ICoord c) {
-		/*
-		 * a revoir
-		 */
-		assert c != null;
-		assert g != null;
-		assert g.isValidCoord(c);
-		ICell src = g.getCell(c);
-		assert src.isModifiable();
-		
-		int v = 0;
-		for (int i = 0; i < src.candidates().length; ++i) {
-			if (src.candidates()[i]) {
-				if (v == 0) {
-					v = i + 1;
-				} else {
-					return;
-				}
-			}
-		}
-		src.setValue(v);
-	}
-	
-	/**
-	 * troisieme algo de resolution
-	 */
-	
-	private void siblings(IGrid g, ICoord c) {
-		
-	}
 }

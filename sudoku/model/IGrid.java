@@ -186,18 +186,17 @@ public interface IGrid extends Serializable, Cloneable {
 	void clear();
 	
 	/**
-	 * Change la valeur de la cellule de coord par value.
+	 * Change la valeur de la cellule par value.
 	 * @pre : <pre>
-	 * 		coord != null
-	 * 		isValidCoord(coord)
+	 * 		c != null
 	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).getValue() == value
+	 * 		c.getValue() == value
 	 * </pre>
 	 */
-	void changeValue(ICoord coord, int value);
-	
+
+	void SetValue(ICell c, int value) ;
 	/**
 	 * Réinitialise la valeur de la cellule de coord par 0.
 	 * @pre : <pre>

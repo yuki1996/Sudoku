@@ -168,8 +168,7 @@ interface ISudoku {
 	/**
 	 * Résous pas à pas la grille ajout la valeur dans une case
 	 */
-	void resolve();
-	
+	void resolve(IGrid g);	
 	/**
 	 * Enregistre la grille.
 	 * @pre: <pre>
@@ -195,4 +194,5 @@ interface ISudoku {
 	 * </pre>
 	 */
 	void reset();
+
 }
