@@ -1,106 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.14" icons="true" always-add-relationships="false" generalizations="true" 
-  realizations="false" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <interface id="1" language="java" name="sudoku.model.ISudoku" project="Sudoku" 
-    file="/Sudoku/src/sudoku/model/ISudoku.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1318" y="222"/>    
+<class-diagram version="1.1.14" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="sudoku.model.StdGridModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/StdGridModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="464" y="624"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="2" language="java" name="sudoku.model.IGrid" project="Sudoku" 
-    file="/Sudoku/src/sudoku/model/IGrid.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="761" y="305"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="3" language="java" name="sudoku.model.ICell" project="Sudoku" 
-    file="/Sudoku/src/sudoku/model/ICell.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="315" y="171"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="4" language="java" name="sudoku.model.Grid" project="Sudoku" file="/Sudoku/src/sudoku/model/Grid.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="536" y="319"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="sudoku.model.Sudoku" project="Sudoku" file="/Sudoku/src/sudoku/model/Sudoku.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1058" y="306"/>    
+  <interface id="2" language="java" name="sudoku.model.GridModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/GridModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="801" y="647"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
-  </class>  
-  <class id="6" language="java" name="sudoku.model.Cell" project="Sudoku" file="/Sudoku/src/sudoku/model/Cell.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="109" y="210"/>    
+  </interface>  
+  <class id="3" language="java" name="sudoku.model.StdCellModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/StdCellModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="494" y="105"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <realization id="7">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
+  <class id="4" language="java" name="sudoku.model.StdSudokuModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/StdSudokuModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="429" width="204" x="695" y="-107"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="5" language="java" name="sudoku.model.CellModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/CellModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="84" y="85"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="6" language="java" name="sudoku.model.SudokuModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/SudokuModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="339" width="204" x="939" y="-107"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <package id="7" language="java" name="sudoku.model.gui" project="Sudoku" file="/Sudoku/src/sudoku/model/gui" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="186" width="277" x="-61" y="310"/>    
+    <display autosize="false" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="8" language="java" name="sudoku.model.gui.Cell" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/gui/Cell.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="78" y="414"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <realization id="9">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
   </realization>  
-  <association id="8">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="9" name="cells">        
-        <position height="0" width="0" x="114" y="109"/>      
-      </attribute>      
-      <multiplicity id="10" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="114" y="109"/>      
-      </multiplicity>    
+  <association id="10">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="11" name="model"/>      
+      <multiplicity id="12" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
-  <realization id="11">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="1"/>  
+  <association id="13">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="14" name="cells"/>      
+      <multiplicity id="15" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="false"/>  
+  </association>  
+  <realization id="16">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="5"/>  
   </realization>  
-  <association id="12">    
-    <bendpoint x="899" y="275"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="13" name="gridPlayer">        
-        <position height="0" width="0" x="237" y="134"/>      
-      </attribute>      
-      <multiplicity id="14" minimum="0" maximum="1">        
-        <position height="0" width="0" x="237" y="134"/>      
-      </multiplicity>    
+  <association id="17">    
+    <bendpoint x="720" y="360"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="18" name="gridPlayer"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
-  <realization id="15">    
+  <realization id="20">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="2"/>  
+    <end type="TARGET" refId="6"/>  
   </realization>  
-  <association id="16">    
-    <bendpoint x="918" y="357"/>    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="17" name="gridSoluce">        
-        <position height="0" width="0" x="237" y="134"/>      
-      </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1">        
-        <position height="0" width="0" x="237" y="134"/>      
-      </multiplicity>    
+  <association id="21">    
+    <bendpoint x="880" y="366"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="22" name="gridSoluce"/>      
+      <multiplicity id="23" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
