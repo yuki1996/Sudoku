@@ -32,10 +32,12 @@ public abstract class Report {
 		cellSets.put(CellSetName.DELETION_CELLS, new HashSet<CellModel>());
 		cellSets.put(CellSetName.DELETION_UNITS, new HashSet<CellModel>());	
 		values = new HashSet<Integer>();
+
 	}
 	
-	public Set<Integer> getValueSet() {
-		return new HashSet<Integer>(values);
+	//REQUETES
+	public String getRuleName() {
+		return name;
 	}
 	
 	public Set<CellModel> getCellSet(CellSetName csn) {
@@ -59,6 +61,4 @@ public abstract class Report {
 	
 	void addValue(int n) {
 		values.add(n);
-	}
-	
 }

@@ -2,25 +2,15 @@ package sudoku;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import java.util.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -31,14 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 //import com.sun.media.sound.Toolkit;
 
@@ -56,6 +40,7 @@ public class Game implements MouseListener {
 	public final static int WIDTH_CELL = 3;
 	
 	public final static int NUMBER_POSSIBILITIES = 9;
+	public final int[] VALUES = {1,2,3,4,5,6,7,8,9};
 	
 	// ATTRIBUTS
 	private JFrame mainFrame;
@@ -79,7 +64,9 @@ public class Game implements MouseListener {
 	private JButton resolve;
 	private JButton solution;
 	
-	private long startTime;
+	private BeanGrid grid;
+	
+	//private long startTime;
 	//private JLabel currentTime;
 	
 	// CONSTRUCTEURS
@@ -104,7 +91,9 @@ public class Game implements MouseListener {
 	}
 	
 	public void createModel() {
-        // model = new Model();
+		// ceci est un exemple :
+		grid = new BeanGrid(HEIGHT_GRID, WIDTH_GRID, 
+				HEIGHT_CELL, WIDTH_CELL, VALUES);
     }
   
 	private void createView() {
@@ -130,15 +119,14 @@ public class Game implements MouseListener {
     	undoMenu = new JMenuItem("Annuler l'action");
     	doMenu = new JMenuItem("Refaire l'action");
     	
-    	digitButton = new JButton[729];
-    	initDigitButton();
-    	
     	pause = new JButton("démarrer");
     	reset = new JButton("réinitialiser");
     	resolve = new JButton("résoudre");
     	solution = new JButton("solution");
+    	
+    	digitButton = grid.getDigitButton();
  
-    	startTime = System.currentTimeMillis();
+    	//startTime = System.currentTimeMillis();
     	//currentTime = new JLabel("" + (System.currentTimeMillis() - startTime));
 	}
 	
@@ -147,7 +135,7 @@ public class Game implements MouseListener {
 		mainFrame.setJMenuBar(createJMenuBar());
 		
 		JPanel p = new JPanel(new GridLayout(1, 2)); {
-			JPanel q = makeGrid();
+			JPanel q = grid.makeGrid();
 			p.add(q, BorderLayout.WEST);
 			
 			q = new JPanel(new GridLayout(3, 1)); {
@@ -332,7 +320,7 @@ public class Game implements MouseListener {
         
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                startTime = System.currentTimeMillis();
+                //startTime = System.currentTimeMillis();
                 //currentTime.setText("" + (System.currentTimeMillis() - startTime));
                 pause.setText("démarrer");
              }
@@ -376,46 +364,9 @@ public class Game implements MouseListener {
         }
 	}
 	
-	private JPanel makeGrid() {
-		JPanel q = new JPanel(new GridLayout(HEIGHT_GRID, WIDTH_GRID)); {
-			int k = 0;
-			for (int i = 0 ; i < NUMBER_POSSIBILITIES ; ++i) {
-				JPanel r = new JPanel(new GridLayout(HEIGHT_SECTOR, WIDTH_SECTOR)); {
-					for (int j = 0 ; j < NUMBER_POSSIBILITIES ; ++j) {
-						JPanel s = new JPanel(new GridLayout(HEIGHT_CELL, WIDTH_CELL)); {
-							for (int l = 0; l < NUMBER_POSSIBILITIES; ++l) {
-								s.add(digitButton[k]);
-								++k;
-							}
-						}
-						r.add(s);
-						s.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-					}
-				}
-				q.add(r);
-				r.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-			}
-		}
-		q.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		return q;
-	}
 	
-	private void initDigitButton() { 
-    	int k = 1;
-//    	for (int i = 0 ; i < 729 ; ++i) {
-    	int n = (HEIGHT_GRID * WIDTH_GRID) * HEIGHT_CELL ;
-    	n *= n;
-    	for (int i = 0 ; i < n ; ++i) {
-    		digitButton[i] = new JButton("" + k);
-    		digitButton[i].setName("" + i);
-    		digitButton[i].setBorder(BorderFactory.createLineBorder(Color.WHITE));
-    		digitButton[i].setBackground(Color.WHITE);
-    		if (k == 9) { 
-    			k = 0;
-    		}
-    		++k;
-    	}
-	}
+	
+	
 	
 	// gestion de la souris
 	@Override

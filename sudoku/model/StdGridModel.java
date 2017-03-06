@@ -290,7 +290,6 @@ public class StdGridModel implements GridModel {
 		}
 		return bool;
 	}
-	
 	//mise à jour des cellules
 	private void updateEasyPossibilities(ICoord c) {
 		Contract.checkCondition(c != null);

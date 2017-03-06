@@ -1,6 +1,5 @@
 package sudoku.model.heuristic;
 
-
 import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import util.Contract;

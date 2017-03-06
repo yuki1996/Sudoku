@@ -135,4 +135,6 @@ public class RuleOneCandidate extends ReportGenerator {
 		}
 		return null;
 	}
+
+
 }
