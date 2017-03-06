@@ -25,7 +25,7 @@ public abstract class AbstractCommand implements Command {
      */
     protected AbstractCommand(GridModel grid) {
         Contract.checkCondition(grid != null, "la grille donné est null");
-
+        
         this.grid = grid;
         state = State.DO;
     }

@@ -12,12 +12,8 @@ public class RuleManager {
 	  
   }
 
-  public void executeRule() {
-	  // à voir
-  }
-
   //COMMANDES
   public void executeRule() {
 	  lastReport.execute(grid);
-
+  }
 }

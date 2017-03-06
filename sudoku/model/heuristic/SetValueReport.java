@@ -1,60 +1,71 @@
 package sudoku.model.heuristic;
 
+import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import sudoku.model.CellModel;
-import util.Contract;
+import sudoku.model.GridModel;
+import sudoku.model.history.cmd.AddValue;
+import sudoku.model.history.cmd.Command;
+import sudoku.util.ICoord;
 
-public class SetValueReport extends Report {
+abstract class SetValueReport implements Report {
 	//ATRIBUTS
-	private Set<CellModel> decisiveUnits;
-	private CellModel changedCell;
+	private Set<ICoord> decisiveUnits;
+	private ICoord changedCoord;
 	private int value;
+	private GridModel grid;
 	
 	//CONSTRUCTEURS
-	protected SetValueReport(String ruleName, CellModel changedCell, int value) {
-		super(ruleName);
-		Contract.checkCondition(changedCell.isCandidate(value), 
-				value + " n'est pas un candidats valable");
-		decisiveUnits = new HashSet<CellModel>();
-		this.changedCell = changedCell;
+	protected SetValueReport(GridModel grid, ICoord changedCoord, int value) {
+		decisiveUnits = new HashSet<ICoord>();
+		this.changedCoord = changedCoord;
 		this.value = value;
+		this.grid = grid;
 	}
 	
 	//REQUETES
 	@Override
-	public String describe() {
-		/*
-		 * besoin d'un nom pour la cellule
-		 */
-		return null;
-	}
+	abstract public String describe();
 	
-	int getValue() {
+	public int getValue() {
 		return value;
 	}
 	
-	CellModel changedCell() {
-		return changedCell;
+	public ICoord changedCell() {
+		return changedCoord;
 	}
 	
-	Set<CellModel> decisiveUnits() {
+	public Set<ICoord> decisiveUnits() {
 		return decisiveUnits;
 	}
 	
 	//COMMANDES
-	@Override
-	public void execute() {
-		changedCell.setValue(value);
+	public void addDecisiveUnits(ICoord coord) {
+		decisiveUnits.add(coord);
 	}
 	
-	void addDecisiveUnits(CellModel cell) {
-		decisiveUnits.add(cell);
-	}
-	
-	void setDecisiveUnits(Set<CellModel> newSet) {
+	public void setDecisiveUnits(Set<ICoord> newSet) {
 		decisiveUnits = newSet;
+	}
+
+	@Override
+	public Map<CellSetName, Set<ICoord>> importantSets() {
+		Map<CellSetName, Set<ICoord>> cellSets = 
+				new EnumMap<CellSetName, Set<ICoord>>(CellSetName.class);
+		Set<ICoord> decisiveCells = new HashSet<ICoord>();
+		decisiveCells.add(changedCoord);
+		cellSets.put(CellSetName.DECISIVE_CELLS, decisiveCells);
+		cellSets.put(CellSetName.DECISIVE_UNITS, new HashSet<ICoord>(decisiveUnits));
+		cellSets.put(CellSetName.DELETION_CELLS, new HashSet<ICoord>());
+		cellSets.put(CellSetName.DELETION_UNITS, new HashSet<ICoord>());
+		return cellSets;
+	}
+
+	@Override
+	public Command getCommand() {
+		return new AddValue(grid, changedCoord, value);
 	}
 
 }

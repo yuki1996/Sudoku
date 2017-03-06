@@ -1,30 +1,36 @@
 package sudoku.model.heuristic;
 
-import util.Contract;
+import java.util.Map;
+import java.util.Set;
 
-public abstract class Report {
-	//ATTRIBUTS
-	/**
-	 * on pourrait mettre un objet et utilisé toString mais il faudrait le définir
-	 * pour chaque regle.
-	 * Remarque: Sa serait pas long.
-	 */
-	private String name; 
-	
-	// CONSTRUCTEUR
-	protected Report(String ruleName) {
-		Contract.checkCondition(ruleName != null);
-		name = ruleName;
+import sudoku.model.history.cmd.Command;
+import sudoku.util.ICoord;
+
+public interface Report {
+
+	public enum CellSetName {
+		DECISIVE_CELLS,
+		DECISIVE_UNITS,
+		DELETION_CELLS,
+		DELETION_UNITS;
 	}
 	
 	//REQUETES
-	public String getRuleName() {
-		return name;
-	}
+	/**
+	 * Renvoie une description d'une modification possible du sudoku.
+	 */
+	String describe();
 	
-	public abstract String describe();
+	/**
+	 * Renvoie les ensembles de cellules importants pour la règle utilisée.
+	 */
+	Map<CellSetName, Set<ICoord>> importantSets();
 	
 	//COMMANDES
-	public abstract void execute();
+	/**
+	 * Renvoie la commande à executer pour faire les changements indiquer par la 
+	 * regle.
+	 */
+	Command getCommand();
 	
 }
