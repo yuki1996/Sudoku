@@ -9,11 +9,11 @@ import sudoku.model.ICell;
 import sudoku.model.IGrid;
 import util.Contract;
 
-public class Report {
+public abstract class Report {
 
 	private String description;
-	private Map<CellSetName, Set<ICell>> cellSets;
-	private Set<Integer> values;
+	protected Map<CellSetName, Set<ICell>> cellSets;
+	protected Set<Integer> values;
 
 	// pas nécessaire de le mettre ici : à voir
 	public enum CellSetName {
@@ -27,6 +27,10 @@ public class Report {
 	protected Report() {
 		description = null;
 		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
+		cellSets.put(CellSetName.DECISIVE_CELLS, new HashSet<ICell>());
+		cellSets.put(CellSetName.DECISIVE_UNITS, new HashSet<ICell>());
+		cellSets.put(CellSetName.DELETION_CELLS, new HashSet<ICell>());
+		cellSets.put(CellSetName.DELETION_UNITS, new HashSet<ICell>());	
 		values = new HashSet<Integer>();
 	}
 	
@@ -38,16 +42,19 @@ public class Report {
 		return new HashSet<ICell>(cellSets.get(csn));
 	}
 	
-//	public String describe() {
-//		return rule.getGenerator().describe(this);
-//	}
-
-	public void execute() {
-		// à voir
+	public String describe() {
+		return description;
 	}
+
+	public abstract void execute(IGrid grid);
 	
 	void addCell(CellSetName csn, ICell cell) {
-		
+		Contract.checkCondition(cell != null);
+		cellSets.get(csn).add(cell);
+	}
+	
+	void setDescription(String describe) {
+		description = describe;
 	}
 	
 	void addValue(int n) {

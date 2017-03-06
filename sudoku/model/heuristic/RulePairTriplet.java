@@ -13,7 +13,7 @@ public class RulePairTriplet extends ReportGenerator {
 	@Override
 	protected Report generate(IGrid grid) {
 		Contract.checkCondition(grid != null);
-		Report r = new Report();
+		Report r = new RemoveReport();
 		ICell [][] tabC = grid.cells();
 		ICell c;
 		Object[][] tab = new Object[grid.numberCandidates()][3];
@@ -71,7 +71,12 @@ public class RulePairTriplet extends ReportGenerator {
 					for (ICell cell : grid.getRow((Integer) tab[k][2])) {
 						r.addCell(CellSetName.DELETION_CELLS, cell);
 					}
-					r.addValue(k + 1);
+					int value = k + 1;
+					r.addValue(value);
+					String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+					s += value + " alignés dans cette région, donnent la possibilitée de" 
+							+ " supprimer les " + value + " dans les autres régions de cette ligne.";
+					r.setDescription(s);
 					return r;
 				}
 			}
@@ -128,38 +133,17 @@ public class RulePairTriplet extends ReportGenerator {
 					for (ICell cell : grid.getRow((Integer) tab[k][2])) {
 						r.addCell(CellSetName.DELETION_CELLS, cell);
 					}
-					r.addValue(k + 1);
+
+					int value = k + 1;
+					r.addValue(value);
+					String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+					s += value + " alignés dans cette région, donnent la possibilitée de" 
+							+ " supprimer les " + value + " dans les autres régions de cette colonne.";
+					r.setDescription(s);
 					return r;
 				}
 			}
 		}
 		return null;
 	}
-
-
-	/**
-	 *   @Override
-	public String describe(Report report, IGrid g) {
-		Contract.checkCondition(report != null);
-		Contract.checkCondition(g != null);
-		String s = "Les " + report.getDecisiveCells().size() + " candidats ";
-		if (!report.getValues().isEmpty()) {
-			Iterator<Integer> it = report.getValues().iterator();
-			int value = it.next();
-			s += value + " alignés dans cette région, donnent la possibilitée de" 
-					+ " supprimer les " + value + " dans les autres régions de cette";
-			switch (detecte_unit(report.getContextualCells(), g)) {
-			case 0:
-				s += "ligne.";
-				return s;
-			case 1: 
-				s += "colonne.";
-				return s;
-			default:
-				return null;
-			}
-		}
-		return null;
-	}
-	 */
 }
