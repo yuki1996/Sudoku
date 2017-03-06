@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import util.Contract;
 
-public class Cell implements ICell {
+public class StdCellModel implements CellModel {
 	//ATTRIBUTS
 	private int value;
 	private boolean modifiable;
@@ -16,11 +16,11 @@ public class Cell implements ICell {
 	
 	//CONSTRUCTEURS
 	
-	public Cell(int cardinal) {		
+	public StdCellModel(int cardinal) {		
 		this(0, true, cardinal);
 	}
 	
-	public Cell(int value, boolean modifiable, int cardinal) {
+	public StdCellModel(int value, boolean modifiable, int cardinal) {
 		Contract.checkCondition(cardinal > 0, "cardinal doit être strictement positif.");
 		Contract.checkCondition(0 <= value && value <= cardinal, 
 				"value doit être strictement positif.");
@@ -63,9 +63,9 @@ public class Cell implements ICell {
 	}
 	
 	public Object clone() {
-		Cell clone = null;
+		StdCellModel clone = null;
 		try {
-			clone = (Cell) super.clone();
+			clone = (StdCellModel) super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError("echec clonage");
 		}
@@ -78,7 +78,7 @@ public class Cell implements ICell {
 	
 	public boolean equals(Object obj) {
 		if ((obj != null) && (obj.getClass() == this.getClass())) {
-			Cell o = (Cell) obj;
+			StdCellModel o = (StdCellModel) obj;
 			return this.isModifiable() == o.isModifiable() 
 					&& this.getValue() == o.getValue()
 					&& Arrays.equals(this.candidates,o.candidates);

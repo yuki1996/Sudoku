@@ -1,11 +1,10 @@
 package sudoku.model.heuristic;
 
-import java.util.Vector;
-import sudoku.model.IGrid;
+import sudoku.model.GridModel;
 
 public class RuleManager {
 
-  private IGrid grid;
+  private GridModel grid;
 
   private Report lastReport;
 

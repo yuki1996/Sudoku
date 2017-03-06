@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sudoku.model.ICell;
+import sudoku.model.CellModel;
 
 public class RemoveCandidateReport extends Report {
 	
@@ -18,15 +18,15 @@ public class RemoveCandidateReport extends Report {
 	}
 	
 	//ATRIBUTS
-	private Map<CellSetName, Set<ICell>> cellSets;
+	private Map<CellSetName, Set<CellModel>> cellSets;
 	private Set<Integer> values;
 	
 	// CONSTRUCTEUR
 	RemoveCandidateReport(String ruleName) {
 		super(ruleName);
-		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
+		cellSets = new EnumMap<CellSetName, Set<CellModel>>(CellSetName.class);
 		for (CellSetName csn : CellSetName.values()) {
-			cellSets.put(csn, new HashSet<ICell>());
+			cellSets.put(csn, new HashSet<CellModel>());
 		}
 		values = new HashSet<Integer>();
 	}
@@ -50,20 +50,20 @@ public class RemoveCandidateReport extends Report {
 		return new HashSet<Integer>(values);
 	}
 	
-	public Set<ICell> getCellSet(CellSetName csn) {
-		return new HashSet<ICell>(cellSets.get(csn));
+	public Set<CellModel> getCellSet(CellSetName csn) {
+		return new HashSet<CellModel>(cellSets.get(csn));
 	}
 
 	//COMMANDES
 	public void execute() {
-		for (ICell c : cellSets.get(CellSetName.DELETION_CELLS)) {
+		for (CellModel c : cellSets.get(CellSetName.DELETION_CELLS)) {
 			for (Integer n : values) {
 				c.removeCandidate(n);
 			}
 		}
 	}
 	
-	void addCell(CellSetName csn, ICell cell) {
+	void addCell(CellSetName csn, CellModel cell) {
 		cellSets.get(csn).add(cell);
 	}
 	
@@ -71,7 +71,7 @@ public class RemoveCandidateReport extends Report {
 		values.add(n);
 	}
 	
-	void setCellSet(CellSetName csn, Set<ICell> newSet) {
+	void setCellSet(CellSetName csn, Set<CellModel> newSet) {
 		cellSets.put(csn, newSet);
 	}
 }

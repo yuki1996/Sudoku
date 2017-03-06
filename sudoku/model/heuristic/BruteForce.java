@@ -1,15 +1,15 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report.CellSetName;
 
 class BruteForce extends ReportGenerator {
 
 	@Override
-	protected Report generate(IGrid grid) {
-		for (ICell[] unit : grid.cells()) {
-			for (ICell cell : unit) {
+	protected Report generate(GridModel grid) {
+		for (CellModel[] unit : grid.cells()) {
+			for (CellModel cell : unit) {
 				if (! cell.hasValue()) {
 					for (int i = 1; i <= cell.getCardinalCandidates(); ++i) {
 						if (cell.canTakeValue(i)) {

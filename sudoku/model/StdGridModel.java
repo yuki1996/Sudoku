@@ -7,21 +7,21 @@ import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
 
-public class Grid implements IGrid {
+public class StdGridModel implements GridModel {
 	// ATTRIBUTS
 	private int numberSectorByWidth;
 	private int numberSectorByHeight;
-	private ICell[][] cells;
+	private CellModel[][] cells;
 	
-	public Grid(int numberSectorByWidth, int numberSectorByHeight)  {
+	public StdGridModel(int numberSectorByWidth, int numberSectorByHeight)  {
 		Contract.checkCondition(numberSectorByWidth > 0 && numberSectorByHeight > 0);
 		this.numberSectorByWidth = numberSectorByWidth;
 		this.numberSectorByHeight = numberSectorByHeight;
 		int size = numberSectorByWidth * numberSectorByHeight;
-		cells = new ICell[size][size];
+		cells = new CellModel[size][size];
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				cells[i][j] = new Cell(size);
+				cells[i][j] = new StdCellModel(size);
 			}
 		}
 	}
@@ -59,19 +59,19 @@ public class Grid implements IGrid {
 	
 
 	@Override
-	public ICell[][] cells() {
+	public CellModel[][] cells() {
 		return cells.clone();
 	}
 
 	@Override
-	public ICell getCell(ICoord coord) {
+	public CellModel getCell(ICoord coord) {
 		Contract.checkCondition(coord != null 
 			&& isValidCoord(coord));
 		return cells()[coord.getRow()][coord.getCol()];
 	}
 	
 	@Override
-	public ICoord getCoord(ICell cell) {
+	public ICoord getCoord(CellModel cell) {
 		for (int k = 0; k < size(); ++k) {
 			for (int j = 0; j < size(); ++j) {
 				if (cells[k][j] == cell) {
@@ -85,8 +85,8 @@ public class Grid implements IGrid {
 	@Override
 	public boolean isFull() {
 		boolean bool = true;
-		for (ICell[] cell: cells()) {
-			for (ICell c: cell) {
+		for (CellModel[] cell: cells()) {
+			for (CellModel c: cell) {
 				bool &= (c.getValue() != 0);
 			}
 		}
@@ -94,10 +94,10 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getRow(ICoord coord) {
+	public Set<CellModel> getRow(ICoord coord) {
 		Contract.checkCondition(coord != null
 			&& isValidCoord(coord));
-		Set<ICell> set = new HashSet<ICell>();
+		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
 			set.add(cells()[coord.getRow()][i]);
 		}
@@ -105,10 +105,10 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getCol(ICoord coord) {
+	public Set<CellModel> getCol(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
-		Set<ICell> set = new HashSet<ICell>();
+		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
 			set.add(cells()[i][coord.getCol()]);
 		}
@@ -116,10 +116,10 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getSector(ICoord coord) {
+	public Set<CellModel> getSector(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
-		Set<ICell> set = new HashSet<ICell>();
+		Set<CellModel> set = new HashSet<CellModel>();
 		int col = coord.getCol();
 		int row = coord.getRow();
 		for (int i = 0; i < getNumberSectorByWidth(); i++) {
@@ -132,9 +132,9 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getRow(int rowNum) {
+	public Set<CellModel> getRow(int rowNum) {
 		Contract.checkCondition(0 <= rowNum && rowNum < size());
-		Set<ICell> set = new HashSet<ICell>();
+		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
 			set.add(cells()[i][rowNum]);
 		}
@@ -142,9 +142,9 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getCol(int colNum) {
+	public Set<CellModel> getCol(int colNum) {
 		Contract.checkCondition(0 <= colNum && colNum < size());
-		Set<ICell> set = new HashSet<ICell>();
+		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
 			set.add(cells()[colNum][i]);
 		}
@@ -152,10 +152,10 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getSector(int sectorRowNum, int sectorColNum) {
+	public Set<CellModel> getSector(int sectorRowNum, int sectorColNum) {
 		Contract.checkCondition(0 <= sectorRowNum && sectorRowNum < getNumberSectorByHeight());
 		Contract.checkCondition(0 <= sectorColNum && sectorColNum < getNumberSectorByWidth());
-		Set<ICell> set = new HashSet<ICell>();
+		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < getNumberSectorByWidth(); i++) {
 			for (int j = 0; j < getNumberSectorByHeight(); j++) {
 				set.add(cells()[sectorColNum * getWidthSector() + j]
@@ -173,10 +173,10 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public Set<ICell> getUnitCells(ICoord coord) {
+	public Set<CellModel> getUnitCells(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
-		Set<ICell> set = getRow(coord);
+		Set<CellModel> set = getRow(coord);
 		set.addAll(getSector(coord));
 		set.addAll(getCol(coord));
 		return set;
@@ -184,18 +184,18 @@ public class Grid implements IGrid {
 
 	@Override
 	public Object clone() {
-		Grid clone = null;
+		StdGridModel clone = null;
 		try {
-			clone = (Grid) super.clone();
+			clone = (StdGridModel) super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError("echec clonage");
 		}
 		clone.numberSectorByHeight = this.numberSectorByHeight;
 		clone.numberSectorByWidth = this.numberSectorByWidth;
-		clone.cells = new ICell[size()][size()];
+		clone.cells = new CellModel[size()][size()];
 		for (int i = 0; i < size() ; ++i) {
 			for (int j = 0; j < size() ; ++j) {
-				clone.cells[i][j] = (Cell) cells[i][j].clone();
+				clone.cells[i][j] = (StdCellModel) cells[i][j].clone();
 			}
 		}
 		return clone;
@@ -217,7 +217,7 @@ public class Grid implements IGrid {
 	public void clear() {
 		for (int i = 0; i < size(); i++) {
 			for (int j = 0; j < size(); j++) {
-				cells[i][j] = new Cell(size());
+				cells[i][j] = new StdCellModel(size());
 			}
 		}
 	}
@@ -252,7 +252,7 @@ public class Grid implements IGrid {
 	}
 
 	@Override
-	public void changeCells(ICell[][] tabCells) {
+	public void changeCells(CellModel[][] tabCells) {
 		Contract.checkCondition(tabCells != null && tabCells.length == size() 
 								&& checkTab(tabCells));
 		for (int i = 0; i < size(); i++) {
@@ -270,11 +270,11 @@ public class Grid implements IGrid {
 	 * 		tabCells != null
 	 * </pre>
 	 */
-	private boolean checkTab(ICell[][] tabCells) {
+	private boolean checkTab(CellModel[][] tabCells) {
 		assert tabCells != null;
 		boolean bool = true;
-		for (ICell[] cell: cells()) {
-			for (ICell c: cell) {
+		for (CellModel[] cell: cells()) {
+			for (CellModel c: cell) {
 				bool &= (c != null);
 			}
 		}

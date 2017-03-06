@@ -16,16 +16,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import sudoku.model.Cell;
-import sudoku.model.ICell;
+import sudoku.model.StdCellModel;
+import sudoku.model.CellModel;
 
-public class GuiCell extends JPanel {
+public class Cell extends JPanel {
 	
 	// ATTRIBUTS
 	private static final Color DEFAULT_COLOR = Color.WHITE;
 	private static final Color HOVER_COLOR = Color.LIGHT_GRAY;
 	
-	private ICell model;
+	private CellModel model;
 	
 	// imperativement autre chose que des JLabel
 	// - probleme au niveau de la visibilité
@@ -34,7 +34,7 @@ public class GuiCell extends JPanel {
 	private JLabel[] candidates;
 	
 	// CONSTRUCTEUR
-	public GuiCell(ICell cell) {
+	public Cell(CellModel cell) {
 		createModel(cell);
 		createView();
 		placeComponents();
@@ -42,7 +42,7 @@ public class GuiCell extends JPanel {
 	}
 	
 	// OUTILS
-	private void createModel(ICell cell) {
+	private void createModel(CellModel cell) {
 		model = cell;
 	}
 	
@@ -122,7 +122,7 @@ public class GuiCell extends JPanel {
 			
 		}
 		
-		model.addPropertyChangeListener(ICell.VALUE, new PropertyChangeListener() {
+		model.addPropertyChangeListener(CellModel.VALUE, new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -135,7 +135,7 @@ public class GuiCell extends JPanel {
 			}
 		});
 		
-		model.addPropertyChangeListener(ICell.CANDIDATE, new PropertyChangeListener() {
+		model.addPropertyChangeListener(CellModel.CANDIDATE, new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -166,11 +166,11 @@ public class GuiCell extends JPanel {
 		class Bla {
 			JFrame mainFrame = new JFrame();
 			public Bla() {
-				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.CENTER);
-				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.NORTH);
-				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.SOUTH);
-				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.WEST);
-				mainFrame.add(new GuiCell(new Cell(9)), BorderLayout.EAST);
+				mainFrame.add(new Cell(new StdCellModel(9)), BorderLayout.CENTER);
+				mainFrame.add(new Cell(new StdCellModel(9)), BorderLayout.NORTH);
+				mainFrame.add(new Cell(new StdCellModel(9)), BorderLayout.SOUTH);
+				mainFrame.add(new Cell(new StdCellModel(9)), BorderLayout.WEST);
+				mainFrame.add(new Cell(new StdCellModel(9)), BorderLayout.EAST);
 				mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 			

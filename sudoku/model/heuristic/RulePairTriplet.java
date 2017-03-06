@@ -3,19 +3,19 @@ package sudoku.model.heuristic;
 import java.util.HashSet;
 import java.util.Set;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report.CellSetName;
 import util.Contract;
 
 public class RulePairTriplet extends ReportGenerator {
 
 	@Override
-	protected Report generate(IGrid grid) {
+	protected Report generate(GridModel grid) {
 		Contract.checkCondition(grid != null);
 		Report r = new Report();
-		ICell [][] tabC = grid.cells();
-		ICell c;
+		CellModel [][] tabC = grid.cells();
+		CellModel c;
 		Object[][] tab = new Object[grid.numberCandidates()][3];
 		Set<Integer> setRow = new HashSet<Integer>();
 		Set<Integer> setCol = new HashSet<Integer>();
@@ -24,7 +24,7 @@ public class RulePairTriplet extends ReportGenerator {
 		for (int i = 0; i < grid.getWidthSector(); i++) {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				tab[k][0] = false;
-				tab[k][1] = new HashSet<ICell>();
+				tab[k][1] = new HashSet<CellModel>();
 				tab[k][2] = -1;
 			}
 			for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
@@ -38,14 +38,14 @@ public class RulePairTriplet extends ReportGenerator {
 							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
 							if (tabB[k] && !(Boolean)tab[k][0]) {
 								tab[k][0] = true;
-								((Set<ICell>) tab[k][1]).add(c);
+								((Set<CellModel>) tab[k][1]).add(c);
 								tab[k][2] = m;
 								setCol.add(j);
 							}
 							if (tabB[k] && (Boolean)tab[k][0] && tab[k][1] != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même ligne
 								if (m == ((Integer) tab[k][2])) {
-									((Set<ICell>) tab[k][1]).add(c);
+									((Set<CellModel>) tab[k][1]).add(c);
 								} else {
 									//le candidat existe dans la cellule et qu'il est déjà apparu mais dans une autre ligne
 									tab[k][1] = null;
@@ -59,16 +59,16 @@ public class RulePairTriplet extends ReportGenerator {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				//le candidat n'est présent que sur une ligne 
 				if ((Boolean) tab[k][0] && tab[k][1] != null) {
-					for (ICell cell : (Set<ICell>) tab[k][1]) {
+					for (CellModel cell : (Set<CellModel>) tab[k][1]) {
 						r.addCell(CellSetName.DECISIVE_UNITS, cell);
 					}
-					r.addCell(CellSetName.DECISIVE_CELLS, (ICell) tab[k][1]);
+					r.addCell(CellSetName.DECISIVE_CELLS, (CellModel) tab[k][1]);
 					for (int col : setCol) {
-						for (ICell cell : grid.getSector(i, col)) {
+						for (CellModel cell : grid.getSector(i, col)) {
 							r.addCell(CellSetName.DELETION_UNITS, cell);
 						}
 					}
-					for (ICell cell : grid.getRow((Integer) tab[k][2])) {
+					for (CellModel cell : grid.getRow((Integer) tab[k][2])) {
 						r.addCell(CellSetName.DELETION_CELLS, cell);
 					}
 					r.addValue(k + 1);
@@ -81,7 +81,7 @@ public class RulePairTriplet extends ReportGenerator {
 		for (int j = 0; j < grid.getHeightSector(); j++) {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				tab[k][0] = false;
-				tab[k][1] = new HashSet<ICell>();
+				tab[k][1] = new HashSet<CellModel>();
 				tab[k][2] = -1;
 			}
 			for (int m = j * nbSH; m < grid.getWidthSector() * (j + 1); m++) {
@@ -95,14 +95,14 @@ public class RulePairTriplet extends ReportGenerator {
 							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
 							if (tabB[k] && !(Boolean)tab[k][0]) {
 								tab[k][0] = true;
-								((Set<ICell>) tab[k][1]).add(c);
+								((Set<CellModel>) tab[k][1]).add(c);
 								tab[k][2] = m;
 								setRow.add(i);
 							}
 							if (tabB[k] && (Boolean)tab[k][0] && tab[k][1] != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même colonne
 								if (m == ((Integer) tab[k][2])) {
-									((Set<ICell>) tab[k][1]).add(c);
+									((Set<CellModel>) tab[k][1]).add(c);
 								} else {
 									//le candidat existe dans la cellule et qu'il est déjà apparu mais dans une autre colonne
 									tab[k][1] = null;
@@ -116,16 +116,16 @@ public class RulePairTriplet extends ReportGenerator {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				//le candidat n'est présent que sur une ligne 
 				if ((Boolean) tab[k][0] && tab[k][1] != null) {
-					for (ICell cell : (Set<ICell>) tab[k][1]) {
+					for (CellModel cell : (Set<CellModel>) tab[k][1]) {
 						r.addCell(CellSetName.DECISIVE_UNITS, cell);
 					}
-					r.addCell(CellSetName.DECISIVE_CELLS, (ICell) tab[k][1]);
+					r.addCell(CellSetName.DECISIVE_CELLS, (CellModel) tab[k][1]);
 					for (int row : setRow) {
-						for (ICell cell : grid.getSector(row, j)) {
+						for (CellModel cell : grid.getSector(row, j)) {
 							r.addCell(CellSetName.DELETION_UNITS, cell);
 						}
 					}
-					for (ICell cell : grid.getRow((Integer) tab[k][2])) {
+					for (CellModel cell : grid.getRow((Integer) tab[k][2])) {
 						r.addCell(CellSetName.DELETION_CELLS, cell);
 					}
 					r.addValue(k + 1);
@@ -139,7 +139,7 @@ public class RulePairTriplet extends ReportGenerator {
 
 	/**
 	 *   @Override
-	public String describe(Report report, IGrid g) {
+	public String describe(Report report, GridModel g) {
 		Contract.checkCondition(report != null);
 		Contract.checkCondition(g != null);
 		String s = "Les " + report.getDecisiveCells().size() + " candidats ";

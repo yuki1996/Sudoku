@@ -3,30 +3,30 @@ package sudoku.model.history.cmd;
 import java.util.HashSet;
 import java.util.Set;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.util.ICoord;
 import util.Contract;
 
 public class AddValue extends AbstractCommand {
 	
 	// ATTRIBUTS
-	private ICell cell;
+	private CellModel cell;
 	private int value;
 	private Set<Command> sideEffects;
 
-	public AddValue(IGrid grid, ICoord coord, int value) {
+	public AddValue(GridModel grid, ICoord coord, int value) {
 		this(grid, grid.getCell(coord), value);
 	}
 	
-	public AddValue(IGrid grid, ICell cell, int value) {
+	public AddValue(GridModel grid, CellModel cell, int value) {
 		super(grid);
 		Contract.checkCondition(grid != null, "la grille est null");
 		Contract.checkCondition(cell != null, "la coordonnée est null");
 		this.cell = cell;
 		this.value = value;
 		sideEffects = new HashSet<Command>();
-		for (ICell c : grid.getUnitCells(grid.getCoord(cell))) {
+		for (CellModel c : grid.getUnitCells(grid.getCoord(cell))) {
 			sideEffects.add(new RemoveCandidate(grid, c, value));
 		}
 	}

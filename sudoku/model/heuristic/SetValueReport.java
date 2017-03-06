@@ -3,21 +3,21 @@ package sudoku.model.heuristic;
 import java.util.HashSet;
 import java.util.Set;
 
-import sudoku.model.ICell;
+import sudoku.model.CellModel;
 import util.Contract;
 
 public class SetValueReport extends Report {
 	//ATRIBUTS
-	private Set<ICell> decisiveUnits;
-	private ICell changedCell;
+	private Set<CellModel> decisiveUnits;
+	private CellModel changedCell;
 	private int value;
 	
 	//CONSTRUCTEURS
-	protected SetValueReport(String ruleName, ICell changedCell, int value) {
+	protected SetValueReport(String ruleName, CellModel changedCell, int value) {
 		super(ruleName);
-		Contract.checkCondition(changedCell.canTakeValue(value), 
+		Contract.checkCondition(changedCell.isCandidate(value), 
 				value + " n'est pas un candidats valable");
-		decisiveUnits = new HashSet<ICell>();
+		decisiveUnits = new HashSet<CellModel>();
 		this.changedCell = changedCell;
 		this.value = value;
 	}
@@ -35,11 +35,11 @@ public class SetValueReport extends Report {
 		return value;
 	}
 	
-	ICell changedCell() {
+	CellModel changedCell() {
 		return changedCell;
 	}
 	
-	Set<ICell> decisiveUnits() {
+	Set<CellModel> decisiveUnits() {
 		return decisiveUnits;
 	}
 	
@@ -49,11 +49,11 @@ public class SetValueReport extends Report {
 		changedCell.setValue(value);
 	}
 	
-	void addDecisiveUnits(ICell cell) {
+	void addDecisiveUnits(CellModel cell) {
 		decisiveUnits.add(cell);
 	}
 	
-	void setDecisiveUnits(Set<ICell> newSet) {
+	void setDecisiveUnits(Set<CellModel> newSet) {
 		decisiveUnits = newSet;
 	}
 

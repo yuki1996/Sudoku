@@ -54,7 +54,7 @@ import java.io.Serializable;
  *          getCardinalCandidates() == Candidates.length
  *    </pre>
  */
-public interface ICell extends Serializable, Cloneable  {
+public interface CellModel extends Serializable, Cloneable  {
 	
 	// PROPRIETES
 	String VALUE = "value";

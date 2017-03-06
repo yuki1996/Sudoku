@@ -2,8 +2,8 @@ package sudoku.model.heuristic;
 
 import java.util.Set;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.Report.CellSetName;
 import sudoku.util.ICoord;
@@ -12,12 +12,12 @@ import util.Contract;
 public class RuleOneCandidate extends ReportGenerator {
 
 	@Override
-	protected Report generate(IGrid grid) {
+	protected Report generate(GridModel grid) {
 		Contract.checkCondition(grid != null);
-		ICell [][] tabC = grid.cells();
+		CellModel [][] tabC = grid.cells();
 		Contract.checkCondition(tabC != null);
 		Report r = new Report();
-		ICell c = null;
+		CellModel c = null;
 		Object [][] tab = new Object[grid.numberCandidates()][2];
 		
 		//on regarde ligne par ligne
@@ -53,10 +53,10 @@ public class RuleOneCandidate extends ReportGenerator {
 		
 					//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 					if ((Boolean) tab[k][0] && tab[k][1] != null) {
-						for (ICell cell : grid.getCol(j)) {
+						for (CellModel cell : grid.getCol(j)) {
 							r.addCell(CellSetName.DECISIVE_UNITS, cell);
 						}
-						r.addCell(CellSetName.DECISIVE_CELLS, (ICell) tab[k][1]);
+						r.addCell(CellSetName.DECISIVE_CELLS, (CellModel) tab[k][1]);
 						r.addValue(k + 1);
 						return r;
 					}
@@ -96,10 +96,10 @@ public class RuleOneCandidate extends ReportGenerator {
 		
 					//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 					if ((Boolean) tab[k][0] && tab[k][1] != null) {
-						for (ICell cell : grid.getRow(i)) {
+						for (CellModel cell : grid.getRow(i)) {
 							r.addCell(CellSetName.DECISIVE_UNITS, cell);
 						}
-						r.addCell(CellSetName.DECISIVE_CELLS, (ICell) tab[k][1]);
+						r.addCell(CellSetName.DECISIVE_CELLS, (CellModel) tab[k][1]);
 						r.addValue(k + 1);
 						return r;
 					}
@@ -143,10 +143,10 @@ public class RuleOneCandidate extends ReportGenerator {
 				for (int k = 0; k < grid.numberCandidates(); k++) {
 					//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 					if ((Boolean) tab[k][0] && tab[k][1] != null) {
-						for (ICell cell : grid.getSector(j, i)) {
+						for (CellModel cell : grid.getSector(j, i)) {
 							r.addCell(CellSetName.DECISIVE_UNITS, cell);
 						}
-						r.addCell(CellSetName.DECISIVE_CELLS, (ICell) tab[k][1]);
+						r.addCell(CellSetName.DECISIVE_CELLS, (CellModel) tab[k][1]);
 						r.addValue(k + 1);
 						return r;
 					}
@@ -157,7 +157,7 @@ public class RuleOneCandidate extends ReportGenerator {
 	}
 
 	/*
-	protected String describe(IGrid g) {
+	protected String describe(GridModel g) {
 		Contract.checkCondition(report != null);
 		Contract.checkCondition(g != null);
 		if (!report.getValues().isEmpty()) {
@@ -185,7 +185,7 @@ public class RuleOneCandidate extends ReportGenerator {
 	// 0 : set est une ligne
 	// 1 : set est une colonne
 	// 2 : set est une région
-	private static int detecte_unit(Set<ICoord> set, IGrid grid) {
+	private static int detecte_unit(Set<ICoord> set, GridModel grid) {
 		assert set != null;
 		assert grid != null;
 		//teste si c'est une ligne

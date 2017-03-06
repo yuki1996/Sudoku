@@ -1,20 +1,20 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.ICell;
-import sudoku.model.IGrid;
+import sudoku.model.CellModel;
+import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report.CellSetName;
 import util.Contract;
 
 public class RuleOnlyCandidate extends ReportGenerator {
 
 	@Override
-	protected Report generate(IGrid grid) {
+	protected Report generate(GridModel grid) {
 		Contract.checkCondition(grid != null);
-		ICell [][] tabC = grid.cells();
+		CellModel [][] tabC = grid.cells();
 		Contract.checkCondition(tabC != null);
 		Report r = new Report();
 		int l = -1;
-		ICell c;
+		CellModel c;
 		for (int i = 0; i < grid.size(); i++) {
 			for (int j = 0; j < grid.size(); j++) {
 				int k = 0;
@@ -43,7 +43,7 @@ public class RuleOnlyCandidate extends ReportGenerator {
 		return null;
 	}
 	/*
-	 * public String describe(IGrid g) {
+	 * public String describe(GridModel g) {
 		Contract.checkCondition(g != null);
 		if (!report.getValues().isEmpty()) {
 			Iterator<Integer> it = report.getValues().iterator();
