@@ -2,35 +2,24 @@ package sudoku.model.heuristic;
 
 import sudoku.model.CellModel;
 import sudoku.model.GridModel;
+import sudoku.model.history.cmd.Command;
 import util.Contract;
 
 public class RuleManager {
-
+  //ATTRIBUTS
+	
   private GridModel grid;
 
   private Report lastReport;
-
+  
+  //CONSTRUCTEURS
+  
   public RuleManager(GridModel g) {
 	  Contract.checkCondition(g != null);
 	  grid = g;
   }
-  
-  public void findRule() {
-	for (int i = 0 ; i < Rule.values().length; i++) {
-		lastReport = Rule.values()[i].getGenerator().generate(grid);
-		if (lastReport != null) {
-			break;
-		}
-	}
-  }
 
-  //COMMANDES
-  public void executeRule() {
-	  if (lastReport != null) {
-		  lastReport.execute(grid);
-		  lastReport = null;
-	  }
-  }
+  //REQUETES
   
   public String describe() {
 	  return lastReport.describe();
@@ -75,4 +64,20 @@ public class RuleManager {
 	  }
 	  return true;
   }
+
+  public Command getCommand() {
+	  return lastReport.getCommand();
+  }
+  
+  //COMMANDES
+  
+  public void findRule() {
+	for (int i = 0 ; i < Rule.values().length; i++) {
+		lastReport = Rule.values()[i].getGenerator().generate(grid);
+		if (lastReport != null) {
+			break;
+		}
+	}
+  }
+  
 }

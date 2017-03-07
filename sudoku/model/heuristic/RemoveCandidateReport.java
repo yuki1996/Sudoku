@@ -10,13 +10,15 @@ import sudoku.model.history.cmd.Command;
 import sudoku.model.history.cmd.CommandSet;
 import sudoku.model.history.cmd.RemoveCandidate;
 import sudoku.util.ICoord;
+import util.Contract;
 
-abstract class RemoveCandidateReport implements Report {
+class RemoveCandidateReport implements Report {
 	
 	//ATRIBUTS
 	private Map<CellSetName, Set<ICoord>> cellSets;
 	private Set<Integer> values;
 	private GridModel grid;
+	private String description;
 	
 	// CONSTRUCTEUR
 	RemoveCandidateReport(GridModel grid) {
@@ -29,7 +31,9 @@ abstract class RemoveCandidateReport implements Report {
 	}
 	
 	//REQUETES
-	abstract public String describe();
+	public String describe() {
+		return description;
+	}
 	
 	public Set<Integer> getValueSet() {
 		return new HashSet<Integer>(values);
@@ -40,16 +44,20 @@ abstract class RemoveCandidateReport implements Report {
 	}
 
 	//COMMANDES
+	public void setDescription(String s) {
+		Contract.checkCondition(s != null, "s vaut null");
+		description = s;
+	}
 	
-	void addCell(CellSetName csn, ICoord cell) {
+	public void addCell(CellSetName csn, ICoord cell) {
 		cellSets.get(csn).add(cell);
 	}
 	
-	void addValue(int n) {
+	public void addValue(int n) {
 		values.add(n);
 	}
 	
-	void setCellSet(CellSetName csn, Set<ICoord> newSet) {
+	public void setCellSet(CellSetName csn, Set<ICoord> newSet) {
 		cellSets.put(csn, newSet);
 	}
 
