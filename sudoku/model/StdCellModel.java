@@ -58,8 +58,7 @@ public class StdCellModel implements CellModel {
 	@Override
 	public boolean isCandidate(int n) {
 		Contract.checkCondition(isValid(n));
-		
-		return candidates[n - 1];
+		return candidates[n];
 	}
 	
 	public Object clone() {
@@ -111,8 +110,6 @@ public class StdCellModel implements CellModel {
 	public void addCandidate(int n) {
 		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
-
-		System.out.println("add " + n);
 		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = true;
 		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
@@ -123,8 +120,6 @@ public class StdCellModel implements CellModel {
 	public void removeCandidate(int n) {
 		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
-
-		System.out.println("remove " + n);
 		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = false;
 		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
@@ -135,8 +130,6 @@ public class StdCellModel implements CellModel {
 	public void toggleCandidate(int n) {
 		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
-
-		System.out.println("toggle " + n + " =" + candidates[n-1]);
 		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = !candidates[n - 1];
 		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
@@ -163,7 +156,7 @@ public class StdCellModel implements CellModel {
 	
 	// OUTILS
 	private boolean isValid(int value) {
-		return 0 < value && value <= getCardinalCandidates();
+		return 0 <= value && value <= getCardinalCandidates();
 	}
 
 }

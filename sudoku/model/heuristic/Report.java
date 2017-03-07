@@ -1,5 +1,6 @@
 package sudoku.model.heuristic;
 
+
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public interface Report {
 		DELETION_CELLS,
 		DELETION_UNITS;
 	}
+	
 	
 	//REQUETES
 	/**
@@ -32,5 +34,4 @@ public interface Report {
 	 * regle.
 	 */
 	Command getCommand();
-	
 }

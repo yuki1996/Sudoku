@@ -67,5 +67,4 @@ abstract class SetValueReport implements Report {
 	public Command getCommand() {
 		return new AddValue(grid, changedCoord, value);
 	}
-
 }
