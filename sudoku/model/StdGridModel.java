@@ -67,7 +67,7 @@ public class StdGridModel implements GridModel {
 	public CellModel getCell(ICoord coord) {
 		Contract.checkCondition(coord != null 
 			&& isValidCoord(coord));
-		return cells()[coord.getCol()][coord.getRow()];
+		return cells()[coord.getRow()][coord.getCol()];
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class StdGridModel implements GridModel {
 			&& isValidCoord(coord));
 		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
-			set.add(cells()[coord.getCol()][i]);
+			set.add(cells()[coord.getRow()][i]);
 		}
 		return set;
 	}
@@ -110,7 +110,7 @@ public class StdGridModel implements GridModel {
 				&& isValidCoord(coord));
 		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
-			set.add(cells()[i][coord.getRow()]);
+			set.add(cells()[i][coord.getCol()]);
 		}
 		return set;
 	}
@@ -124,29 +124,29 @@ public class StdGridModel implements GridModel {
 		int row = coord.getRow();
 		for (int i = 0; i < getNumberSectorByWidth(); i++) {
 			for (int j = 0; j < getNumberSectorByHeight(); j++) {
-				set.add(cells()[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]
-					[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]);
+				set.add(cells()[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]
+						[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]);
 			}
 		}
 		return set;
 	}
 
 	@Override
-	public Set<CellModel> getRow(int colNum) {
-		Contract.checkCondition(0 <= colNum && colNum < size());
+	public Set<CellModel> getRow(int rowNum) {
+		Contract.checkCondition(0 <= rowNum && rowNum < size());
 		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
-			set.add(cells()[colNum][i]);
+			set.add(cells()[rowNum][i]);
 		}
 		return set;
 	}
 
 	@Override
-	public Set<CellModel> getCol(int rowNum) {
-		Contract.checkCondition(0 <= rowNum && rowNum < size());
+	public Set<CellModel> getCol(int colNum) {
+		Contract.checkCondition(0 <= colNum && colNum < size());
 		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < size(); i++) {
-			set.add(cells()[i][rowNum]);
+			set.add(cells()[i][colNum]);
 		}
 		return set;
 	}
@@ -158,11 +158,34 @@ public class StdGridModel implements GridModel {
 		Set<CellModel> set = new HashSet<CellModel>();
 		for (int i = 0; i < getNumberSectorByWidth(); i++) {
 			for (int j = 0; j < getNumberSectorByHeight(); j++) {
-				set.add(cells()[sectorColNum * getWidthSector() + j]
-						[sectorRowNum * getHeightSector() + i]);
+				set.add(cells()[sectorRowNum * getHeightSector() + i]
+						[sectorColNum * getWidthSector() + j]);
 			}
 		}
 		return set;
+	}
+	
+
+	/** 
+	 * Retourne l'ensemble des coordonées de la region situé a la ligne de secteur
+	 * sectorRowNum et a la colonne de secteur sectorColNum
+	 * @pre : <pre>
+	 * 		0 <= sectorRowNum < size()
+	 * 		0 <= sectorColNum < size()
+	 * </pre>
+	 */
+	public Set<ICoord> getSectorCoord(int sectorRowNum, int sectorColNum) {
+		Contract.checkCondition(0 <= sectorRowNum && sectorRowNum < size());
+		Contract.checkCondition(0 <= sectorColNum && sectorColNum < size());
+		Set<ICoord> set = new HashSet<ICoord>();
+		for (int i = 0; i < getNumberSectorByWidth(); i++) {
+			for (int j = 0; j < getNumberSectorByHeight(); j++) {
+				set.add(new Coord((sectorRowNum / getNumberSectorByWidth())* getNumberSectorByWidth() + i,
+						(sectorColNum / getWidthSector()) * getWidthSector() + j));
+			}
+		}
+		return set;
+		
 	}
 
 	@Override
@@ -244,13 +267,13 @@ public class StdGridModel implements GridModel {
 	public void resetValue(ICoord coord) {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
-		cells[coord.getCol()][coord.getRow()].removeValue();
+		cells[coord.getRow()][coord.getCol()].removeValue();
 	}
 
 	@Override
 	public void addCandidate(ICoord coord, int value) {
 		Contract.checkCondition(coord != null && 1 <= value  && value <= numberCandidates());
-		cells[coord.getCol()][coord.getRow()].addCandidate(value);
+		cells[coord.getRow()][coord.getCol()].addCandidate(value);
 	}
 
 	@Override
@@ -258,7 +281,7 @@ public class StdGridModel implements GridModel {
 		Contract.checkCondition(coord != null 
 				&& isValidCoord(coord)
 				&& 1 <= value  && value <= numberCandidates());
-		cells[coord.getCol()][coord.getRow()].removeCandidate(value);
+		cells[coord.getRow()][coord.getCol()].removeCandidate(value);
 	}
 
 	@Override

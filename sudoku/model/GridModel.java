@@ -152,6 +152,16 @@ public interface GridModel extends Serializable, Cloneable {
 	 */
 	Set<CellModel> getSector(int sectorRowNum, int sectorColNum);
 	
+	/** 
+	 * Retourne l'ensemble des coordonées de la region situé a la ligne de secteur
+	 * sectorRowNum et a la colonne de secteur sectorColNum
+	 * @pre : <pre>
+	 * 		0 <= sectorRowNum < getNumberSectorByHeight()
+	 * 		0 <= sectorColNum < getNumberSectorByWidth()
+	 * </pre>
+	 */
+	Set<ICoord> getSectorCoord(int sectorRowNum, int sectorColNum);
+	
 	/**
 	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et size().
 	 * @pre : <pre>

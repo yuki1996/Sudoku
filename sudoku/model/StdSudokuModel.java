@@ -195,7 +195,7 @@ public class StdSudokuModel implements SudokuModel {
 		Contract.checkCondition(g != null);
 		RuleManager rm = new RuleManager(g);
 		rm.findRule();
-		//rm.executeRule();
+		rm.getCommand().act();
 	}
 
 	public void reset() {
