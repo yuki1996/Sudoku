@@ -9,13 +9,15 @@ import sudoku.model.GridModel;
 import sudoku.model.history.cmd.AddValue;
 import sudoku.model.history.cmd.Command;
 import sudoku.util.ICoord;
+import util.Contract;
 
-abstract class SetValueReport implements Report {
+class SetValueReport implements Report {
 	//ATRIBUTS
 	private Set<ICoord> decisiveUnits;
 	private ICoord changedCoord;
 	private int value;
 	private GridModel grid;
+	private String description;
 	
 	//CONSTRUCTEURS
 	protected SetValueReport(GridModel grid, ICoord changedCoord, int value) {
@@ -27,7 +29,9 @@ abstract class SetValueReport implements Report {
 	
 	//REQUETES
 	@Override
-	abstract public String describe();
+	public String describe() {
+		return description;
+	}
 	
 	public int getValue() {
 		return value;
@@ -42,6 +46,12 @@ abstract class SetValueReport implements Report {
 	}
 	
 	//COMMANDES
+
+	public void setDescription(String s) {
+		Contract.checkCondition(s != null, "s vaut null");
+		description = s;
+	}
+	
 	public void addDecisiveUnits(ICoord coord) {
 		decisiveUnits.add(coord);
 	}
