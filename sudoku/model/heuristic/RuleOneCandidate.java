@@ -19,6 +19,7 @@ public class RuleOneCandidate extends ReportGenerator {
 		Integer[] tabI = new Integer[grid.numberCandidates()];
 		Integer[] tabCol = new Integer[grid.numberCandidates()];
 		Integer[] tabRow = new Integer[grid.numberCandidates()];
+		
 		//on regarde ligne par ligne
 		for (int i = 0; i < grid.size(); i++) {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
@@ -41,7 +42,7 @@ public class RuleOneCandidate extends ReportGenerator {
 					}
 				}
 			}
-			// A la fin de chaque région on regarde si on a candidat unique dans la ligne
+			// A la fin de chaque ligne on regarde si on a candidat unique dans la ligne
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 				if ( tabI[k] == 1) {
@@ -79,7 +80,8 @@ public class RuleOneCandidate extends ReportGenerator {
 					}
 				}
 			}
-			// A la fin de chaque région on regarde si on a candidat unique dans la colonne
+			
+			// A la fin de chaque colonne on regarde si on a candidat unique dans la colonne
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 	
 				//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
@@ -96,6 +98,7 @@ public class RuleOneCandidate extends ReportGenerator {
 				}
 			}
 		}
+		
 		//on regarde région par région
 		int nbSW = grid.getNumberSectorByWidth();
 		int nbSH = grid.getNumberSectorByHeight();
@@ -116,8 +119,8 @@ public class RuleOneCandidate extends ReportGenerator {
 								//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
 								if (c.isCandidate(k)) {
 									tabI[k] += 1; 
-									tabCol[k] = m;
-									tabRow[k] = n;
+									tabRow[k] = m;
+									tabCol[k] = n;
 								}
 								
 							}
@@ -129,18 +132,23 @@ public class RuleOneCandidate extends ReportGenerator {
 					//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
 					if (tabI[k] == 1) {
 						int value = k + 1;
-						ICoord coord = new Coord(tabCol[k],tabRow[k]);
+						ICoord coord = new Coord(tabRow[k],tabCol[k]);
 						SetValueReport r = new SetValueReport(grid, coord, value);
-						r.setDecisiveUnits(grid.getSectorCoord(tabRow[k], tabCol[k]));
+						for (ICoord cd : grid.getSectorCoord(tabRow[k], tabCol[k])) {
+							r.addDecisiveUnits(cd);
+						}
 						String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette région.";
 						r.setDescription(s);
 						return r;
 					}
+					
 				}
+				
 			}
 		}
 		return null;
 	}
+	
 
 
 }
