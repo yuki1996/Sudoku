@@ -1,7 +1,5 @@
 package sudoku.util;
 
-import java.util.Vector;
-
 public enum EnumError {
 
   OK,
@@ -9,7 +7,5 @@ public enum EnumError {
   WARNING,
 
   ERROR;
-
-    public Vector  myISudoku;
 
 }

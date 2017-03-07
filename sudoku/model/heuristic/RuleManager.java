@@ -24,6 +24,7 @@ public class RuleManager {
 	}
   }
 
+  //COMMANDES
   public void executeRule() {
 	  if (lastReport != null) {
 		  lastReport.execute(grid);
