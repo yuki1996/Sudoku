@@ -25,8 +25,9 @@ public class RemoveCandidate extends AbstractCommand {
 
 	@Override
 	protected void doIt() {
-		Contract.checkCondition(!cell.hasValue(), "");
-		cell.removeCandidate(value);
+		if (cell.isModifiable()) {
+			cell.removeCandidate(value);
+		}
 	}
 
 	@Override
