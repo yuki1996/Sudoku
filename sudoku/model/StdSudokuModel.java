@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import sudoku.model.heuristic.RuleManager;
 import sudoku.model.history.History;
 import sudoku.model.history.StdHistory;
 import sudoku.model.history.cmd.AddCandidate;
@@ -70,7 +71,7 @@ public class StdSudokuModel implements SudokuModel {
 			for (int i = 0; i < gridPlayer.size(); i++) {
 				for (int j = 0; j < gridPlayer.size(); j++) {
 					if (gridPlayer.cells()[i][j].hasValue()) {
-						updateEasyPossibilities(new Coord(j, i));
+						updateEasyPossibilities(new Coord(i, j));
 					}
 				}
 			}
@@ -134,8 +135,9 @@ public class StdSudokuModel implements SudokuModel {
 	}
 
 	public String help() {
-		// TODO ATTENDRE LES REGLES
-		return null;
+		RuleManager rm = new RuleManager(gridPlayer);
+		rm.findRule();
+		return rm.describe();
 	}
 
 
@@ -189,9 +191,11 @@ public class StdSudokuModel implements SudokuModel {
 
 
 	@Override
-	public void resolve() {
-		// TODO Auto-generated method stub
-		
+	public void resolve(GridModel g) {
+		Contract.checkCondition(g != null);
+		RuleManager rm = new RuleManager(g);
+		rm.findRule();
+		rm.executeRule();
 	}
 
 	public void reset() {
@@ -220,35 +224,4 @@ public class StdSudokuModel implements SudokuModel {
 			ois.close();
 		}
 	}
-	
-	//OUTILS
-	
-	/**
-	 * fait les mise à jour simple pour la grille g
-	 */
-	private void updateEasyGrid(GridModel g) {
-		assert g != null;
-		for (int i = 0; i < g.size(); ++i) {
-			for (int j = 0; j < g.size(); ++j) {
-				Coord c = new Coord(i,j);
-				if (g.getCell(c).hasValue()) {
-					updateEasyPossibilities(g, c);
-				}
-			}
-		}
-	}
-	
-	private void updateEasyPossibilities(GridModel g, ICoord c) {
-		assert c != null;
-		assert isValidCoord(c) ;
-		assert g.getCell(c).hasValue();
-		int n = g.getCell(c).getValue();
-		Set<CellModel> set = g.getUnitCells(c);
-		for (CellModel cell : set) {
-			if (cell.isModifiable()) {
-				cell.removeCandidate(n);
-			}
-		}
-	}
-	
 }

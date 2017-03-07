@@ -167,8 +167,11 @@ interface SudokuModel {
 	
 	/**
 	 * Résous pas à pas la grille ajout la valeur dans une case
+	  * @pre: <pre>
+	 * 		g != null 
+	 * </pre> 
 	 */
-	void resolve();
+	void resolve(GridModel g);
 	
 	/**
 	 * Enregistre la grille.

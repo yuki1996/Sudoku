@@ -13,7 +13,7 @@ public class RulePairTriplet extends ReportGenerator {
 	@Override
 	protected Report generate(GridModel grid) {
 		Contract.checkCondition(grid != null);
-		Report r = new Report();
+		Report r = new RemoveReport();
 		CellModel [][] tabC = grid.cells();
 		CellModel c;
 		Object[][] tab = new Object[grid.numberCandidates()][3];
@@ -32,17 +32,16 @@ public class RulePairTriplet extends ReportGenerator {
 					c = tabC[m][j];
 					//cellule modifiable sans valeur
 					if (c.isModifiable() && ! c.hasValue()) {
-						boolean [] tabB = c.candidates();
 						//parcourt tableau des candidats de la cellule
-						for (int k = 0; k < tabB.length; k++) {
+						for (int k = 0; k < grid.numberCandidates(); k++) {
 							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-							if (tabB[k] && !(Boolean)tab[k][0]) {
+							if (c.isCandidate(k)&& !(Boolean)tab[k][0]) {
 								tab[k][0] = true;
 								((Set<CellModel>) tab[k][1]).add(c);
 								tab[k][2] = m;
 								setCol.add(j);
 							}
-							if (tabB[k] && (Boolean)tab[k][0] && tab[k][1] != null) {
+							if (c.isCandidate(k) && (Boolean)tab[k][0] && tab[k][1] != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même ligne
 								if (m == ((Integer) tab[k][2])) {
 									((Set<CellModel>) tab[k][1]).add(c);
@@ -71,7 +70,12 @@ public class RulePairTriplet extends ReportGenerator {
 					for (CellModel cell : grid.getRow((Integer) tab[k][2])) {
 						r.addCell(CellSetName.DELETION_CELLS, cell);
 					}
-					r.addValue(k + 1);
+					int value = k + 1;
+					r.addValue(value);
+					String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+					s += value + " alignés dans cette région, donnent la possibilitée de" 
+							+ " supprimer les " + value + " dans les autres régions de cette ligne.";
+					r.setDescription(s);
 					return r;
 				}
 			}
@@ -89,17 +93,16 @@ public class RulePairTriplet extends ReportGenerator {
 					c = tabC[i][m];
 					//cellule modifiable sans valeur
 					if (c.isModifiable() && ! c.hasValue()) {
-						boolean [] tabB = c.candidates();
 						//parcourt tableau des candidats de la cellule
-						for (int k = 0; k < tabB.length; k++) {
+						for (int k = 0; k < grid.numberCandidates(); k++) {
 							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-							if (tabB[k] && !(Boolean)tab[k][0]) {
+							if (c.isCandidate(k) && !(Boolean)tab[k][0]) {
 								tab[k][0] = true;
 								((Set<CellModel>) tab[k][1]).add(c);
 								tab[k][2] = m;
 								setRow.add(i);
 							}
-							if (tabB[k] && (Boolean)tab[k][0] && tab[k][1] != null) {
+							if (c.isCandidate(k) && (Boolean)tab[k][0] && tab[k][1] != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même colonne
 								if (m == ((Integer) tab[k][2])) {
 									((Set<CellModel>) tab[k][1]).add(c);
@@ -128,38 +131,17 @@ public class RulePairTriplet extends ReportGenerator {
 					for (CellModel cell : grid.getRow((Integer) tab[k][2])) {
 						r.addCell(CellSetName.DELETION_CELLS, cell);
 					}
-					r.addValue(k + 1);
+
+					int value = k + 1;
+					r.addValue(value);
+					String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+					s += value + " alignés dans cette région, donnent la possibilitée de" 
+							+ " supprimer les " + value + " dans les autres régions de cette colonne.";
+					r.setDescription(s);
 					return r;
 				}
 			}
 		}
 		return null;
 	}
-
-
-	/**
-	 *   @Override
-	public String describe(Report report, GridModel g) {
-		Contract.checkCondition(report != null);
-		Contract.checkCondition(g != null);
-		String s = "Les " + report.getDecisiveCells().size() + " candidats ";
-		if (!report.getValues().isEmpty()) {
-			Iterator<Integer> it = report.getValues().iterator();
-			int value = it.next();
-			s += value + " alignés dans cette région, donnent la possibilitée de" 
-					+ " supprimer les " + value + " dans les autres régions de cette";
-			switch (detecte_unit(report.getContextualCells(), g)) {
-			case 0:
-				s += "ligne.";
-				return s;
-			case 1: 
-				s += "colonne.";
-				return s;
-			default:
-				return null;
-			}
-		}
-		return null;
-	}
-	 */
 }
