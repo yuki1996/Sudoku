@@ -5,73 +5,77 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sudoku.model.CellModel;
+import sudoku.model.GridModel;
+import sudoku.model.history.cmd.Command;
+import sudoku.model.history.cmd.CommandSet;
+import sudoku.model.history.cmd.RemoveCandidate;
+import sudoku.util.ICoord;
+import util.Contract;
 
-public class RemoveCandidateReport extends Report {
-	
-	// pas nécessaire de le mettre ici : à voir
-	enum CellSetName {
-		DECISIVE_CELLS,
-		DECISIVE_UNITS,
-		DELETION_CELLS,
-		DELETION_UNITS;
-	}
+class RemoveCandidateReport implements Report {
 	
 	//ATRIBUTS
-	private Map<CellSetName, Set<CellModel>> cellSets;
+	private Map<CellSetName, Set<ICoord>> cellSets;
 	private Set<Integer> values;
+	private GridModel grid;
+	private String description;
 	
 	// CONSTRUCTEUR
-	RemoveCandidateReport(String ruleName) {
-		super(ruleName);
-		cellSets = new EnumMap<CellSetName, Set<CellModel>>(CellSetName.class);
+	RemoveCandidateReport(GridModel grid) {
+		cellSets = new EnumMap<CellSetName, Set<ICoord>>(CellSetName.class);
 		for (CellSetName csn : CellSetName.values()) {
-			cellSets.put(csn, new HashSet<CellModel>());
+			cellSets.put(csn, new HashSet<ICoord>());
 		}
 		values = new HashSet<Integer>();
+		this.grid = grid;
 	}
 	
 	//REQUETES
 	public String describe() {
-		String res = new String("Regle : " + getRuleName() + "\n");
-		res += "On peut supprimer les candidats";
-		for (Integer n : values) {
-			res += " " + n;
-		}
-		/*
-		 * Données les cellules affectés les DECISIVE_CELLS, les DECISIVE_UNITS,
-		 * les DELETION_CELLS et les DELETION_UNITS
-		 * BESOIN D'UN NOM POUR LES CELLULES!!!!!
-		 */
-		return res;
+		return description;
 	}
 	
 	public Set<Integer> getValueSet() {
 		return new HashSet<Integer>(values);
 	}
 	
-	public Set<CellModel> getCellSet(CellSetName csn) {
-		return new HashSet<CellModel>(cellSets.get(csn));
+	public Set<ICoord> getCellSet(CellSetName csn) {
+		return new HashSet<ICoord>(cellSets.get(csn));
 	}
 
 	//COMMANDES
-	public void execute() {
-		for (CellModel c : cellSets.get(CellSetName.DELETION_CELLS)) {
-			for (Integer n : values) {
-				c.removeCandidate(n);
-			}
-		}
+	public void setDescription(String s) {
+		Contract.checkCondition(s != null, "s vaut null");
+		description = s;
 	}
 	
-	void addCell(CellSetName csn, CellModel cell) {
+	public void addCell(CellSetName csn, ICoord cell) {
 		cellSets.get(csn).add(cell);
 	}
 	
-	void addValue(int n) {
+	public void addValue(int n) {
 		values.add(n);
 	}
 	
-	void setCellSet(CellSetName csn, Set<CellModel> newSet) {
+	public void setCellSet(CellSetName csn, Set<ICoord> newSet) {
 		cellSets.put(csn, newSet);
+	}
+
+	@Override
+	public Map<sudoku.model.heuristic.Report.CellSetName, Set<ICoord>> importantSets() {
+		return cellSets;
+	}
+
+	@Override
+	public Command getCommand() {
+		Set<Command> set = new HashSet<Command>();
+		for (ICoord c : cellSets.get(CellSetName.DELETION_CELLS)) {
+			for (Integer v : values) {
+				if (grid.getCell(c).isCandidate(v)) {
+					set.add(new RemoveCandidate(grid, c, v));
+				}
+			}
+		}
+		return new CommandSet(grid, set);
 	}
 }
