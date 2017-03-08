@@ -2,8 +2,6 @@ package sudoku.model.heuristic;
 
 import sudoku.model.CellModel;
 import sudoku.model.GridModel;
-import sudoku.model.heuristic.Report;
-import sudoku.model.heuristic.Report.CellSetName;
 import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;

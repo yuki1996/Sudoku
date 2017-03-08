@@ -41,6 +41,11 @@ public class Cell extends JPanel {
 		createController();
 	}
 	
+	// REQUETES
+	public CellModel getModel() {
+		return model;
+	}
+	
 	// OUTILS
 	private void createModel(CellModel cell) {
 		model = cell;
@@ -150,15 +155,15 @@ public class Cell extends JPanel {
 	}
 
 	private void swapToValue() {
-		((CardLayout)this.getLayout()).last(this);;
+		((CardLayout)getLayout()).last(this);;
 	}
 
 	private void swapToCandidates() {
-		((CardLayout)this.getLayout()).first(this);;
+		((CardLayout)getLayout()).first(this);;
 	}
 	
 	private void swap() {
-		((CardLayout)this.getLayout()).next(this);
+		((CardLayout)getLayout()).next(this);
 	}
 	
 	// TEST
