@@ -2,11 +2,9 @@ package sudoku.model.heuristic;
 
 enum Rule {
 	
-	
 	ONLY_CANDIDATE(new RuleOnlyCandidate()),
 	
 	ONE_CANDIDATE(new RuleOneCandidate()),
-	
 	
 	PAIR_TRIPLET(new RulePairTriplet()),
 	

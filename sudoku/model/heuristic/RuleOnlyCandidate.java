@@ -3,6 +3,7 @@ package sudoku.model.heuristic;
 import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report.CellSetName;
+import sudoku.util.Coord;
 import util.Contract;
 
 public class RuleOnlyCandidate extends ReportGenerator {
@@ -12,7 +13,6 @@ public class RuleOnlyCandidate extends ReportGenerator {
 		Contract.checkCondition(grid != null);
 		CellModel [][] tabC = grid.cells();
 		Contract.checkCondition(tabC != null);
-		Report r = new SetValueReport();
 		int l = -1;
 		CellModel c;
 		for (int i = 0; i < grid.size(); i++) {
@@ -33,8 +33,9 @@ public class RuleOnlyCandidate extends ReportGenerator {
 					}
 				}
 				if (k == 1) {
-					r.addCell(CellSetName.DECISIVE_CELLS, c);
-					r.addValue(l);
+
+					SetValueReport r = new SetValueReport(grid, new Coord(i, j), l);
+					r.addDecisiveUnits(new Coord(i, j));
 					String string = "Cette case contient un seul candidat avec le symbole " + l;
 					r.setDescription(string);
 					return r;

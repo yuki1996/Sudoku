@@ -1,6 +1,5 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.model.history.cmd.Command;
 import util.Contract;
@@ -25,46 +24,6 @@ public class RuleManager {
 	  return lastReport.describe();
   }
 
-  public static boolean solve(int i, int j, GridModel g) {
-	  if (g.isFull()) {	
-		  return true; 
-	  }
-	  if (g.cells()[i][j].hasValue()) {
-		  return solve(i + 1, j, g);
-	  }
-	  for (int val = 1; val < g.numberCandidates(); ++val) {
-		  if (legal(i, j, val, g)) {
-			  g.cells()[i][j].setValue(val);
-			  if (solve(i + 1, j, g)) {
-				  return true;
-			  }
-		  }
-	  }
-	  if (g.cells()[i][j].isModifiable()) {
-		  g.cells()[i][j].removeValue();
-	  }
-	  return false;
-  }
-  
-  private static boolean legal(int col, int row, int val, GridModel g) {
-	  for (CellModel c : g.getRow(row)) {
-		  if (val == c.getValue()) {
-			  return false;
-		  }
-	  }
-	  for (CellModel c : g.getCol(col)) {
-		  if (val == c.getValue()) {
-			  return false;
-		  }
-	  }
-	  for (CellModel c : g.getSector(row,col)) {
-		  if (val == c.getValue()) {
-			  return false;
-		  }
-	  }
-	  return true;
-  }
-
   public Command getCommand() {
 	  return lastReport.getCommand();
   }
@@ -80,4 +39,63 @@ public class RuleManager {
 	}
   }
   
+
+  /** The active part begins here */
+  public void backtracking() {
+	estValide(0);
+  }
+
+  private boolean absentSurLigne(int k, int i) {
+      for (int j = 0; j < grid.numberCandidates(); j++) {
+    	  if (grid.cells()[i][j].getValue() == k) {
+    		  return false;
+    	  }
+      }
+      return true;
+  }
+
+  private boolean absentSurColonne(int k, int j) {
+      for (int i = 0; i < grid.numberCandidates(); i++) {
+          if (grid.cells()[i][j].getValue() == k) {
+              return false;
+          }
+      }
+      return true;
+  }
+
+  boolean absentSurBloc(int k, int i, int j) {
+      int rowSector = grid.getNumberSectorByWidth() * (i / grid.getNumberSectorByWidth());
+      int colSector = grid.getNumberSectorByHeight() * (j / grid.getNumberSectorByHeight());
+      for (i = rowSector; i < rowSector + grid.getNumberSectorByWidth(); i++) {
+          for (j = colSector; j < colSector + grid.getNumberSectorByHeight(); j++) {
+              if (grid.cells()[i][j].getValue() == k) {
+                  return false;
+              }
+          }
+      }
+      return true;
+  }
+
+  boolean estValide(int position){
+      if (position == grid.numberCandidates() * grid.numberCandidates()) {
+          return true;
+      }
+      int i = position / grid.numberCandidates(), j = position % grid.numberCandidates();
+      if (grid.cells()[i][j].hasValue()) {
+          return estValide(position+1);
+      }
+      for (int k = 1; k <= grid.numberCandidates(); k++) {
+          if (absentSurLigne(k,i) && absentSurColonne(k,j) && absentSurBloc(k,i,j)) {
+        	  grid.cells()[i][j].setValue(k);
+              if (estValide(position+1)) {
+                  return true;
+              }
+          }
+      }
+      if (grid.cells()[i][j].isModifiable()) {
+    	  grid.cells()[i][j].removeValue();
+      }
+      return false;
+
+  }
 }

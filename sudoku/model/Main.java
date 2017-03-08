@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import sudoku.model.heuristic.RuleManager;
 import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
@@ -20,11 +21,11 @@ public final class Main {
 		//Creation
 		SudokuModel sudo = new StdSudokuModel(new File("./grille1.txt"));;
 
-		while (!sudo.getGridSoluce().isFull() ) {
-			sudo.resolve(sudo.getGridSoluce());
-		}
-		
-		while (!sudo.getGridPlayer().isFull() ) {
+		RuleManager rm = new RuleManager(sudo.getGridSoluce());
+		rm.backtracking();
+
+		affiche_grille_soluce(sudo);
+		while (!sudo.getGridPlayer().isFull()) {
 			System.out.println(sudo.help());
 			sudo.resolve(sudo.getGridPlayer());
 			affiche_grille(sudo);
