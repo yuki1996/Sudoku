@@ -2,11 +2,8 @@ package sudoku.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import sudoku.model.heuristic.RuleManager;
-import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
 
