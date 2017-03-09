@@ -200,6 +200,7 @@ public class StdGridModel implements GridModel {
 		Contract.checkCondition(coord != null
 				&& isValidCoord(coord));
 		Set<CellModel> set = getRow(coord);
+		// addAll
 		for (CellModel cell : getSector(coord)) {
 			set.add(cell);
 		}

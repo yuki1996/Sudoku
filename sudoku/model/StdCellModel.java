@@ -58,7 +58,7 @@ public class StdCellModel implements CellModel {
 	@Override
 	public boolean isCandidate(int n) {
 		Contract.checkCondition(isValid(n));
-		return candidates[n];
+		return candidates[n - 1];
 	}
 	
 	public Object clone() {
@@ -156,7 +156,7 @@ public class StdCellModel implements CellModel {
 	
 	// OUTILS
 	private boolean isValid(int value) {
-		return 0 <= value && value <= getCardinalCandidates();
+		return 0 < value && value <= getCardinalCandidates();
 	}
 
 }
