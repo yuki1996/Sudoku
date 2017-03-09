@@ -1,19 +1,14 @@
 package sudoku.model.heuristic;
 
-import java.util.EnumMap;
-import java.util.HashSet;
+
 import java.util.Map;
 import java.util.Set;
 
-import sudoku.model.ICell;
+import sudoku.model.history.cmd.Command;
+import sudoku.util.ICoord;
 
-public class Report {
+public interface Report {
 
-	private String description;
-	private Map<CellSetName, Set<ICell>> cellSets;
-	private Set<Integer> values;
-
-	// pas nécessaire de le mettre ici : à voir
 	public enum CellSetName {
 		DECISIVE_CELLS,
 		DECISIVE_UNITS,
@@ -21,35 +16,22 @@ public class Report {
 		DELETION_UNITS;
 	}
 	
-	// CONSTRUCTEUR
-	protected Report() {
-		description = null;
-		cellSets = new EnumMap<CellSetName, Set<ICell>>(CellSetName.class);
-		values = new HashSet<Integer>();
-	}
 	
-	public Set<Integer> getValueSet() {
-		return new HashSet<Integer>(values);
-	}
+	//REQUETES
+	/**
+	 * Renvoie une description d'une modification possible du sudoku.
+	 */
+	String describe();
 	
-	public Set<ICell> getCellSet(CellSetName csn) {
-		return new HashSet<ICell>(cellSets.get(csn));
-	}
+	/**
+	 * Renvoie les ensembles de cellules importants pour la règle utilisée.
+	 */
+	Map<CellSetName, Set<ICoord>> importantSets();
 	
-//	public String describe() {
-//		return rule.getGenerator().describe(this);
-//	}
-
-	public void execute() {
-		// à voir
-	}
-	
-	void addCell(CellSetName csn, ICell cell) {
-		
-	}
-	
-	void addValue(int n) {
-		values.add(n);
-	}
-	
+	//COMMANDES
+	/**
+	 * Renvoie la commande à executer pour faire les changements indiquer par la 
+	 * regle.
+	 */
+	Command getCommand();
 }

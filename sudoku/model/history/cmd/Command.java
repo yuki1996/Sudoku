@@ -1,6 +1,6 @@
 package sudoku.model.history.cmd;
 
-import sudoku.model.IGrid;
+import sudoku.model.GridModel;
 
 /**
  * Une commande est un objet capable de modifier une grille selon certains 
@@ -20,7 +20,7 @@ public interface Command {
     /**
      * La grille sur lequel la commande agit.
      */
-    IGrid getGrid();
+    GridModel getGrid();
     
     /**
      * L'état interne de la commande.

@@ -9,7 +9,7 @@ import sudoku.util.ICoord;
  * @inv <pre>
  *	    getNumberSectorByWidth() > 0  && getNumberSectorByHeight() > 0 && size() 
  *			<==>  getNumberSectorByWidth() * getNumberSectorByHeight()
- * 		isFull() <==> forall ICell cell in cells() : cell.hasValue()
+ * 		isFull() <==> forall CellModel cell in cells() : cell.hasValue()
  * 		forall ICoord c : getCell(c) <==> cells[c.getRow()][c.getCol()]
  * 		size() == getNumberSectorByHeight() * getNumberSectorByWidth()
  * 		cells().size() == size() 
@@ -36,7 +36,7 @@ import sudoku.util.ICoord;
  *    </pre>
  *    
  */
-public interface IGrid extends Serializable, Cloneable {
+public interface GridModel extends Serializable, Cloneable {
 	
 	//REQUÊTES
 	/**
@@ -72,7 +72,7 @@ public interface IGrid extends Serializable, Cloneable {
 	/**
 	 * Retourne le tableau de cellules
 	 */
-	ICell[][] cells();
+	CellModel[][] cells();
 	
 	/**
 	 * Retourne la cellule à coordonnée c.
@@ -81,7 +81,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	ICell getCell(ICoord coord);
+	CellModel getCell(ICoord coord);
 	
 	/**
 	 * Retourne la coordonnée correspondant à cell.
@@ -89,7 +89,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		cell != null
 	 * <pre>
 	 */
-	ICoord getCoord(ICell cell);
+	ICoord getCoord(CellModel cell);
 	
 	/**
 	 * Retourne si la grille est complète
@@ -104,7 +104,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	Set<ICell> getRow(ICoord coord);
+	Set<CellModel> getRow(ICoord coord);
 	
 	/**
 	 * Retourne l'ensemble des cellules de la colonne d'où se trouve la 
@@ -114,7 +114,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */ 
-	Set<ICell> getCol(ICoord coord);
+	Set<CellModel> getCol(ICoord coord);
 	
 	/**
 	 * Retourne l'ensemble des cellules de la région d'où se trouve la 
@@ -124,7 +124,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	Set<ICell> getSector(ICoord coord);
+	Set<CellModel> getSector(ICoord coord);
 	
 	/**
 	 * Retourne l'ensemble des cellules de la ligne a la position rowNum
@@ -132,7 +132,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		0 <= rowNum < size()
 	 * </pre>
 	 */
-	Set<ICell> getRow(int rowNum);
+	Set<CellModel> getRow(int rowNum);
 	
 	/**
 	 * Retourne l'ensemble des cellules de la colonne a la position colNum
@@ -140,7 +140,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		0 <= colNum < size()
 	 * </pre>
 	 */ 
-	Set<ICell> getCol(int colNum);
+	Set<CellModel> getCol(int colNum);
 	
 	/**
 	 * Retourne l'ensemble des cellules de la region situé a la ligne de secteur
@@ -150,7 +150,17 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		0 <= sectorColNum < getNumberSectorByWidth()
 	 * </pre>
 	 */
-	Set<ICell> getSector(int sectorRowNum, int sectorColNum);
+	Set<CellModel> getSector(int sectorRowNum, int sectorColNum);
+	
+	/** 
+	 * Retourne l'ensemble des coordonées de la region situé a la ligne de secteur
+	 * sectorRowNum et a la colonne de secteur sectorColNum
+	 * @pre : <pre>
+	 * 		0 <= sectorRowNum < getNumberSectorByHeight()
+	 * 		0 <= sectorColNum < getNumberSectorByWidth()
+	 * </pre>
+	 */
+	Set<ICoord> getSectorCoord(int sectorRowNum, int sectorColNum);
 	
 	/**
 	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et size().
@@ -167,7 +177,7 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	Set<ICell> getUnitCells(ICoord coord);
+	Set<CellModel> getUnitCells(ICoord coord);
 	
 	/**
 	 * Retourne un clone de la grille.
@@ -194,17 +204,16 @@ public interface IGrid extends Serializable, Cloneable {
 	void clear();
 	
 	/**
-	 * Change la valeur de la cellule de coord par value.
+	 * Change la valeur de la cellule par value.
 	 * @pre : <pre>
-	 * 		coord != null
-	 * 		isValidCoord(coord)
+	 * 		c != null
 	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).getValue() == value
+	 * 		c.getValue() == value
 	 * </pre>
 	 */
-	void changeValue(ICoord coord, int value);
+	void setValue(CellModel c, int value);
 	
 	/**
 	 * Réinitialise la valeur de la cellule de coord par 0.
@@ -255,6 +264,6 @@ public interface IGrid extends Serializable, Cloneable {
 	 * 		cells() == tabCells
 	 * </pre>
 	 */
-	void changeCells(ICell[][] tabCells);
+	void changeCells(CellModel[][] tabCells);
 }
 

@@ -36,18 +36,18 @@ import sudoku.util.ICoord;
  *    </pre>
  *    
  */
-interface ISudoku {
+interface SudokuModel {
 	
 	//REQUÊTES
 	/**
 	 * Retourne la grille de Sudoku du joueur.
 	 */
-	IGrid getGridPlayer();
+	GridModel getGridPlayer();
 	
 	/**
 	 * Retourne la grille solution du Sudoku.
 	 */
-	IGrid getGridSoluce();
+	GridModel getGridSoluce();
 	
 	/**
 	 * Retourne si on a gagné.
@@ -167,8 +167,11 @@ interface ISudoku {
 	
 	/**
 	 * Résous pas à pas la grille ajout la valeur dans une case
+	  * @pre: <pre>
+	 * 		g != null 
+	 * </pre> 
 	 */
-	void resolve();
+	void resolve(GridModel g);
 	
 	/**
 	 * Enregistre la grille.

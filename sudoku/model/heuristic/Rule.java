@@ -2,11 +2,11 @@ package sudoku.model.heuristic;
 
 enum Rule {
 	
-	ONE_CANDIDATE(null),
+	ONLY_CANDIDATE(new RuleOnlyCandidate()),
 	
-	ONLY_CANDIDATE(null),
+	ONE_CANDIDATE(new RuleOneCandidate()),
 	
-	PAIR_TRIPLET(null),
+	PAIR_TRIPLET(new RulePairTriplet()),
 	
 	INTERACTION_BETWEEN_SECTORS(null),
 	
@@ -48,14 +48,14 @@ enum Rule {
 	
 	BRUTE_FORCE(null);
 	
-	private ReportGenerator generator;
+	private ReportGenerator myGenerator;
 	
-	private Rule(ReportGenerator generator) {
-		
+	Rule(ReportGenerator generator) {
+		myGenerator = generator;
 	}
 	
 	public ReportGenerator getGenerator() {
-		return generator;
+		return myGenerator;
 	}
 	
 }

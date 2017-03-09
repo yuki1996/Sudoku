@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import util.Contract;
 
-public class Cell implements ICell {
+public class StdCellModel implements CellModel {
 	//ATTRIBUTS
 	private int value;
 	private boolean modifiable;
@@ -16,11 +16,11 @@ public class Cell implements ICell {
 	
 	//CONSTRUCTEURS
 	
-	public Cell(int cardinal) {		
+	public StdCellModel(int cardinal) {		
 		this(0, true, cardinal);
 	}
 	
-	public Cell(int value, boolean modifiable, int cardinal) {
+	public StdCellModel(int value, boolean modifiable, int cardinal) {
 		Contract.checkCondition(cardinal > 0, "cardinal doit être strictement positif.");
 		Contract.checkCondition(0 <= value && value <= cardinal, 
 				"value doit être strictement positif.");
@@ -58,14 +58,13 @@ public class Cell implements ICell {
 	@Override
 	public boolean isCandidate(int n) {
 		Contract.checkCondition(isValid(n));
-		
 		return candidates[n - 1];
 	}
 	
 	public Object clone() {
-		Cell clone = null;
+		StdCellModel clone = null;
 		try {
-			clone = (Cell) super.clone();
+			clone = (StdCellModel) super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new InternalError("echec clonage");
 		}
@@ -78,7 +77,7 @@ public class Cell implements ICell {
 	
 	public boolean equals(Object obj) {
 		if ((obj != null) && (obj.getClass() == this.getClass())) {
-			Cell o = (Cell) obj;
+			StdCellModel o = (StdCellModel) obj;
 			return this.isModifiable() == o.isModifiable() 
 					&& this.getValue() == o.getValue()
 					&& Arrays.equals(this.candidates,o.candidates);
@@ -111,8 +110,6 @@ public class Cell implements ICell {
 	public void addCandidate(int n) {
 		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
-
-		System.out.println("add " + n);
 		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = true;
 		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
@@ -123,8 +120,6 @@ public class Cell implements ICell {
 	public void removeCandidate(int n) {
 		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
-
-		System.out.println("remove " + n);
 		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = false;
 		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,
@@ -135,8 +130,6 @@ public class Cell implements ICell {
 	public void toggleCandidate(int n) {
 		Contract.checkCondition(isValid(n));
 		Contract.checkCondition(modifiable);
-
-		System.out.println("toggle " + n + " =" + candidates[n-1]);
 		boolean oldCandidate = candidates[n - 1];
 		candidates[n - 1] = !candidates[n - 1];
 		propertySupport.fireIndexedPropertyChange(CANDIDATE, n,

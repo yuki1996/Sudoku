@@ -54,7 +54,7 @@ import java.io.Serializable;
  *          getCardinalCandidates() == Candidates.length
  *    </pre>
  */
-public interface ICell extends Serializable, Cloneable  {
+public interface CellModel extends Serializable, Cloneable  {
 	
 	// PROPRIETES
 	String VALUE = "value";
@@ -73,7 +73,7 @@ public interface ICell extends Serializable, Cloneable  {
 	int getValue();
 	
 	/**
-	 * Renvoie vrai si la cellule a une valeur (differente de 0).
+	 * Renvoie vrai si la cellule a une valeur.
 	 * Renvoie faux sinon.
 	 */
 	boolean hasValue();

@@ -1,9 +1,10 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.IGrid;
+import sudoku.model.GridModel;
 
 abstract class ReportGenerator {
 	
+	
 	// génération des Report
-	protected abstract Report generate(IGrid grid);
+	protected abstract Report generate(GridModel grid);
 }
