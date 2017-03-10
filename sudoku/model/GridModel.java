@@ -97,62 +97,52 @@ public interface GridModel extends Serializable, Cloneable {
 	boolean isFull();
 	
 	/**
-	 * Retourne l'ensemble des cellules de la ligne d'où se trouve la 
+	 * Retourne l'ensemble des coordonées de la ligne d'où se trouve la 
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	Set<CellModel> getRow(ICoord coord);
+	Set<ICoord> getRow(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des cellules de la colonne d'où se trouve la 
+	 * Retourne l'ensemble des coordonées de la colonne d'où se trouve la 
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */ 
-	Set<CellModel> getCol(ICoord coord);
+	Set<ICoord> getCol(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des cellules de la région d'où se trouve la 
+	 * Retourne l'ensemble des coordonées de la région d'où se trouve la 
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	Set<CellModel> getSector(ICoord coord);
+	Set<ICoord> getSector(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des cellules de la ligne a la position rowNum
+	 * Retourne l'ensemble des coordonées de la ligne a la position rowNum
 	 * @pre : <pre>
 	 * 		0 <= rowNum < size()
 	 * </pre>
 	 */
-	Set<CellModel> getRow(int rowNum);
+	Set<ICoord> getRow(int rowNum);
 	
 	/**
-	 * Retourne l'ensemble des cellules de la colonne a la position colNum
+	 * Retourne l'ensemble des coordonées de la colonne a la position colNum
 	 * @pre : <pre>
 	 * 		0 <= colNum < size()
 	 * </pre>
 	 */ 
-	Set<CellModel> getCol(int colNum);
+	Set<ICoord> getCol(int colNum);
 	
 	/**
-	 * Retourne l'ensemble des cellules de la region situé a la ligne de secteur
-	 * sectorRowNum et a la colonne de secteur sectorColNum
-	 * @pre : <pre>
-	 * 		0 <= sectorRowNum < getNumberSectorByHeight()
-	 * 		0 <= sectorColNum < getNumberSectorByWidth()
-	 * </pre>
-	 */
-	Set<CellModel> getSector(int sectorRowNum, int sectorColNum);
-	
-	/** 
 	 * Retourne l'ensemble des coordonées de la region situé a la ligne de secteur
 	 * sectorRowNum et a la colonne de secteur sectorColNum
 	 * @pre : <pre>
@@ -160,7 +150,7 @@ public interface GridModel extends Serializable, Cloneable {
 	 * 		0 <= sectorColNum < getNumberSectorByWidth()
 	 * </pre>
 	 */
-	Set<ICoord> getSectorCoord(int sectorRowNum, int sectorColNum);
+	Set<ICoord> getSector(int sectorRowNum, int sectorColNum);
 	
 	/**
 	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et size().
@@ -177,7 +167,7 @@ public interface GridModel extends Serializable, Cloneable {
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 */
-	Set<CellModel> getUnitCells(ICoord coord);
+	Set<ICoord> getUnitCoords(ICoord coord);
 	
 	/**
 	 * Retourne un clone de la grille.

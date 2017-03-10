@@ -156,7 +156,7 @@ public class StdCellModel implements CellModel {
 	
 	// OUTILS
 	private boolean isValid(int value) {
-		return 0 < value && value <= getCardinalCandidates();
+		return 0 <= value && value <= getCardinalCandidates();
 	}
 
 }

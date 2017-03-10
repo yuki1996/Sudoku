@@ -3,6 +3,7 @@ package sudoku.model.heuristic;
 import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.util.Coord;
+import sudoku.util.ICoord;
 import util.Contract;
 
 public class RuleOnlyCandidate extends ReportGenerator {
@@ -13,17 +14,16 @@ public class RuleOnlyCandidate extends ReportGenerator {
 		CellModel [][] tabC = grid.cells();
 		Contract.checkCondition(tabC != null);
 		int l = -1;
-		CellModel c;
 		for (int i = 0; i < grid.size(); i++) {
 			for (int j = 0; j < grid.size(); j++) {
 				int k = 0;
-				c = tabC[i][j];
-				if (c.isModifiable() && ! c.hasValue()) {
+				ICoord c = new Coord(i, j);
+				if (grid.getCell(c).isModifiable() && ! grid.getCell(c).hasValue()) {
 					//parcourt tableau des candidats de la cellule
-					for (int m = 0; m < grid.numberCandidates(); m++) {
-						if (c.isCandidate(m)) {
+					for (int m = 1; m <= grid.numberCandidates(); m++) {
+						if (grid.getCell(c).isCandidate(m)) {
 							++k;
-							l = m + 1;
+							l = m;
 						}
 						if (k > 1) {
 							l = -1;
@@ -32,9 +32,7 @@ public class RuleOnlyCandidate extends ReportGenerator {
 					}
 				}
 				if (k == 1) {
-
-					SetValueReport r = new SetValueReport(grid, new Coord(i, j), l);
-					r.addDecisiveUnits(new Coord(i, j));
+					SetValueReport r = new SetValueReport(grid, c, l);
 					String string = "Cette case contient un seul candidat avec le symbole " + l;
 					r.setDescription(string);
 					return r;

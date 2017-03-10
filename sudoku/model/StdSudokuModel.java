@@ -143,18 +143,16 @@ public class StdSudokuModel implements SudokuModel {
 
 	//COMMANDES
 	public void updateEasyPossibilities(ICoord c) {
-		Contract.checkCondition(c != null
-				&& isValidCoord(c) 
-				&& getGridPlayer().getCell(c).getValue() > 0);
+		Contract.checkCondition(c != null);
+		Contract.checkCondition(isValidCoord(c));
+		Contract.checkCondition(getGridPlayer().getCell(c).getValue() > 0);
 		int n = getGridPlayer().getCell(c).getValue();
-		Set<CellModel> set = getGridPlayer().getUnitCells(c);
-		for (int i = 0 ; i < getGridPlayer().numberCandidates(); i++) {
-			for (int j = 0 ; j < getGridPlayer().numberCandidates(); j++) {
-				if (set.contains(getGridPlayer().cells()[i][j]) && getGridPlayer().cells()[i][j].isModifiable()) {
-					getGridPlayer().cells()[i][j].removeCandidate(n);
-				}
+		Set<ICoord> set = getGridPlayer().getUnitCoords(c);
+		for (ICoord coord : set) {
+			if (getGridPlayer().getCell(coord).isModifiable()) {
+				getGridPlayer().getCell(coord).removeCandidate(n);
 			}
-		} 
+		}
 		
 	}
 
@@ -195,7 +193,7 @@ public class StdSudokuModel implements SudokuModel {
 		Contract.checkCondition(g != null);
 		RuleManager rm = new RuleManager(g);
 		rm.findRule();
-		rm.getCommand().act();
+		rm.getCommand().act();;
 	}
 
 	public void reset() {
