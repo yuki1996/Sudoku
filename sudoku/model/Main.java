@@ -2,8 +2,6 @@ package sudoku.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import sudoku.util.Coord;
 import sudoku.util.ICoord;
@@ -19,7 +17,12 @@ public final class Main {
 		
 		//Creation
 		SudokuModel sudo = new StdSudokuModel(new File("./grille1.txt"));;
-
+		
+		System.out.println(sudo.help());
+		sudo.resolve(sudo.getGridPlayer());
+		affiche_grille(sudo);
+		affiche_possibilite(new Coord(1,2), sudo);
+		/*
 		while (!sudo.getGridSoluce().isFull() ) {
 			sudo.resolve(sudo.getGridSoluce());
 		}
@@ -29,7 +32,7 @@ public final class Main {
 			sudo.resolve(sudo.getGridPlayer());
 			affiche_grille(sudo);
 		}
-		System.out.println(sudo.isWin() ? "gagné" : "perdu");
+		System.out.println(sudo.isWin() ? "gagné" : "perdu");*/
 	}
 
 	//OUTILS
@@ -80,7 +83,7 @@ public final class Main {
 		}
 
 		System.out.println("");
-		for (int i = 0; i < c.getCardinalCandidates(); i++) {
+		for (int i = 1; i <= c.getCardinalCandidates(); i++) {
 			System.out.print(c.isCandidate(i) ? 1 : 0);
 			System.out.print(" ");
 		}

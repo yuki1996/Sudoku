@@ -2,17 +2,15 @@ package sudoku.model.heuristic;
 
 enum Rule {
 	
+	IDENTICAL_CANDIDATES(new IdenticalCandidates()),
 	
 	ONLY_CANDIDATE(new RuleOnlyCandidate()),
 	
-	ONE_CANDIDATE(new RuleOneCandidate()),
-	
+	ONE_CANDIDATE(null),
 	
 	PAIR_TRIPLET(new RulePairTriplet()),
 	
 	INTERACTION_BETWEEN_SECTORS(null),
-	
-	IDENTICAL_CANDIDATES(null),
 	
 	ISOLATED_GROUPS(null),
 	

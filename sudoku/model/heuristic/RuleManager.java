@@ -1,8 +1,8 @@
 package sudoku.model.heuristic;
 
-import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.model.history.cmd.Command;
+import sudoku.util.ICoord;
 import util.Contract;
 
 public class RuleManager {
@@ -47,18 +47,18 @@ public class RuleManager {
   }
   
   private static boolean legal(int col, int row, int val, GridModel g) {
-	  for (CellModel c : g.getRow(row)) {
-		  if (val == c.getValue()) {
+	  for (ICoord c : g.getRow(row)) {
+		  if (val == g.getCell(c).getValue()) {
 			  return false;
 		  }
 	  }
-	  for (CellModel c : g.getCol(col)) {
-		  if (val == c.getValue()) {
+	  for (ICoord c : g.getCol(col)) {
+		  if (val == g.getCell(c).getValue()) {
 			  return false;
 		  }
 	  }
-	  for (CellModel c : g.getSector(row,col)) {
-		  if (val == c.getValue()) {
+	  for (ICoord c : g.getSector(row,col)) {
+		  if (val == g.getCell(c).getValue()) {
 			  return false;
 		  }
 	  }
