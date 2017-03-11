@@ -34,12 +34,12 @@ public class RulePairTriplet extends ReportGenerator {
 						//parcourt tableau des candidats de la cellule
 						for (int k = 0; k < grid.numberCandidates(); k++) {
 							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-							if (c.isCandidate(k)&& !(Boolean)tab[k][0]) {
+							if (c.isCandidate(k + 1)&& !(Boolean)tab[k][0]) {
 								tab[k][0] = true;
 								((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
 								tab[k][2] = m;
 							}
-							if (c.isCandidate(k) && (Boolean)tab[k][0] && tab[k][1] != null) {
+							if (c.isCandidate(k + 1) && (Boolean)tab[k][0] && tab[k][1] != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même ligne
 								if (m == ((Integer) tab[k][2])) {
 									((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
@@ -62,13 +62,13 @@ public class RulePairTriplet extends ReportGenerator {
 					for (ICoord coord : (Set<ICoord>) tab[k][1]) {
 						System.out.println("case("+coord.getRow()+","+coord.getCol()+")");
 						r.addCell(CellSetName.DECISIVE_CELLS, coord);
-						for(ICoord cd : grid.getSectorCoord(coord.getRow(), coord.getCol())) {
+						for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
 							r.addCell(CellSetName.DECISIVE_UNITS, cd);
 						}
 					}
 					for (int j = 0; j < grid.size(); j++) {
 						ICoord coord = new Coord((Integer) tab[k][2], j);
-						if (grid.getCell(coord).isCandidate(value - 1) && grid.getCell(coord).isModifiable() 
+						if (grid.getCell(coord).isCandidate(value) && grid.getCell(coord).isModifiable() 
 								&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 							System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ value);
 							r.addCell(CellSetName.DELETION_CELLS, coord);
@@ -106,12 +106,12 @@ public class RulePairTriplet extends ReportGenerator {
 						//parcourt tableau des candidats de la cellule
 						for (int k = 0; k < grid.numberCandidates(); k++) {
 							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-							if (c.isCandidate(k) && !(Boolean)tab[k][0]) {
+							if (c.isCandidate(k + 1) && !(Boolean)tab[k][0]) {
 								tab[k][0] = true;
 								((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
 								tab[k][2] = m;
 							}
-							if (c.isCandidate(k) && (Boolean)tab[k][0] && tab[k][1] != null) {
+							if (c.isCandidate(k + 1) && (Boolean)tab[k][0] && tab[k][1] != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même colonne
 								if (m == ((Integer) tab[k][2])) {
 									((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
@@ -134,13 +134,13 @@ public class RulePairTriplet extends ReportGenerator {
 					for (ICoord coord : (Set<ICoord>) tab[k][1]) {
 						System.out.println("case("+coord.getRow()+","+coord.getCol()+")");
 						r.addCell(CellSetName.DECISIVE_CELLS, coord);
-						for(ICoord cd : grid.getSectorCoord(coord.getRow(), coord.getCol())) {
+						for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
 							r.addCell(CellSetName.DECISIVE_UNITS, cd);
 						}
 					}
 					for (int i = 0; i < grid.size(); i++) {
 						ICoord coord = new Coord(i, (Integer) tab[k][2]);
-						if (grid.getCell(coord).isCandidate(value - 1) && grid.getCell(coord).isModifiable()
+						if (grid.getCell(coord).isCandidate(value) && grid.getCell(coord).isModifiable()
 								&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 							System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ value);
 							r.addCell(CellSetName.DELETION_CELLS, coord);
