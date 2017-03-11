@@ -170,6 +170,45 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<ICoord> getUnitCoords(ICoord coord);
 	
 	/**
+	 * Retourne l'ensemble des cellules de la ligne d'où se trouve la 
+	 * coordonnée coord
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		isValidCoord(coord)
+	 * </pre>
+	 */
+	Set<CellModel> getRowCell(ICoord coord);
+	
+	/**
+	 * Retourne l'ensemble des cellules de la colonne d'où se trouve la 
+	 * coordonnée coord
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		isValidCoord(coord)
+	 * </pre>
+	 */ 
+	Set<CellModel> getColCell(ICoord coord);
+	
+	/**
+	 * Retourne l'ensemble des cellules de la région d'où se trouve la 
+	 * coordonnée coord
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		isValidCoord(coord)
+	 * </pre>
+	 */
+	Set<CellModel> getSectorCell(ICoord coord);
+	
+	/**
+	 * Retourne l'ensemble des cellules  présentes sur la ligne, colonne et région de la coordonnée.
+	 * @pre : <pre>
+	 * 		coord != null
+	 * 		isValidCoord(coord)
+	 * </pre>
+	 */
+	Set<CellModel> getUnitCells(ICoord coord);
+	
+	/**
 	 * Retourne un clone de la grille.
 	 */
 	Object clone();

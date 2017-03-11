@@ -153,18 +153,17 @@ public class StdGridModel implements GridModel {
 
 	@Override
 	public Set<ICoord> getSector(int sectorRowNum, int sectorColNum) {
-		Contract.checkCondition(0 <= sectorRowNum && sectorRowNum < getNumberSectorByHeight());
-		Contract.checkCondition(0 <= sectorColNum && sectorColNum < getNumberSectorByWidth());
+		Contract.checkCondition(0 <= sectorRowNum && sectorRowNum < size());
+		Contract.checkCondition(0 <= sectorColNum && sectorColNum < size());
 		Set<ICoord> set = new HashSet<ICoord>();
 		for (int i = 0; i < getNumberSectorByWidth(); i++) {
 			for (int j = 0; j < getNumberSectorByHeight(); j++) {
-				set.add(new Coord(sectorRowNum * getHeightSector() + i,
-						sectorColNum * getWidthSector() + j));
+				set.add(new Coord((sectorRowNum / getNumberSectorByWidth())* getNumberSectorByWidth() + i,
+						(sectorColNum / getWidthSector()) * getWidthSector() + j));
 			}
 		}
 		return set;
 	}
-
 	@Override
 	public boolean isValidCoord(ICoord coord) {
 		Contract.checkCondition(coord != null);
@@ -181,6 +180,56 @@ public class StdGridModel implements GridModel {
 		set.addAll(getCol(coord));
 		return set;
 	}
+	
+	public Set<CellModel> getRowCell(ICoord coord) {
+		Contract.checkCondition(coord != null
+			&& isValidCoord(coord));
+		Set<CellModel> set = new HashSet<CellModel>();
+		for (int i = 0; i < size(); i++) {
+			set.add(cells()[coord.getRow()][i]);
+		}
+		return set;
+	}
+
+	@Override
+	public Set<CellModel> getColCell(ICoord coord) {
+		Contract.checkCondition(coord != null
+				&& isValidCoord(coord));
+		Set<CellModel> set = new HashSet<CellModel>();
+		for (int i = 0; i < size(); i++) {
+			set.add(cells()[i][coord.getCol()]);
+		}
+		return set;
+	}
+
+	@Override
+	public Set<CellModel> getSectorCell(ICoord coord) {
+		Contract.checkCondition(coord != null
+				&& isValidCoord(coord));
+		Set<CellModel> set = new HashSet<CellModel>();
+		int col = coord.getCol();
+		int row = coord.getRow();
+		for (int i = 0; i < getNumberSectorByWidth(); i++) {
+			for (int j = 0; j < getNumberSectorByHeight(); j++) {
+				set.add(cells()[(row / getNumberSectorByWidth())* getNumberSectorByWidth() + i]
+						[(col / getNumberSectorByHeight()) * getNumberSectorByHeight() + j]);
+			}
+		}
+		return set;
+	}
+	public Set<CellModel> getUnitCells(ICoord coord) {
+		Contract.checkCondition(coord != null
+				&& isValidCoord(coord));
+		Set<CellModel> set = getRowCell(coord);
+		for (CellModel cell : getSectorCell(coord)) {
+			set.add(cell);
+		}
+		for (CellModel cell : getColCell(coord)) {
+			set.add(cell);
+		}
+		return set;
+	}
+
 
 	@Override
 	public Object clone() {
