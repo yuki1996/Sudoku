@@ -4,6 +4,8 @@ import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.Report.CellSetName;
+import sudoku.util.Coord;
+import sudoku.util.ICoord;
 import util.Contract;
 
 public class RuleOneCandidate extends ReportGenerator {
@@ -13,15 +15,17 @@ public class RuleOneCandidate extends ReportGenerator {
 		Contract.checkCondition(grid != null);
 		CellModel [][] tabC = grid.cells();
 		Contract.checkCondition(tabC != null);
-		Report r = new SetValueReport();
 		CellModel c = null;
 		Integer[] tabI = new Integer[grid.numberCandidates()];
-		CellModel[] tabCell = new CellModel[grid.numberCandidates()];
+		Integer[] tabCol = new Integer[grid.numberCandidates()];
+		Integer[] tabRow = new Integer[grid.numberCandidates()];
+		
 		//on regarde ligne par ligne
 		for (int i = 0; i < grid.size(); i++) {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				tabI[k] = 0;
-				tabCell[k] = null;
+				tabCol[k] = -1;
+				tabRow[k] = -1;
 			}
 			for (int j = 0; j < grid.size(); j++) {
 				c = tabC[i][j];
@@ -30,23 +34,24 @@ public class RuleOneCandidate extends ReportGenerator {
 					//parcourt tableau des candidats de la cellule
 					for (int k = 0; k < grid.numberCandidates(); k++) {
 						//le candidat existe dans la cellule
-						if (c.isCandidate(k)) {
+						if (c.isCandidate(k + 1)) {
 							tabI[k] += 1;
-							tabCell[k] = c;
+							tabCol[k] = i;
+							tabRow[k] = j;
 						}		
 					}
 				}
 			}
-			// A la fin de chaque région on regarde si on a candidat unique dans la ligne
+			// A la fin de chaque ligne on regarde si on a candidat unique dans la ligne
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
-				if ( tabI[k] == 1 && tabCell[k] != null) {
-					for (CellModel cell : grid.getRow(i)) {
-						r.addCell(CellSetName.DECISIVE_UNITS, cell);
-					}
-					r.addCell(CellSetName.DECISIVE_CELLS, tabCell[k]);
+				if ( tabI[k] == 1) {
 					int value = k + 1;
-					r.addValue(value);
+					ICoord coord = new Coord(tabCol[k],tabRow[k]);
+					SetValueReport r = new SetValueReport(grid, coord, value);
+					for (int j = 0; j < grid.numberCandidates(); j++) {
+						r.addDecisiveUnits(new Coord(i,j));
+					}
 					String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette ligne.";
 					r.setDescription(s);
 					return r;
@@ -57,7 +62,8 @@ public class RuleOneCandidate extends ReportGenerator {
 		for (int i = 0; i < grid.size(); i++) {
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 				tabI[k] = 0;
-				tabCell[k] = null;
+				tabCol[k] = -1;
+				tabRow[k] = -1;
 			}
 			for (int j = 0; j < grid.size(); j++) {
 				c = tabC[j][i];
@@ -66,30 +72,33 @@ public class RuleOneCandidate extends ReportGenerator {
 					//parcourt tableau des candidats de la cellule
 					for (int k = 0; k < grid.numberCandidates(); k++) {
 						//le candidat existe dans la cellule
-						if (c.isCandidate(k)) {
+						if (c.isCandidate(k + 1)) {
 							tabI[k] += 1;
-							tabCell[k] = c;
+							tabCol[k] = j;
+							tabRow[k] = i;
 						}
 					}
 				}
 			}
-			// A la fin de chaque région on regarde si on a candidat unique dans la colonne
+			
+			// A la fin de chaque colonne on regarde si on a candidat unique dans la colonne
 			for (int k = 0; k < grid.numberCandidates(); k++) {
 	
 				//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
-				if (tabI[k] == 1 && tabCell[k] != null) {
-					for (CellModel cell : grid.getCol(i)) {
-						r.addCell(CellSetName.DECISIVE_UNITS, cell);
-					}
-					r.addCell(CellSetName.DECISIVE_CELLS, tabCell[k]);
+				if (tabI[k] == 1) {
 					int value = k + 1;
-					r.addValue(value);
+					ICoord coord = new Coord(tabCol[k],tabRow[k]);
+					SetValueReport r = new SetValueReport(grid, coord, value);
+					for (int j = 0; j < grid.numberCandidates(); j++) {
+						r.addDecisiveUnits(new Coord(j,i));
+					}
 					String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette colonne.";
 					r.setDescription(s);
 					return r;
 				}
 			}
 		}
+		
 		//on regarde région par région
 		int nbSW = grid.getNumberSectorByWidth();
 		int nbSH = grid.getNumberSectorByHeight();
@@ -97,7 +106,8 @@ public class RuleOneCandidate extends ReportGenerator {
 			for (int j = 0; j < grid.getHeightSector(); j++) {
 				for (int k = 0; k < grid.numberCandidates(); k++) {
 					tabI[k] = 0;
-					tabCell[k] = null;
+					tabCol[k] = -1;
+					tabRow[k] = -1;
 				}
 				for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
 					for (int n = j * nbSH; n < grid.getWidthSector() * (j + 1); n++) {
@@ -107,9 +117,10 @@ public class RuleOneCandidate extends ReportGenerator {
 							//parcourt tableau des candidats de la cellule
 							for (int k = 0; k < grid.numberCandidates(); k++) {
 								//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-								if (c.isCandidate(k)) {
+								if (c.isCandidate(k + 1)) {
 									tabI[k] += 1; 
-									tabCell[k] = c;
+									tabRow[k] = m;
+									tabCol[k] = n;
 								}
 								
 							}
@@ -119,22 +130,25 @@ public class RuleOneCandidate extends ReportGenerator {
 				// A la fin de chaque région on regarde si on a candidat unique dans la région
 				for (int k = 0; k < grid.numberCandidates(); k++) {
 					//le candidat existe dans la ligne et qu'il est apparu une seule et unique fois
-					if (tabI[k] == 1 && tabCell[k] != null) {
-						for (CellModel cell : grid.getSector(j, i)) {
-							r.addCell(CellSetName.DECISIVE_UNITS, cell);
-						}
-						r.addCell(CellSetName.DECISIVE_CELLS, tabCell[k]);
+					if (tabI[k] == 1) {
 						int value = k + 1;
-						r.addValue(value);
+						ICoord coord = new Coord(tabRow[k],tabCol[k]);
+						SetValueReport r = new SetValueReport(grid, coord, value);
+						for (ICoord cd : grid.getSector(tabRow[k], tabCol[k])) {
+							r.addDecisiveUnits(cd);
+						}
 						String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette région.";
 						r.setDescription(s);
 						return r;
 					}
+					
 				}
+				
 			}
 		}
 		return null;
 	}
+	
 
 
 }
