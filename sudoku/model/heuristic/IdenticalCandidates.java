@@ -34,11 +34,24 @@ public class IdenticalCandidates extends ReportGenerator {
 		
 		
 		Map<Integer, List<List<ICoord>>> map1 = sort1(list, 0, grid.numberCandidates(), grid); 
+		/*
+		System.out.println("sort1");
+		for (Entry<Integer, List<List<ICoord>>> ent : map1.entrySet()) {
+			System.out.println(ent.getKey());
+			for(List<ICoord> list1 : ent.getValue()) {
+				for(ICoord c : list1) {
+					System.out.print("  L" + c.getRow() + "C" + c.getCol());
+				}
+				System.out.println();
+			}
+		}
+		System.out.println("fin  sort1");
+		*/
 		Map<Integer, List<Couple<Unit, List<ICoord>>>> map2 = sort2(map1, grid);
-		
-		
+		/*
+		System.out.println("sort2");
 		for (Entry<Integer, List<Couple<Unit, List<ICoord>>>> ent : map2.entrySet()) {
-			System.out.println(ent.getKey() + "\n");
+			System.out.println(ent.getKey());
 			for (Couple<Unit, List<ICoord>> couple : ent.getValue()) {
 				if (couple.getFirst() == Unit.COL) {
 					System.out.println("  col");
@@ -54,8 +67,8 @@ public class IdenticalCandidates extends ReportGenerator {
 			}
 			System.out.println();
 		}
-		
-		
+		System.out.println("fin  sort2");
+		*/
 		
 		
 		for (int i = 2; i < grid.numberCandidates(); ++i) {
@@ -69,7 +82,7 @@ public class IdenticalCandidates extends ReportGenerator {
 				CellModel cell = grid.getCell(c);
 				String str = "Avec la regle des candidats identiques, "
 						+ "on peut supprimer les candidats ";
-				for (Integer j = 1; j < cell.getCardinalCandidates(); ++j) {
+				for (Integer j = 1; j <= cell.getCardinalCandidates(); ++j) {
 					if (cell.isCandidate(j)) {
 						res.addValue(j);
 						str += j.toString() + " ";
@@ -91,7 +104,9 @@ public class IdenticalCandidates extends ReportGenerator {
 				
 				str += "des cellules";
 				for (ICoord coord : sector) {
-					str += " L" + coord.getRow() + "C" + coord.getCol();
+					if (! grid.getCell(coord).hasValue()) {
+						str += " L" + coord.getRow() + "C" + coord.getCol();
+					}
 				}
 				str += ".";
 				res.setDescription(str);
@@ -129,12 +144,45 @@ public class IdenticalCandidates extends ReportGenerator {
 				list2.add(c);
 			}
 		}
+		
 		if (! list1.isEmpty()) {
-			res.putAll(sort1(list1, numberCandidates + 1, candidateValue - 1, g));
+			Map<Integer, List<List<ICoord>>> res1 = 
+					sort1(list1, numberCandidates + 1, candidateValue - 1, g);
+			for (Entry<Integer, List<List<ICoord>>> ent1 : res1.entrySet()) {
+				List<List<ICoord>> listRes1 = res.get(ent1.getKey());
+				if (listRes1 != null) {
+					listRes1.addAll(ent1.getValue());
+					res.put(ent1.getKey(), listRes1);
+				} else {
+					res.put(ent1.getKey(), ent1.getValue());
+				}
+			}
 		}
+		
 		if (! list2.isEmpty()) {
-			res.putAll(sort1(list2, numberCandidates, candidateValue - 1, g));
+			Map<Integer, List<List<ICoord>>> res2 = 
+					sort1(list2, numberCandidates, candidateValue - 1, g);
+			for (Entry<Integer, List<List<ICoord>>> ent2 : res2.entrySet()) {
+				List<List<ICoord>> listRes2 = res.get(ent2.getKey());
+				if (listRes2 != null) {
+					listRes2.addAll(ent2.getValue());
+					res.put(ent2.getKey(), listRes2);
+				} else {
+					res.put(ent2.getKey(), ent2.getValue());
+				}
+			}
+		}/*
+		System.out.println("sort1 " + numberCandidates + " " + candidateValue);
+		for (Entry<Integer, List<List<ICoord>>> ent : res.entrySet()) {
+			System.out.println(ent.getKey());
+			for(List<ICoord> list3 : ent.getValue()) {
+				for(ICoord c : list3) {
+					System.out.print("  L" + c.getRow() + "C" + c.getCol());
+				}
+				System.out.println();
+			}
 		}
+		System.out.println("fin  sort1");*/
 		return res;
 	}
 	
