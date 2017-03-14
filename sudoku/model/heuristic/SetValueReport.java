@@ -74,7 +74,7 @@ class SetValueReport implements Report {
 	}
 
 	@Override
-	public Command getCommand() {
+	public Command generateCommand() {
 		return new AddValue(grid, changedCoord, value);
 	}
 }

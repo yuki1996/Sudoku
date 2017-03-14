@@ -24,8 +24,8 @@ public class RuleManager {
 	  return lastReport.describe();
   }
 
-  public Command getCommand() {
-	  return lastReport.getCommand();
+  public Command generateCommand() {
+	  return lastReport.generateCommand();
   }
   
   //COMMANDES

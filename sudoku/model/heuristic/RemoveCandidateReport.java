@@ -67,7 +67,7 @@ class RemoveCandidateReport implements Report {
 	}
 
 	@Override
-	public Command getCommand() {
+	public Command generateCommand() {
 		Set<Command> set = new HashSet<Command>();
 		for (ICoord c : cellSets.get(CellSetName.DELETION_CELLS)) {
 			for (Integer v : values) {
