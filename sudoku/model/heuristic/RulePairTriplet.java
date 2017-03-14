@@ -23,6 +23,7 @@ public class RulePairTriplet extends ReportGenerator {
 		int col = -1;
 		Set<ICoord> decisiveCellsRow = new HashSet<ICoord>();
 		Set<ICoord> decisiveCellsCol = new HashSet<ICoord>();
+		String s = "";
 		
 		int nbSW = grid.getNumberSectorByWidth();
 		int nbSH = grid.getNumberSectorByHeight();
@@ -69,6 +70,8 @@ public class RulePairTriplet extends ReportGenerator {
 						if (row != -1) {
 							for (ICoord coord : decisiveCellsRow) {
 								r.addCell(CellSetName.DECISIVE_CELLS, coord);
+								//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ": "+ k);
+								
 								for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
 									r.addCell(CellSetName.DECISIVE_UNITS, cd);
 								}
@@ -78,13 +81,21 @@ public class RulePairTriplet extends ReportGenerator {
 								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
 										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 									r.addCell(CellSetName.DELETION_CELLS, coord);
+									//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ k);
+									
 								} else {
 									r.addCell(CellSetName.DELETION_UNITS, coord);
 								}
 							}
+
+							s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+							s += k + " alignés dans cette région, donnent la possibilité de" 
+									+ " supprimer les " + k + " dans les autres régions de cette ligne.";
 						} else {
 							for (ICoord coord : decisiveCellsCol) {
 								r.addCell(CellSetName.DECISIVE_CELLS, coord);
+								//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") : "+ k);
+								
 								for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
 									r.addCell(CellSetName.DECISIVE_UNITS, cd);
 								}
@@ -94,10 +105,16 @@ public class RulePairTriplet extends ReportGenerator {
 								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
 										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 									r.addCell(CellSetName.DELETION_CELLS, coord);
+									//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ k);
+									
 								} else {
 									r.addCell(CellSetName.DELETION_UNITS, coord);
 								}
 							}
+
+							s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+							s += k + " alignés dans cette région, donnent la possibilité de" 
+									+ " supprimer les " + k + " dans les autres régions de cette colonne.";
 						}
 						
 
@@ -105,9 +122,6 @@ public class RulePairTriplet extends ReportGenerator {
 							r = null;
 							break;
 						}
-						String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
-						s += k + " alignés dans cette région, donnent la possibilité de" 
-								+ " supprimer les " + k + " dans les autres régions de cette colonne.";
 						r.setDescription(s);
 						return r;
 					}
