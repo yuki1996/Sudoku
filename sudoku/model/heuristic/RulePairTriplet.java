@@ -24,16 +24,15 @@ public class RulePairTriplet extends ReportGenerator {
 		Set<ICoord> decisiveCellsRow = new HashSet<ICoord>();
 		Set<ICoord> decisiveCellsCol = new HashSet<ICoord>();
 		
-		//type1
-		//on regarde région par région
 		int nbSW = grid.getNumberSectorByWidth();
 		int nbSH = grid.getNumberSectorByHeight();
 		for (int k = 1; k <= grid.numberCandidates(); k++) {
+			//on regarde région par région
 			for (int i = 0; i < grid.getWidthSector(); i++) {
 				for (int j = 0; j < grid.getHeightSector(); j++) {
 					for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
 						for (int n = j * nbSH; n < grid.getWidthSector() * (j + 1); n++) {
-							if (tabC[m][n].isModifiable()) {
+							if (!tabC[m][n].hasValue()) {
 								if (tabC[m][n].isCandidate(k)) {
 									if (!existRow) {
 										existRow = true;
@@ -116,13 +115,11 @@ public class RulePairTriplet extends ReportGenerator {
 					existCol = false;
 					row = -1;
 					col = -1;
+					decisiveCellsRow.clear();
+					decisiveCellsCol.clear();
 				}
 			}
 		}
-		
-		//type 2
-		
-		
 		return null;
 	}
 }
