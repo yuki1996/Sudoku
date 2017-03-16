@@ -54,35 +54,25 @@ public class StdSudokuModel implements SudokuModel {
 			
 			gridSoluce = new StdGridModel(width, height);
 			gridPlayer = new StdGridModel(width, height);
+
+			ruleManager = new RuleManager(gridPlayer);
+			history = new StdHistory<Command>(HISTORY_SIZE);
 			for (int k = 0; k < width * height; ++k) {
 				line = fr.readLine();
 				tokens = line.split(SEPARATOR);
 				for (int j = 0; j < width * height; ++j) {
 					int value = Integer.parseInt(tokens[j]);
 					CellModel gridPlayerCell = gridPlayer.cells()[k][j];
-					if (value == 0){
-						gridPlayerCell.reset();
-					} else {
+					if (value != 0){
 						new AddValue(gridPlayer, gridPlayerCell, value).act();
 						gridPlayerCell.setModifiable(false);
 					}
 				}
 			}
-			/*
-			for (int i = 0; i < gridPlayer.size(); i++) {
-				for (int j = 0; j < gridPlayer.size(); j++) {
-					if (gridPlayer.cells()[i][j].hasValue()) {
-						updateEasyPossibilities(new Coord(i, j));
-					}
-				}
-			}*/
 			gridSoluce = (StdGridModel) gridPlayer.clone();
 			RuleManager rm = new RuleManager(gridSoluce);
 			while (!gridSoluce.isFull()) {
-				affiche_grille(gridSoluce);
-				affiche_grillecandi(gridSoluce);
 				rm.findRule();
-				System.out.println(rm.describe());
 				rm.generateCommand().act();
 			}
 		} finally {
@@ -213,59 +203,5 @@ public class StdSudokuModel implements SudokuModel {
 		} finally {
 			ois.close();
 		}
-	}
-	
-	//OUTILS
-	private static void affiche_grille(GridModel g) {
-		Contract.checkCondition(g != null);
-		for (int i = 0; i < g.size(); i++) {
-			if (i % 3 == 0) {
-				System.out.println("  -------------------------");
-			}
-			for (int j = 0; j < g.size(); j++) {
-				if (j % 3 == 0) {
-					System.out.print(" | ");
-				}
-				System.out.print(g.cells()[i][j].getValue()+" ");
-				
-			}
-			System.out.println("");
-		}
-		System.out.println("  -------------------------");
-		
-	}
-	public void updateEasyPossibilities(ICoord c) {
-		Contract.checkCondition(c != null);
-		Contract.checkCondition(isValidCoord(c));
-		Contract.checkCondition(getGridPlayer().getCell(c).getValue() > 0);
-		int n = getGridPlayer().getCell(c).getValue();
-		Set<ICoord> set = getGridPlayer().getUnitCoords(c);
-		for (ICoord coord : set) {
-			if (getGridPlayer().getCell(coord).isModifiable()) {
-				getGridPlayer().getCell(coord).removeCandidate(n);
-			}
-		}
-		
-	}
-	
-	private static void affiche_grillecandi(GridModel g) {
-		Contract.checkCondition(g != null);
-		for (int i = 0; i < g.size(); i++) {
-			if (i % 3 == 0) {
-				System.out.println("  -------------------------");
-			}
-			for (int j = 0; j < g.size(); j++) {
-				if (j % 3 == 0) {
-					System.out.print(" | ");
-				}
-				for (int l = 1; l <= g.cells()[i][j].getCardinalCandidates(); l++) {
-					System.out.print(g.cells()[i][j].isCandidate(l) ? l : "");
-					System.out.print(" ");
-				}
-			}
-			System.out.println("");
-		}
-		System.out.println("  -------------------------");
-		
 	}
 }
