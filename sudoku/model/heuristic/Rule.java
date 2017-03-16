@@ -11,7 +11,7 @@ enum Rule {
 	
 	INTERACTION_BETWEEN_SECTORS(new RuleInteractionBetweenSector()),
 	
-	IDENTICAL_CANDIDATES(new IdenticalCandidates()),
+	IDENTICAL_CANDIDATES(new RuleIdenticalCandidates()),
 	
 	
 	ISOLATED_GROUPS(null),
