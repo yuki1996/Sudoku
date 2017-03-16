@@ -17,7 +17,7 @@ public final class Main {
 	public static void main(String[] args) throws IOException {
 		
 		//Creation
-		SudokuModel sudo = new StdSudokuModel(new File("./grille2.txt"));
+		SudokuModel sudo = new StdSudokuModel(new File("./grille1.txt"));
 
 		affiche_grille(sudo);
 		/*
@@ -26,16 +26,11 @@ public final class Main {
 		affiche_grille(sudo);
 		affiche_possibilite(new Coord(1,2), sudo);
 		*/
-		while (!sudo.getGridSoluce().isFull() ) {
-			RuleManager rm = new RuleManager(sudo.getGridSoluce());
-			rm.backtracking();
-		}
-		
-		while (!sudo.getGridPlayer().isFull() ) {
+		/*while (!sudo.getGridPlayer().isFull() ) {
 			System.out.println(sudo.help());
-			sudo.resolve(sudo.getGridPlayer());
+			sudo.resolve();
 			affiche_grille(sudo);
-		}
+		}*/
 		System.out.println(sudo.isWin() ? "gagné\n" : "perdu\n");
 		
 	}

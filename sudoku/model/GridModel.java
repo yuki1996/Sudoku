@@ -31,7 +31,7 @@ import sudoku.util.ICoord;
  *     $POST$ 
  *         getNumberSectorByWidth() == numberSectorByWidth
  *         getNumberSectorByHeight() == numberSectorByHeight
- *         forall int i,j : cells[i][j].getValue() == 0 &&
+ *         forall int i,j : ! cells[i][j].hasValue() &&
  *         				    cells[i][j].isModifiable()
  *    </pre>
  *    
@@ -97,7 +97,7 @@ public interface GridModel extends Serializable, Cloneable {
 	boolean isFull();
 	
 	/**
-	 * Retourne l'ensemble des coordonées de la ligne d'où se trouve la 
+	 * Retourne l'ensemble des coordonnées de la ligne dans laquelle se trouve la 
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
@@ -107,7 +107,7 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<ICoord> getRow(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des coordonées de la colonne d'où se trouve la 
+	 * Retourne l'ensemble des coordonnées de la colonne dans laquelle se trouve la 
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
@@ -117,7 +117,7 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<ICoord> getCol(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des coordonées de la région d'où se trouve la 
+	 * Retourne l'ensemble des coordonnées de la région dans laquelle se trouve la 
 	 * coordonnée coord
 	 * @pre : <pre>
 	 * 		coord != null
@@ -127,7 +127,7 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<ICoord> getSector(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des coordonées de la ligne a la position rowNum
+	 * Retourne l'ensemble des coordonnées de la ligne à la position rowNum
 	 * @pre : <pre>
 	 * 		0 <= rowNum < size()
 	 * </pre>
@@ -135,7 +135,7 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<ICoord> getRow(int rowNum);
 	
 	/**
-	 * Retourne l'ensemble des coordonées de la colonne a la position colNum
+	 * Retourne l'ensemble des coordonnées de la colonne à la position colNum
 	 * @pre : <pre>
 	 * 		0 <= colNum < size()
 	 * </pre>
@@ -143,8 +143,8 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<ICoord> getCol(int colNum);
 	
 	/**
-	 * Retourne l'ensemble des coordonées de la region situé a la ligne de secteur
-	 * sectorRowNum et a la colonne de secteur sectorColNum
+	 * Retourne l'ensemble des coordonnées de la région situé à la ligne de secteur
+	 * sectorRowNum et à la colonne de secteur sectorColNum
 	 * @pre : <pre>
 	 * 		0 <= sectorRowNum < getNumberSectorByHeight()
 	 * 		0 <= sectorColNum < getNumberSectorByWidth()
@@ -161,7 +161,8 @@ public interface GridModel extends Serializable, Cloneable {
 	boolean isValidCoord(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des cellules  présentes sur la ligne, colonne et région de la coordonnée.
+	 * Retourne l'ensemble des cellules présentes sur la ligne, colonne et région 
+	 * de la coordonnée coord.
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
@@ -200,7 +201,8 @@ public interface GridModel extends Serializable, Cloneable {
 	Set<CellModel> getSectorCell(ICoord coord);
 	
 	/**
-	 * Retourne l'ensemble des cellules  présentes sur la ligne, colonne et région de la coordonnée.
+	 * Retourne l'ensemble des cellules présentes sur la ligne, colonne et région de la 
+	 * coordonnée coord.
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
@@ -216,42 +218,41 @@ public interface GridModel extends Serializable, Cloneable {
 	//COMMANDES
 	
 	/**
-	 * Efface toutes les valeurs de la grille qui ne sont pas celle de
-	 * départ
+	 * Efface toutes les valeurs de la grille qui sont modifiables.
 	 * @post
-	 * 		forall int i,j : cells[i][j].isModifiable() => cells[i][j].getValue() == 0
+	 * 		forall int i,j : cells[i][j].isModifiable() => ! cells[i][j].hasValue()
 	 */
 	void reset();
 	
 	/**
 	 * Efface toutes les valeurs de la grille.
 	 * @post :<pre>
-	 * 		forall int i,j : cells[i][j].getValue() == 0 &&
+	 * 		forall int i,j : ! cells[i][j].hasValue() &&
 	 *         				 cells[i][j].isModifiable()
 	 * </pre>
 	 */
 	void clear();
 	
 	/**
-	 * Change la valeur de la cellule par value.
+	 * Change la valeur de la cellule de coord par value.
 	 * @pre : <pre>
 	 * 		c != null
 	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		c.getValue() == value
+	 * 		getCell(coord).getValue() == value
 	 * </pre>
 	 */
-	void setValue(CellModel c, int value);
+	void setValue(ICoord coord, int value);
 	
 	/**
-	 * Réinitialise la valeur de la cellule de coord par 0.
+	 * Réinitialise la valeur de la cellule de coord.
 	 * @pre : <pre>
 	 * 		coord != null
 	 * 		isValidCoord(coord)
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).getValue() == 0
+	 * 		! getCell(coord).hasValue()
 	 * </pre>
 	 */
 	void resetValue(ICoord coord);
@@ -264,7 +265,7 @@ public interface GridModel extends Serializable, Cloneable {
 	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		getCell(coord).Candidates()[value - 1]
+	 * 		getCell(coord).isCandidate(value)
 	 * </pre>
 	 */
 	void addCandidate(ICoord coord, int value);
@@ -277,7 +278,7 @@ public interface GridModel extends Serializable, Cloneable {
 	 * 		1 <= value <= numberCandidates()
 	 * </pre>
 	 * @post <pre>
-	 * 		! getCell(coord).Candidates()[value - 1]
+	 * 		! getCell(coord).isCandidate(value)
 	 * </pre>
 	 */
 	void removeCandidate(ICoord coord, int value);	
