@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.1.14" icons="true" always-add-relationships="false" generalizations="true" 
-  realizations="false" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+<class-diagram version="1.1.14" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="sudoku.model.history.StdHistory" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/StdHistory.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="114" y="153"/>    
+    <position height="-1" width="-1" x="114" y="361"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,34 +12,34 @@
   </class>  
   <interface id="2" language="java" name="sudoku.model.history.History" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/History.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="334" y="109"/>    
+    <position height="-1" width="-1" x="108" y="114"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </interface>  
-  <interface id="3" language="java" name="sudoku.model.history.cmd.Command" project="Sudoku" 
-    file="/Sudoku/src/sudoku/model/history/cmd/Command.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="600" y="91"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="false" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="4" language="java" name="sudoku.model.history.cmd.ExecuteRule" project="Sudoku" 
-    file="/Sudoku/src/sudoku/model/history/cmd/ExecuteRule.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="354" y="527"/>    
+  <class id="3" language="java" name="sudoku.model.history.cmd.CommandSet" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/history/cmd/CommandSet.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="904" y="236"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
+  <interface id="4" language="java" name="sudoku.model.history.cmd.Command" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/history/cmd/Command.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="726" y="105"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
   <class id="5" language="java" name="sudoku.model.history.cmd.RemoveValue" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/cmd/RemoveValue.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="624" y="555"/>    
+    <position height="-1" width="-1" x="425" y="538"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <enumeration id="6" language="java" name="sudoku.model.history.cmd.State" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/cmd/State.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="908" y="131"/>    
+    <position height="-1" width="-1" x="316" y="94"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </enumeration>  
   <class id="7" language="java" name="sudoku.model.history.cmd.AddValue" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/cmd/AddValue.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="126" y="507"/>    
+    <position height="-1" width="-1" x="731" y="368"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="sudoku.model.history.cmd.RemoveCandidate" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/cmd/RemoveCandidate.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="880" y="558"/>    
+    <position height="-1" width="-1" x="666" y="544"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -75,7 +75,7 @@
   </class>  
   <class id="9" language="java" name="sudoku.model.history.cmd.AbstractCommand" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/cmd/AbstractCommand.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="638" y="328"/>    
+    <position height="-1" width="-1" x="518" y="139"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,65 +84,65 @@
   </class>  
   <class id="10" language="java" name="sudoku.model.history.cmd.AddCandidate" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/history/cmd/AddCandidate.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1117" y="443"/>    
+    <position height="141" width="216" x="219" y="308"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <generalization id="11">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <generalization id="12">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <generalization id="13">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <association id="14">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="15" name="sideEffects"/>      
-      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
+  <association id="11">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="12" name="actions"/>      
+      <multiplicity id="13" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
-  <realization id="17">    
+  <realization id="14">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="TARGET" refId="4"/>  
   </realization>  
-  <generalization id="18">    
+  <generalization id="15">    
     <end type="SOURCE" refId="8"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <generalization id="19">    
-    <end type="SOURCE" refId="7"/>    
+  <generalization id="16">    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <realization id="20">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <association id="21">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="22" name="actions"/>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
+  <association id="17">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="18" name="sideEffects"/>      
+      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
-  <association id="24">    
+  <association id="20">    
     <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="25" name="state"/>      
-      <multiplicity id="26" minimum="0" maximum="1"/>    
+      <attribute id="21" name="state"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <realization id="26">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

@@ -3,6 +3,8 @@ package sudoku.model.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,22 +18,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import sudoku.model.StdCellModel;
 import sudoku.model.CellModel;
+import sudoku.model.StdCellModel;
 
 public class Cell extends JPanel {
 	
 	// ATTRIBUTS
 	private static final Color DEFAULT_COLOR = Color.WHITE;
-	private static final Color HOVER_COLOR = Color.LIGHT_GRAY;
+	// le dernier parametre est pour la transparence
+	private static final Color HOVER_COLOR = new Color(128, 128, 128, 128);
 	
 	private CellModel model;
 	
-	// imperativement autre chose que des JLabel
-	// - probleme au niveau de la visibilité
-	// - flexibilité d'affichage (JComponent ?)
-	private JLabel value;
-	private JLabel[] candidates;
+	private JLabel[] displayables;	// definition d'une classe plus appropriée plus tard
+	private JLabel[] candidateDisplayables;
+	private JPanel[] cards;
+	private JPanel[] candidates;
+	
+	private CardLayout cardLayout;
 	
 	// CONSTRUCTEUR
 	public Cell(CellModel cell) {
@@ -41,82 +45,104 @@ public class Cell extends JPanel {
 		createController();
 	}
 	
+	// REQUETES
+	public CellModel getModel() {
+		return model;
+	}
+	
 	// OUTILS
 	private void createModel(CellModel cell) {
 		model = cell;
 	}
 	
 	private void createView() {
-		value = new JLabel();
-		value.setOpaque(true);
-		value.setBackground(DEFAULT_COLOR);
-		candidates = new JLabel[model.getCardinalCandidates()];
+		displayables = new JLabel[] {new JLabel("1"), new JLabel("2"), new JLabel("3"),
+									new JLabel("4"), new JLabel("5"), new JLabel("6"),
+									new JLabel("7"), new JLabel("8"), new JLabel("9")};
+		candidateDisplayables = new JLabel[displayables.length];
+		for (int k = 0; k < displayables.length; ++k) {
+			candidateDisplayables[k] = new JLabel(displayables[k].getText());
+			displayables[k].setFont(displayables[k].getFont().deriveFont(15.0f));
+			candidateDisplayables[k].setFont(displayables[k].getFont().deriveFont(10.0f));
+		}
+		
+		cards = new JPanel[model.getCardinalCandidates() + 1];
+		for (int k = 0; k < cards.length; ++k) {
+			cards[k] = new JPanel();
+			cards[k].setBackground(DEFAULT_COLOR);
+		}
+		candidates = new JPanel[model.getCardinalCandidates()];
 		for (int k = 0; k < candidates.length; ++k) {
-			candidates[k] = new JLabel(Integer.toString(k + 1));
-			candidates[k].setOpaque(true);
+			candidates[k] = new JPanel();
 			candidates[k].setBackground(DEFAULT_COLOR);
 		}
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		cardLayout = new CardLayout();
 	}
 	
 	private void placeComponents() {
-		this.setLayout(new CardLayout());
-		JPanel p = new JPanel(new GridLayout(3, 3)); {
-			for (JLabel c : candidates) {
-				p.add(c);
+		this.setLayout(cardLayout);
+		cards[0].setLayout(new GridLayout(3, 3)); {
+			for (int k = 0; k < candidates.length; ++k) {
+				candidates[k].setLayout(new GridBagLayout()); {
+					candidates[k].add(candidateDisplayables[k]);
+				}
+				cards[0].add(candidates[k]);
 			}
 		}
-		this.add(p);
-		this.add(value);
+		this.add(cards[0], "0");
+		for (int k = 1; k < cards.length; ++k) {
+			cards[k].setLayout(new GridBagLayout()); {
+				cards[k].add(displayables[k-1]);
+			}
+			this.add(cards[k], displayables[k-1].getText());
+		}
 	}
 	
 	private void createController() {
-		value.addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (model.isModifiable()) {
-					switch (e.getButton()) {
-						case MouseEvent.BUTTON1: // clique gauche
+		for (int k = 0; k < candidates.length; ++k) {
+			cards[k].addMouseListener(new MouseAdapter() {
+	
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (model.isModifiable()) {
+						if (SwingUtilities.isLeftMouseButton(e)) { // clique gauche
 							model.removeValue();
-							break;
-						default:;
+						}
 					}
 				}
-			}
-
-		});
+	
+			});
+		}
 		
 		for (int k = 0; k < candidates.length; ++k) {
-			final int n = k;
-			candidates[n].addMouseListener(new MouseAdapter() {
+			final int n = k + 1;
+			candidates[k].addMouseListener(new MouseAdapter() {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					System.out.println("clicked " + n);
 					if (model.isModifiable()) {
-						switch (e.getButton()) {
-							case MouseEvent.BUTTON1: // clique gauche
-								System.out.println("gauche");
-								model.setValue(n + 1);
-								break;
-							case MouseEvent.BUTTON3: // clique droit
-								System.out.println("droite");
-								model.toggleCandidate(n + 1);
-								break;
-							default:;
+						if (SwingUtilities.isLeftMouseButton(e)
+						&& model.isCandidate(n)) {
+							System.out.println("gauche");
+							model.setValue(n);
+						} else if (SwingUtilities.isRightMouseButton(e)) {
+							System.out.println("droite");
+							model.toggleCandidate(n);
 						}
 					}
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					candidates[n].setBackground(HOVER_COLOR);
+					candidates[n - 1].setBackground(HOVER_COLOR);
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					candidates[n].setBackground(DEFAULT_COLOR);
+					candidates[n - 1].setBackground(DEFAULT_COLOR);
 				}
 			});
 			
@@ -126,12 +152,7 @@ public class Cell extends JPanel {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if ((Integer) evt.getNewValue() != 0) {
-					value.setText(String.valueOf(model.getValue()));
-					swapToValue();
-				} else {
-					swapToCandidates();
-				}
+				cardLayout.show(Cell.this, String.valueOf(evt.getNewValue()));
 			}
 		});
 		
@@ -143,24 +164,12 @@ public class Cell extends JPanel {
 						(IndexedPropertyChangeEvent) evt;
 				int index = ievt.getIndex() - 1;
 				System.out.println("recu " + index);
-				candidates[index].setVisible(model.isCandidate(index)); // pas bon setVisible(false) ne permet pas de recliquer dessus
+				candidateDisplayables[index].setVisible(model.isCandidate(index + 1));
 				candidates[index].repaint();
 			}
 		});
 	}
 
-	private void swapToValue() {
-		((CardLayout)this.getLayout()).last(this);;
-	}
-
-	private void swapToCandidates() {
-		((CardLayout)this.getLayout()).first(this);;
-	}
-	
-	private void swap() {
-		((CardLayout)this.getLayout()).next(this);
-	}
-	
 	// TEST
 	public static void main(String[] args) {
 		class Bla {

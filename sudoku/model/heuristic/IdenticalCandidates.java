@@ -34,41 +34,7 @@ public class IdenticalCandidates extends ReportGenerator {
 		
 		
 		Map<Integer, List<List<ICoord>>> map1 = sort1(list, 0, grid.numberCandidates(), grid); 
-		/*
-		System.out.println("sort1");
-		for (Entry<Integer, List<List<ICoord>>> ent : map1.entrySet()) {
-			System.out.println(ent.getKey());
-			for(List<ICoord> list1 : ent.getValue()) {
-				for(ICoord c : list1) {
-					System.out.print("  L" + c.getRow() + "C" + c.getCol());
-				}
-				System.out.println();
-			}
-		}
-		System.out.println("fin  sort1");
-		*/
 		Map<Integer, List<Couple<Unit, List<ICoord>>>> map2 = sort2(map1, grid);
-		/*
-		System.out.println("sort2");
-		for (Entry<Integer, List<Couple<Unit, List<ICoord>>>> ent : map2.entrySet()) {
-			System.out.println(ent.getKey());
-			for (Couple<Unit, List<ICoord>> couple : ent.getValue()) {
-				if (couple.getFirst() == Unit.COL) {
-					System.out.println("  col");
-				} else if (couple.getFirst() == Unit.ROW) {
-					System.out.println("  row");
-				} else {
-					System.out.println("  sector");
-				}
-				System.out.print("  ");
-				for(ICoord c : couple.getSecond()) {
-					System.out.print("L" + c.getRow() + "C" + c.getCol() + "\n");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println("fin  sort2");
-		*/
 		
 		
 		for (int i = 2; i < grid.numberCandidates(); ++i) {
@@ -82,6 +48,7 @@ public class IdenticalCandidates extends ReportGenerator {
 				CellModel cell = grid.getCell(c);
 				String str = "Avec la regle des candidats identiques, "
 						+ "on peut supprimer les candidats ";
+
 				for (Integer j = 1; j <= cell.getCardinalCandidates(); ++j) {
 					if (cell.isCandidate(j)) {
 						res.addValue(j);
@@ -171,18 +138,7 @@ public class IdenticalCandidates extends ReportGenerator {
 					res.put(ent2.getKey(), ent2.getValue());
 				}
 			}
-		}/*
-		System.out.println("sort1 " + numberCandidates + " " + candidateValue);
-		for (Entry<Integer, List<List<ICoord>>> ent : res.entrySet()) {
-			System.out.println(ent.getKey());
-			for(List<ICoord> list3 : ent.getValue()) {
-				for(ICoord c : list3) {
-					System.out.print("  L" + c.getRow() + "C" + c.getCol());
-				}
-				System.out.println();
-			}
 		}
-		System.out.println("fin  sort1");*/
 		return res;
 	}
 	

@@ -16,11 +16,12 @@ public final class Main {
 	public static void main(String[] args) throws IOException {
 		
 		//Creation
-		SudokuModel sudo = new StdSudokuModel(new File("./grille4.txt"));;
-
+		SudokuModel sudo = new StdSudokuModel(new File("./grille1.txt"));;
+		
 		System.out.println(sudo.help());
 		sudo.resolve(sudo.getGridPlayer());
 		affiche_grille(sudo);
+		affiche_possibilite(new Coord(1,2), sudo);
 		/*
 		while (!sudo.getGridSoluce().isFull() ) {
 			sudo.resolve(sudo.getGridSoluce());
