@@ -3,10 +3,8 @@ package sudoku.model.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -14,8 +12,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import sudoku.model.CellModel;
@@ -30,10 +28,8 @@ public class Cell extends JPanel {
 	
 	private CellModel model;
 	
-	private JLabel[] displayables;	// definition d'une classe plus appropriée plus tard
-	private JLabel[] candidateDisplayables;
 	private JPanel[] cards;
-	private JPanel[] candidates;
+	private JTable candidates;
 	
 	private CardLayout cardLayout;
 	
@@ -56,16 +52,6 @@ public class Cell extends JPanel {
 	}
 	
 	private void createView() {
-		displayables = new JLabel[] {new JLabel("1"), new JLabel("2"), new JLabel("3"),
-									new JLabel("4"), new JLabel("5"), new JLabel("6"),
-									new JLabel("7"), new JLabel("8"), new JLabel("9")};
-		candidateDisplayables = new JLabel[displayables.length];
-		for (int k = 0; k < displayables.length; ++k) {
-			candidateDisplayables[k] = new JLabel(displayables[k].getText());
-			displayables[k].setFont(displayables[k].getFont().deriveFont(15.0f));
-			candidateDisplayables[k].setFont(displayables[k].getFont().deriveFont(10.0f));
-		}
-		
 		cards = new JPanel[model.getCardinalCandidates() + 1];
 		for (int k = 0; k < cards.length; ++k) {
 			cards[k] = new JPanel();
