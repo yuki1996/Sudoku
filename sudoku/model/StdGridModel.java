@@ -229,7 +229,7 @@ public class StdGridModel implements GridModel {
 		c.setValue(value);
 		for (int i = 0; i < size(); i++) {
 			for (int j = 0; j < size(); j++) {
-				if (cells()[i][j].hasValue()) {
+				if (! cells()[i][j].hasValue()) {
 					updateEasyPossibilities(new Coord(i, j));
 				}
 			}
