@@ -3,6 +3,7 @@ package sudoku.model;
 import java.io.File;
 import java.io.IOException;
 
+import sudoku.model.heuristic.RuleManager;
 import sudoku.util.Coord;
 import sudoku.util.ICoord;
 import util.Contract;
@@ -16,23 +17,22 @@ public final class Main {
 	public static void main(String[] args) throws IOException {
 		
 		//Creation
-		SudokuModel sudo = new StdSudokuModel(new File("./grille1.txt"));;
-		
+		SudokuModel sudo = new StdSudokuModel(new File("./grille1.txt"));
+
+		affiche_grille(sudo);
+		/*
 		System.out.println(sudo.help());
 		sudo.resolve(sudo.getGridPlayer());
 		affiche_grille(sudo);
 		affiche_possibilite(new Coord(1,2), sudo);
-		/*
-		while (!sudo.getGridSoluce().isFull() ) {
-			sudo.resolve(sudo.getGridSoluce());
-		}
-		
-		while (!sudo.getGridPlayer().isFull() ) {
+		*/
+		/*while (!sudo.getGridPlayer().isFull() ) {
 			System.out.println(sudo.help());
-			sudo.resolve(sudo.getGridPlayer());
+			sudo.resolve();
 			affiche_grille(sudo);
-		}
-		System.out.println(sudo.isWin() ? "gagné" : "perdu");*/
+		}*/
+		System.out.println(sudo.isWin() ? "gagné\n" : "perdu\n");
+		
 	}
 
 	//OUTILS

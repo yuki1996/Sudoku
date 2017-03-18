@@ -32,7 +32,7 @@ public class StdSudokuModel implements SudokuModel {
 	
 	private GridModel gridPlayer;
 	private GridModel gridSoluce;
-	
+	private RuleManager ruleManager; 
 	private History<Command> history;
 
 	//CONSTRUCTEUR
@@ -40,6 +40,7 @@ public class StdSudokuModel implements SudokuModel {
 		Contract.checkCondition(width > 0 && height > 0);
 		gridPlayer = new StdGridModel(width, height);
 		gridSoluce = new StdGridModel(width, height);
+		ruleManager = new RuleManager(gridPlayer);
 		history = new StdHistory<Command>(HISTORY_SIZE);
 	}
 	
@@ -53,29 +54,27 @@ public class StdSudokuModel implements SudokuModel {
 			
 			gridSoluce = new StdGridModel(width, height);
 			gridPlayer = new StdGridModel(width, height);
+
+			ruleManager = new RuleManager(gridPlayer);
+			history = new StdHistory<Command>(HISTORY_SIZE);
 			for (int k = 0; k < width * height; ++k) {
 				line = fr.readLine();
 				tokens = line.split(SEPARATOR);
-				CellModel[] gridPlayerLine = gridPlayer.cells()[k];
 				for (int j = 0; j < width * height; ++j) {
 					int value = Integer.parseInt(tokens[j]);
-					CellModel gridPlayerCell = gridPlayerLine[j];
-					if (value == 0){
-						gridPlayerCell.reset();
-					} else {
-						gridPlayerCell.setValue(value);
+					CellModel gridPlayerCell = gridPlayer.cells()[k][j];
+					if (value != 0){
+						new AddValue(gridPlayer, gridPlayerCell, value).act();
 						gridPlayerCell.setModifiable(false);
 					}
 				}
 			}
-			for (int i = 0; i < gridPlayer.size(); i++) {
-				for (int j = 0; j < gridPlayer.size(); j++) {
-					if (gridPlayer.cells()[i][j].hasValue()) {
-						updateEasyPossibilities(new Coord(i, j));
-					}
-				}
-			}
 			gridSoluce = (StdGridModel) gridPlayer.clone();
+			RuleManager rm = new RuleManager(gridSoluce);
+			while (!gridSoluce.isFull()) {
+				rm.findRule();
+				rm.generateCommand().act();
+			}
 		} finally {
 			fr.close();
 		}
@@ -120,7 +119,7 @@ public class StdSudokuModel implements SudokuModel {
 			for (int j = 0 ; j < tabPlayer[i].length; j++) {
 				if (tabPlayer[i][j].getValue() != 0) {
 					if (tabPlayer[i][j].getValue() != tabSoluce[i][j].getValue()) {
-						list.add(new Coord(i,j));
+						list.add(new Coord(i, j));
 					}
 				}
 			}
@@ -135,27 +134,12 @@ public class StdSudokuModel implements SudokuModel {
 	}
 
 	public String help() {
-		RuleManager rm = new RuleManager(gridPlayer);
-		rm.findRule();
-		return rm.describe();
+		ruleManager.findRule();
+		return ruleManager.describe();
 	}
 
 
 	//COMMANDES
-	public void updateEasyPossibilities(ICoord c) {
-		Contract.checkCondition(c != null);
-		Contract.checkCondition(isValidCoord(c));
-		Contract.checkCondition(getGridPlayer().getCell(c).getValue() > 0);
-		int n = getGridPlayer().getCell(c).getValue();
-		Set<ICoord> set = getGridPlayer().getUnitCoords(c);
-		for (ICoord coord : set) {
-			if (getGridPlayer().getCell(coord).isModifiable()) {
-				getGridPlayer().getCell(coord).removeCandidate(n);
-			}
-		}
-		
-	}
-
 	public void setValue(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && n > 0
@@ -169,14 +153,14 @@ public class StdSudokuModel implements SudokuModel {
 		history.add(new RemoveValue(gridPlayer, c));
 	}
 
-	public void addPossibility(ICoord c, int n) {
+	public void addCandidate(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
 		history.add(new AddCandidate(gridPlayer, c, n));
 	}
 
-	public void removePossibility(ICoord c, int n) {
+	public void removeCandidate(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
@@ -189,11 +173,9 @@ public class StdSudokuModel implements SudokuModel {
 
 
 	@Override
-	public void resolve(GridModel g) {
-		Contract.checkCondition(g != null);
-		RuleManager rm = new RuleManager(g);
-		rm.findRule();
-		rm.getCommand().act();;
+	public void resolve() {
+		ruleManager.findRule();
+		ruleManager.generateCommand().act();;
 	}
 
 	public void reset() {

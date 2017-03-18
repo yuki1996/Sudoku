@@ -16,150 +16,121 @@ public class RulePairTriplet extends ReportGenerator {
 	protected Report generate(GridModel grid) {
 		Contract.checkCondition(grid != null);
 		CellModel [][] tabC = grid.cells();
-		CellModel c;
-		Object[][] tab = new Object[grid.numberCandidates()][3];
-		//on regarde région par ligne
+		Contract.checkCondition(tabC != null);
+		boolean existRow = false;
+		boolean existCol = false;
+		int row = -1;
+		int col = -1;
+		Set<ICoord> decisiveCellsRow = new HashSet<ICoord>();
+		Set<ICoord> decisiveCellsCol = new HashSet<ICoord>();
+		String s = "";
+		
 		int nbSW = grid.getNumberSectorByWidth();
-		for (int i = 0; i < grid.getWidthSector(); i++) {
-			for (int k = 0; k < grid.numberCandidates(); k++) {
-				tab[k][0] = false;
-				tab[k][1] = new HashSet<ICoord>();
-				tab[k][2] = -1;
-			}
-			for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
-				for (int j = 0; j < grid.size(); j++) {
-					c = tabC[m][j];
-					//cellule modifiable sans valeur
-					if (c.isModifiable() && ! c.hasValue()) {
-						//parcourt tableau des candidats de la cellule
-						for (int k = 0; k < grid.numberCandidates(); k++) {
-							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-							if (c.isCandidate(k)&& !(Boolean)tab[k][0]) {
-								tab[k][0] = true;
-								((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
-								tab[k][2] = m;
-							}
-							if (c.isCandidate(k) && (Boolean)tab[k][0] && tab[k][1] != null) {
-								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même ligne
-								if (m == ((Integer) tab[k][2])) {
-									((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
-								} else {
-									//le candidat existe dans la cellule et qu'il est déjà apparu mais dans une autre ligne
-									tab[k][1] = null;
-								}
-							}
-						}
-					}
-				}
-			}
-			// A la fin de chaque bloc région on regarde si on a candidat unique dans la région
-			for (int k = 0; k < grid.numberCandidates(); k++) {
-				//le candidat n'est présent que sur une ligne 
-				if ((Boolean) tab[k][0] && tab[k][1] != null && ((Set<ICoord>) tab[k][1]).size() > 1) {
-					RemoveCandidateReport r = new RemoveCandidateReport(grid);
-					int value = k + 1;
-					r.addValue(value);
-					for (ICoord coord : (Set<ICoord>) tab[k][1]) {
-						System.out.println("case("+coord.getRow()+","+coord.getCol()+")");
-						r.addCell(CellSetName.DECISIVE_CELLS, coord);
-						for(ICoord cd : grid.getSectorCoord(coord.getRow(), coord.getCol())) {
-							r.addCell(CellSetName.DECISIVE_UNITS, cd);
-						}
-					}
-					for (int j = 0; j < grid.size(); j++) {
-						ICoord coord = new Coord((Integer) tab[k][2], j);
-						if (grid.getCell(coord).isCandidate(value - 1) && grid.getCell(coord).isModifiable() 
-								&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
-							System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ value);
-							r.addCell(CellSetName.DELETION_CELLS, coord);
-						} else {
-							r.addCell(CellSetName.DELETION_UNITS, coord);
-						}
-					}
-					if (r.getCellSet(CellSetName.DELETION_CELLS).size() == 0) {
-						r = null;
-						break;
-					}
-					String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
-					s += value + " alignés dans cette région, donnent la possibilité de" 
-							+ " supprimer les " + value + " dans les autres régions de cette ligne.";
-					r.setDescription(s);
-					return r;
-				}
-			}
-		}
-
-		//on regarde région par colonne
 		int nbSH = grid.getNumberSectorByHeight();
-		for (int j = 0; j < grid.getHeightSector(); j++) {
-			for (int k = 0; k < grid.numberCandidates(); k++) {
-				tab[k][0] = false;
-				tab[k][1] = new HashSet<CellModel>();
-				tab[k][2] = -1;
-			}
-			for (int m = j * nbSH; m < grid.getWidthSector() * (j + 1); m++) {
-
-				for (int i = 0; i < grid.size(); i++) {
-					c = tabC[i][m];
-					//cellule modifiable sans valeur
-					if (c.isModifiable() && ! c.hasValue()) {
-						//parcourt tableau des candidats de la cellule
-						for (int k = 0; k < grid.numberCandidates(); k++) {
-							//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-							if (c.isCandidate(k) && !(Boolean)tab[k][0]) {
-								tab[k][0] = true;
-								((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
-								tab[k][2] = m;
-							}
-							if (c.isCandidate(k) && (Boolean)tab[k][0] && tab[k][1] != null) {
-								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même colonne
-								if (m == ((Integer) tab[k][2])) {
-									((Set<ICoord>) tab[k][1]).add(new Coord(m, j));
-								} else {
-									//le candidat existe dans la cellule et qu'il est déjà apparu mais dans une autre colonne
-									tab[k][1] = null;
+		for (int k = 1; k <= grid.numberCandidates(); k++) {
+			//on regarde région par région
+			for (int i = 0; i < grid.getWidthSector(); i++) {
+				for (int j = 0; j < grid.getHeightSector(); j++) {
+					for (int m = i * nbSW; m < grid.getHeightSector() * (i + 1); m++) {
+						for (int n = j * nbSH; n < grid.getWidthSector() * (j + 1); n++) {
+							if (!tabC[m][n].hasValue()) {
+								if (tabC[m][n].isCandidate(k)) {
+									if (!existRow) {
+										existRow = true;
+										row = m;
+									}
+									if (existRow) {
+										if (row != m) {
+											row = -1;
+											decisiveCellsRow.clear();
+										} else {
+											decisiveCellsRow.add(new Coord(m, n));
+										}
+									}
+									
+									if (!existCol) {
+										existCol = true;
+										col = n;
+									}
+									if (existCol) {
+										if (col != n) {
+											col = -1;
+											decisiveCellsCol.clear();
+										} else {
+											decisiveCellsCol.add(new Coord(m, n));
+										}
+									}
 								}
 							}
 						}
 					}
-				}
-			}
-			// A la fin de chaque bloc région on regarde si on a candidat unique dans la colonne
-			for (int k = 0; k < grid.numberCandidates(); k++) {
-				//le candidat n'est présent que sur une ligne 
-				if ((Boolean) tab[k][0] && tab[k][1] != null && ((Set<ICoord>) tab[k][1]).size() > 1) {
-					RemoveCandidateReport r = new RemoveCandidateReport(grid);
-					int value = k + 1;
-					r.addValue(value);
-					for (ICoord coord : (Set<ICoord>) tab[k][1]) {
-						System.out.println("case("+coord.getRow()+","+coord.getCol()+")");
-						r.addCell(CellSetName.DECISIVE_CELLS, coord);
-						for(ICoord cd : grid.getSectorCoord(coord.getRow(), coord.getCol())) {
-							r.addCell(CellSetName.DECISIVE_UNITS, cd);
-						}
-					}
-					for (int i = 0; i < grid.size(); i++) {
-						ICoord coord = new Coord(i, (Integer) tab[k][2]);
-						if (grid.getCell(coord).isCandidate(value - 1) && grid.getCell(coord).isModifiable()
-								&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
-							System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ value);
-							r.addCell(CellSetName.DELETION_CELLS, coord);
-						} else {
-							r.addCell(CellSetName.DELETION_UNITS, coord);
-						}
-					}
+					if ((row != -1 && decisiveCellsRow.size() > 1) || (col != -1  && decisiveCellsCol.size() > 1)) {
+						RemoveCandidateReport r = new RemoveCandidateReport(grid);
+						r.addValue(k);
+						if (row != -1) {
+							for (ICoord coord : decisiveCellsRow) {
+								r.addCell(CellSetName.DECISIVE_CELLS, coord);
+								//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ": "+ k);
+								
+								for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
+									r.addCell(CellSetName.DECISIVE_UNITS, cd);
+								}
+							}
+							for (int l = 0; l < grid.size(); l++) {
+								ICoord coord = new Coord(row, l);
+								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
+										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
+									r.addCell(CellSetName.DELETION_CELLS, coord);
+									//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ k);
+									
+								} else {
+									r.addCell(CellSetName.DELETION_UNITS, coord);
+								}
+							}
 
-					if (r.getCellSet(CellSetName.DELETION_CELLS).size() == 0) {
-						r = null;
-						break;
+							s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+							s += k + " alignés dans cette région, donnent la possibilité de" 
+									+ " supprimer les " + k + " dans les autres régions de cette ligne.";
+						} else {
+							for (ICoord coord : decisiveCellsCol) {
+								r.addCell(CellSetName.DECISIVE_CELLS, coord);
+								//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") : "+ k);
+								
+								for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
+									r.addCell(CellSetName.DECISIVE_UNITS, cd);
+								}
+							}
+							for (int l = 0; l < grid.size(); l++) {
+								ICoord coord = new Coord(l, col);
+								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
+										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
+									r.addCell(CellSetName.DELETION_CELLS, coord);
+									//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ k);
+									
+								} else {
+									r.addCell(CellSetName.DELETION_UNITS, coord);
+								}
+							}
+
+							s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+							s += k + " alignés dans cette région, donnent la possibilité de" 
+									+ " supprimer les " + k + " dans les autres régions de cette colonne.";
+						}
+						
+
+						if (r.getCellSet(CellSetName.DELETION_CELLS).size() == 0) {
+							r = null;
+							break;
+						}
+						r.setDescription(s);
+						return r;
 					}
-					String s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
-					s += value + " alignés dans cette région, donnent la possibilité de" 
-							+ " supprimer les " + value + " dans les autres régions de cette colonne.";
-					r.setDescription(s);
-					return r;
-					
-					
+					existRow = false;
+					existCol = false;
+					row = -1;
+					col = -1;
+					decisiveCellsRow.clear();
+					decisiveCellsCol.clear();
 				}
 			}
 		}

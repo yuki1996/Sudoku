@@ -15,7 +15,7 @@ public class CommandSet extends AbstractCommand {
 	public CommandSet(GridModel grid, Set<Command> commandSet) {
 		super(grid);
 		Contract.checkCondition(commandSet != null, "report est null");
-		actions = new HashSet<Command>();
+		actions = commandSet;
 	}
 	
 	@Override
