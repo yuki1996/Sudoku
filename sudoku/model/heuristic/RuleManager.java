@@ -2,6 +2,7 @@ package sudoku.model.heuristic;
 
 import sudoku.model.GridModel;
 import sudoku.model.history.cmd.Command;
+import sudoku.util.ICoord;
 import util.Contract;
 
 public class RuleManager {

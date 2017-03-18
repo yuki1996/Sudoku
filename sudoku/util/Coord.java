@@ -9,7 +9,7 @@ public final class Coord implements ICoord {
 
     // CONSTRUCTEURS
     
-    public Coord( int r,int c) {
+    public Coord(int r, int c) {
         row = r;
         col = c;
     }
