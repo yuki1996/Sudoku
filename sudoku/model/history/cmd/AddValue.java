@@ -26,7 +26,7 @@ public class AddValue extends AbstractCommand {
 		this.cell = cell;
 		this.value = value;
 		sideEffects = new HashSet<Command>();
-		for (CellModel c : grid.getUnitCells(grid.getCoord(cell))) {
+		for (ICoord c : grid.getUnitCoords(grid.getCoord(cell))) {
 			sideEffects.add(new RemoveCandidate(grid, c, value));
 		}
 	}
