@@ -11,8 +11,7 @@ enum Rule {
 	
 	INTERACTION_BETWEEN_SECTORS(new RuleInteractionBetweenSector()),
 	
-	IDENTICAL_CANDIDATES(new RuleIdenticalCandidates()),
-	
+	IDENTICAL_CANDIDATES(new IdenticalCandidates()),
 	
 	ISOLATED_GROUPS(null),
 	
@@ -46,9 +45,7 @@ enum Rule {
 	
 	CHAINED_FORCED_CANDIDATE(null),
 	
-	NISHIO(null),
-	
-	BRUTE_FORCE(null);
+	NISHIO(null);
 	
 	private ReportGenerator myGenerator;
 	
