@@ -13,11 +13,11 @@ enum Rule {
 	
 	IDENTICAL_CANDIDATES(new IdenticalCandidates()),
 	
+	X_WING(new RuleXWing()),
+	
 	ISOLATED_GROUPS(null),
 	
 	MIXED_GROUPS(null),
-	
-	X_WING(null),
 	
 	XY_WING(null),
 	
