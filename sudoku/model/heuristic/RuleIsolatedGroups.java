@@ -10,26 +10,22 @@ import sudoku.util.Couple;
 import sudoku.util.ICoord;
 
 public class RuleIsolatedGroups extends ReportGenerator {
-	private long timer;
 	//COMMANDES
 	@Override
 	protected Report generate(GridModel grid) {
 		Report res;
-		System.out.println("col");
 		for (int i = 0; i < grid.size(); ++i) {
 			res = getReport(grid, grid.getCol(i));
 			if (res != null) {
 				return res;
 			}
 		}
-		System.out.println("row");
 		for (int i = 0; i < grid.size(); ++i) {
 			res = getReport(grid, grid.getRow(i));
 			if (res != null) {
 				return res;
 			}
 		}
-		System.out.println("sector");
 		for (int i = 0; i < grid.getNumberSectorByWidth(); ++i) {
 			for (int j = 0; j < grid.getNumberSectorByHeight(); ++j) {
 				res = getReport(grid, grid.getSector(i, j));
@@ -44,9 +40,6 @@ public class RuleIsolatedGroups extends ReportGenerator {
 	//OUTILS
 	private Report getReport(GridModel grid, Set<ICoord> Unit) {
 		Set<Integer> candidates = new HashSet<Integer>();
-		System.out.println(new Long((System.nanoTime()- timer) / 1000000).toString());
-		timer = System.nanoTime();
-		System.out.println("fait");
 		for(int i = 1; i <= grid.size(); ++i) {
 			candidates.add(i);
 		}
