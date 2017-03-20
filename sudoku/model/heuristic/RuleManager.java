@@ -22,21 +22,27 @@ public class RuleManager {
   //REQUETES
   
   public String describe() {
-	  return lastReport.describe();
+	  return lastReport != null ? lastReport.describe() : null;
   }
 
   public Command generateCommand() {
-	  Report r = lastReport;
-	  lastReport = null;
-	  return r.generateCommand();
+	  if (lastReport != null) {
+		  Report r = lastReport;
+		  lastReport = null;
+		  return r.generateCommand();
+	  }
+	  return null;
   }
   
   //COMMANDES
   
   public void findRule() {
-	for (int i = 0 ; i < Rule.values().length && lastReport == null; i++) {
-		lastReport = Rule.values()[i].getGenerator().generate(grid);
-	}
+		lastReport = null;
+		for (int i = 0 ; i < Rule.values().length && lastReport == null; i++) {
+			if (Rule.values()[i].getGenerator() != null) {
+				lastReport = Rule.values()[i].getGenerator().generate(grid);
+			}
+		}
   }
   
 

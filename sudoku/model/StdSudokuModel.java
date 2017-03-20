@@ -73,7 +73,12 @@ public class StdSudokuModel implements SudokuModel {
 			RuleManager rm = new RuleManager(gridSoluce);
 			while (!gridSoluce.isFull()) {
 				rm.findRule();
-				rm.generateCommand().act();
+				Command r = rm.generateCommand();
+				if (r != null) {
+					r.act();
+				} else {
+					rm.backtracking();
+				}
 			}
 		} finally {
 			fr.close();
