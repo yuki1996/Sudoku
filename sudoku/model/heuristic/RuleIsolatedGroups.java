@@ -39,6 +39,10 @@ public class RuleIsolatedGroups extends ReportGenerator {
 	}
 	
 	//OUTILS
+	/*
+	 * Renvoie un rapport pour la régle groupe isolé pour l'unité unit de grid ou null s'il on ne peut pas
+	 * en trouver.
+	 */
 	private Report getReport(GridModel grid, Set<ICoord> unit) {
 		int novalueCellNb = 0;
 		List<ICoord> listArg = new ArrayList<ICoord>();
@@ -89,7 +93,12 @@ public class RuleIsolatedGroups extends ReportGenerator {
 		return res;
 	}
 	
-	
+	/*
+	 * Renvoie un couple d'un ensemble de candidat et d'une liste de coordonnées tel que chaques cellules de g
+	 * qui sont désigné par une coordonnée de la liste ne possédent que des candidats contenu dans l'ensemble 
+	 * de candidats et qu'il y ai autant de coordonnées dans la liste qu'il n'y a de candidats dans l'ensemble
+	 * De plus, la liste et l'ensemble ont une taille strictement inférieure a novalueCellNb.
+	 */
 	private Couple<Set<Integer>, List<ICoord>> getValidIsolatedGroup(GridModel g, Set<Integer> set, 
 			List<ICoord> l, List<ICoord> lres, int novalueCellNb, List<ICoord> lrest) {
 		int setSize = set.size();
