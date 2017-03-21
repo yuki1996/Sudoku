@@ -2,6 +2,8 @@ package sudoku.model.heuristic;
 
 enum Rule {
 	
+	ISOLATED_GROUPS(new RuleIsolatedGroups()),
+	
 	ONE_CANDIDATE(new RuleOneCandidate()),
 	
 	ONLY_CANDIDATE(new RuleOnlyCandidate()),
@@ -11,8 +13,6 @@ enum Rule {
 	INTERACTION_BETWEEN_SECTORS(null),
 	
 	IDENTICAL_CANDIDATES(new IdenticalCandidates()),
-	
-	ISOLATED_GROUPS(new RuleIsolatedGroups()),
 	
 	MIXED_GROUPS(null),
 	

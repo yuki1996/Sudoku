@@ -95,7 +95,7 @@ public class IdenticalCandidates extends ReportGenerator {
 					res.setCellSet(CellSetName.DELETION_UNITS, unit);
 					res.setCellSet(CellSetName.DELETION_CELLS, changedCells);
 					
-					str += ".\nOn peut donc retirer ces candidats des cellules autres cellules " + unitStr + ":";
+					str += ".\nOn peut donc retirer ces candidats des autres cellules " + unitStr + ":";
 					for (ICoord coord : changedCells) {
 						if (! grid.getCell(coord).hasValue()) {
 							str += " L" + coord.getRow() + "C" + coord.getCol();
