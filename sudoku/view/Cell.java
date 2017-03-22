@@ -3,8 +3,10 @@ package sudoku.model.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
@@ -12,13 +14,14 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import sudoku.model.CellModel;
 import sudoku.model.StdCellModel;
 
+// A SUPPRIMER
 public class Cell extends JPanel {
 	
 	// ATTRIBUTS
@@ -29,7 +32,10 @@ public class Cell extends JPanel {
 	private CellModel model;
 	
 	private JPanel[] cards;
-	private JTable candidates;
+	private JPanel[] candidates;
+	
+	private JLabel[] displayables;
+	private JLabel[] candidateDisplayables;
 	
 	private CardLayout cardLayout;
 	
@@ -52,6 +58,15 @@ public class Cell extends JPanel {
 	}
 	
 	private void createView() {
+		displayables = new JLabel[9];
+		candidateDisplayables = new JLabel[9];
+		for (int k = 0; k < displayables.length; ++k) {
+			displayables[k] = new JLabel(String.valueOf(k + 1));
+			displayables[k].setFont(new Font("Verdana", Font.BOLD, 30));
+			candidateDisplayables[k] = new JLabel(String.valueOf(k + 1));
+			candidateDisplayables[k].setFont(new Font("Verdana", Font.BOLD, 10));
+		}
+		
 		cards = new JPanel[model.getCardinalCandidates() + 1];
 		for (int k = 0; k < cards.length; ++k) {
 			cards[k] = new JPanel();
@@ -87,13 +102,13 @@ public class Cell extends JPanel {
 	
 	private void createController() {
 
-		for (int k = 0; k < candidates.length; ++k) {
+		for (int k = 1; k < cards.length; ++k) {
 			cards[k].addMouseListener(new MouseAdapter() {
 	
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (model.isModifiable()) {
-						if (SwingUtilities.isLeftMouseButton(e)) { // clique gauche
+						if (SwingUtilities.isLeftMouseButton(e)) {
 							model.removeValue();
 						}
 					}
