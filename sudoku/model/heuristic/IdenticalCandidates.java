@@ -1,10 +1,8 @@
 package sudoku.model.heuristic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import sudoku.model.CellModel;
@@ -23,6 +21,8 @@ public class IdenticalCandidates extends ReportGenerator {
 		Contract.checkCondition(grid != null);
 		CellModel [][] tab = grid.cells();
 		Contract.checkCondition(tab != null);
+		
+		// on met toutes les cellules n'ayant pas de valeur dans list
 		List<ICoord> list = new ArrayList<ICoord>();
 		for (int i = 0; i < tab.length; ++i) {
 			for (int j = 0; j < tab.length; ++j) {
@@ -33,69 +33,78 @@ public class IdenticalCandidates extends ReportGenerator {
 		}
 		
 		
-		Map<Integer, List<List<ICoord>>> map1 = sort1(list, 0, grid.numberCandidates(), grid); 
-		Map<Integer, List<Couple<Unit, List<ICoord>>>> map2 = sort2(map1, grid);
+		List<List<ICoord>> []tab1 = sort1(list, 0, grid.numberCandidates(), grid);
 		
-		
-		for (Entry<Integer, List<Couple<Unit, List<ICoord>>>> ent : map2.entrySet()) {
-			System.out.println(ent.getKey() + "\n");
-			for (Couple<Unit, List<ICoord>> couple : ent.getValue()) {
-				if (couple.getFirst() == Unit.COL) {
-					System.out.println("  col");
-				} else if (couple.getFirst() == Unit.ROW) {
-					System.out.println("  row");
-				} else {
-					System.out.println("  sector");
-				}
-				System.out.print("  ");
-				for(ICoord c : couple.getSecond()) {
-					System.out.print("L" + c.getRow() + "C" + c.getCol() + "\n");
-				}
-			}
-			System.out.println();
-		}
-		
-		
+		List<Couple<Unit, List<ICoord>>> []tab2 = sort2(tab1, grid);
 		
 		
 		for (int i = 2; i < grid.numberCandidates(); ++i) {
-			List<Couple<Unit, List<ICoord>>> listCouple = map2.get(i);
-			if (listCouple.size() > 0) {
-				Couple<Unit, List<ICoord>> couple = listCouple.get(0);
-				RemoveCandidateReport res = new RemoveCandidateReport(grid);
-				
+			for (Couple<Unit, List<ICoord>> couple : tab2[i]) {
 				//candidats a supprimé
 				ICoord c = couple.getSecond().get(0);
 				CellModel cell = grid.getCell(c);
-				String str = "Avec la regle des candidats identiques, "
-						+ "on peut supprimer les candidats ";
-				for (Integer j = 1; j < cell.getCardinalCandidates(); ++j) {
+				Set<Integer> Candidates = new HashSet<Integer>();
+				for (Integer j = 1; j <= cell.getCardinalCandidates(); ++j) {
 					if (cell.isCandidate(j)) {
-						res.addValue(j);
-						str += j.toString() + " ";
+						Candidates.add(j);
+					}
+				}
+				Set<ICoord> unit;
+				String unitStr;
+				if (couple.getFirst() == Unit.COL) {
+					unit = grid.getCol(c);
+					unitStr = "de la colonne";
+				} else if (couple.getFirst() == Unit.ROW) {
+					unit = grid.getRow(c);
+					unitStr = "de la ligne";
+				} else {
+					unit = grid.getSector(c);
+					unitStr = "du secteur";
+				}
+				
+				Set<ICoord> possiblyChangedCells = unit;
+				possiblyChangedCells.removeAll(couple.getSecond());
+				Set<ICoord> changedCells = new HashSet<ICoord>();
+				
+				// On verifie qu'il y a un candidat a suprimer dans une cellule sans valeur 
+				boolean test = false;
+				for (ICoord c1 : possiblyChangedCells) {
+					if (! grid.getCell(c1).hasValue()) {
+						CellModel cell1 = grid.getCell(c1);
+						for (Integer j : Candidates) {
+							if (cell1.isCandidate(j)) {
+								changedCells.add(c1);
+								test = true;
+							}
+						}
 					}
 				}
 				
-				
-				Set<ICoord> sector;
-				if (couple.getFirst() == Unit.COL) {
-					sector = grid.getCol(c);
-				} else if (couple.getFirst() == Unit.ROW) {
-					sector = grid.getRow(c);
-				} else {
-					sector = grid.getSector(c);
+				if (test) {
+					RemoveCandidateReport res = new RemoveCandidateReport(grid);
+					
+					String str = "Les cellules";
+					for (ICoord coord : couple.getSecond()) {
+						str += " L" + coord.getRow() + "C" + coord.getCol();
+					}
+					str += " ont et ont uniquement les candidats";
+					for (Integer j : Candidates) {
+						res.addValue(j);
+						str += " " + j.toString();
+					}
+					res.setCellSet(CellSetName.DELETION_UNITS, unit);
+					res.setCellSet(CellSetName.DELETION_CELLS, changedCells);
+					
+					str += ".\nOn peut donc retirer ces candidats des autres cellules " + unitStr + ":";
+					for (ICoord coord : changedCells) {
+						if (! grid.getCell(coord).hasValue()) {
+							str += " L" + coord.getRow() + "C" + coord.getCol();
+						}
+					}
+					str += ".";
+					res.setDescription(str);
+					return res;
 				}
-				res.setCellSet(CellSetName.DELETION_UNITS, sector);
-				sector.removeAll(couple.getSecond());
-				res.setCellSet(CellSetName.DELETION_CELLS, sector);
-				
-				str += "des cellules";
-				for (ICoord coord : sector) {
-					str += " L" + coord.getRow() + "C" + coord.getCol();
-				}
-				str += ".";
-				res.setDescription(str);
-				return res;
 			}
 		}
 		
@@ -104,22 +113,19 @@ public class IdenticalCandidates extends ReportGenerator {
 	
 	//OUTILS
 	/**
-	 * Renvoie une map tel que les clés soit le nombre de candidats des cellules de g 
-	 * pointées par les coordonnées des listes de liste. Toutes les cordonnées d'une 
-	 * liste ont exactement les meme candidats.
+	 * Renvoie un tableau où les coordonnées d'une liste ont les même candidats exactement
+	 * et où les coordonnnées de la liste de liste d'indice i ont i candidats.
 	 */
-	private Map<Integer, List<List<ICoord>>> sort1(List<ICoord> list, 
+	@SuppressWarnings("unchecked")
+	private List<List<ICoord>>[] sort1(List<ICoord> list, 
 			int numberCandidates, int candidateValue, GridModel g) {
 		if (candidateValue == 0) {
-			Map<Integer, List<List<ICoord>>> res = new HashMap<Integer, 
-					List<List<ICoord>>>();
-			List<List<ICoord>> listList = new ArrayList<List<ICoord>>();
-			listList.add(list);
-			res.put(numberCandidates, listList);
+			List<List<ICoord>> []res = new List[g.numberCandidates() + 1];
+			res[numberCandidates] =  new ArrayList<List<ICoord>>();
+			res[numberCandidates].add(list);
 			return res;
 		}
-		Map<Integer, List<List<ICoord>>> res = new HashMap<Integer, 
-				List<List<ICoord>>>();
+		List<List<ICoord>> []res = new List[g.numberCandidates() + 1];
 		List<ICoord> list1 = new ArrayList<ICoord>();
 		List<ICoord> list2 = new ArrayList<ICoord>();
 		for (ICoord c : list) {
@@ -129,97 +135,114 @@ public class IdenticalCandidates extends ReportGenerator {
 				list2.add(c);
 			}
 		}
+		
 		if (! list1.isEmpty()) {
-			res.putAll(sort1(list1, numberCandidates + 1, candidateValue - 1, g));
+			List<List<ICoord>> []res1 = sort1(list1, numberCandidates + 1, candidateValue - 1, g);
+			
+			for (int i = 0; i < res.length; ++i) {
+				if (res[i] != null) {
+					if (res1[i] != null) {
+						res[i].addAll(res1[i]);
+					}
+				} else {
+					res[i] =res1[i];
+				}
+			}
+			
 		}
+		
 		if (! list2.isEmpty()) {
-			res.putAll(sort1(list2, numberCandidates, candidateValue - 1, g));
+			List<List<ICoord>> []res2 = sort1(list2, numberCandidates, candidateValue - 1, g);
+			for (int i = 0; i < res.length; ++i) {
+				if (res[i] != null) {
+					if (res2[i] != null) {
+						res[i].addAll(res2[i]);
+					}
+				} else {
+					res[i] = res2[i];
+				}
+			}
 		}
+		
 		return res;
 	}
 	
 	/**
-	 * renvoie une map tel que les clés soit le nombre de candidats des cellules de g 
-	 * pointées par les coordonnées des listes de listes. Toutes les coordonnées d'une 
-	 * liste ont exactement les meme candidats, font parties d'une meme unité et la 
-	 * taille de la liste est egale au nombre de candidats des cellules que pointent 
-	 * les coordonnées qu'il contient.
+	 * Renvoie un tableau tel que la liste d'indice i soit composé de couple dont un 
+	 * élément est une liste de i coordonnées tel que ces coordonnées aient i candidats 
+	 * et aient les même candidats que les autres cellules de la liste et fassent partie 
+	 * de la même unité dans g et l'autre élément du couple est de type Unit est représente
+	 * le type de l'unité dont les cellules de la liste font toutes partie.
 	 */
-	private Map<Integer, List<Couple<Unit, List<ICoord>>>> sort2(Map<Integer, List<List<ICoord>>> map, 
+	private List<Couple<Unit, List<ICoord>>>[] sort2(List<List<ICoord>>[] tab, 
 			GridModel g) {
-		Map<Integer, List<Couple<Unit, List<ICoord>>>> res = 
-				new HashMap<Integer, List<Couple<Unit, List<ICoord>>>>();
+		@SuppressWarnings("unchecked")
+		List<Couple<Unit, List<ICoord>>>[] res = new List[g.numberCandidates() + 1];
 		for (int i = 1; i <= g.numberCandidates(); ++i) {
-			List<List<ICoord>> listList = map.get(i);
-			List<Couple<Unit, List<ICoord>>> listCouple = new ArrayList<Couple<Unit, List<ICoord>>>();
-			if (listList != null) {
-				for (List<ICoord> list : listList) {
-					//L'integer est le numero de l'unit
-					Map<Integer, List<ICoord>> mapUnit = new HashMap<Integer, 
-							List<ICoord>>();
+
+			res[i] = new ArrayList<Couple<Unit, List<ICoord>>>(); //listCouple
+			if (tab[i] != null) {
+				for (List<ICoord> list : tab[i]) {
+					//L'indice est le numero de l'unit dans la grille
+					@SuppressWarnings("unchecked")
+					List<ICoord>[] tabUnit = new List[g.size()];
 					
 
 					//coordonnées par ligne
 					for (int j = 0; j < g.size(); ++j) {
-						mapUnit.put(j, new ArrayList<ICoord>());
+						tabUnit[j] = new ArrayList<ICoord>();
 					}
 					for (ICoord c : list) {
-						mapUnit.get(c.getRow()).add(c);
+						tabUnit[c.getRow()].add(c);
 					}
 					
 					for (int j = 0; j < g.size(); ++j) {
-						List<ICoord> l = mapUnit.get(j);
-						if (l != null) {
+						if (tabUnit[j] != null) {
 							int nbCellWithoutValueOnUnit = 0;
 							for (ICoord c : g.getRow(j)) {
 								if (! g.getCell(c).hasValue()) {
 									++nbCellWithoutValueOnUnit;
 								}
 							}
-							if (l.size() == i && l.size() < nbCellWithoutValueOnUnit) {
-								listCouple.add(new Couple<Unit, List<ICoord>>(Unit.ROW,l));
+							if (tabUnit[j].size() == i && tabUnit[j].size() < nbCellWithoutValueOnUnit) {
+								res[i].add(new Couple<Unit, List<ICoord>>(Unit.ROW, tabUnit[j]));
 							}
 						}
 					}
 					
 					//coordonnées par colonne
 					for (int j = 0; j < g.size(); ++j) {
-						mapUnit.put(j, new ArrayList<ICoord>());
+						tabUnit[j] = new ArrayList<ICoord>();
 					}
 					for (ICoord c : list) {
-						mapUnit.get(c.getCol()).add(c);
+						tabUnit[c.getCol()].add(c);
 					}
 					
 					for (int j = 0; j < g.size(); ++j) {
-						List<ICoord> l = mapUnit.get(j);
-						if (l != null) {
+						if (tabUnit[j] != null) {
 							int nbCellWithoutValueOnUnit = 0;
 							for (ICoord c : g.getCol(j)) {
 								if (! g.getCell(c).hasValue()) {
 									++nbCellWithoutValueOnUnit;
 								}
 							}
-							if (l.size() == i && l.size() < nbCellWithoutValueOnUnit) {
-								listCouple.add(new Couple<Unit, List<ICoord>>(Unit.COL,l));
+							if (tabUnit[j].size() == i && tabUnit[j].size() < nbCellWithoutValueOnUnit) {
+								res[i].add(new Couple<Unit, List<ICoord>>(Unit.COL, tabUnit[j]));
 							}
 						}
 					}
 					
-					//List<Set<ICoord>> listSector = new ArrayList<Set<ICoord>>();
 					//coordonnées par region
 					for (int j = 0; j < g.size(); ++j) {
-						mapUnit.put(j, new ArrayList<ICoord>());
-						/*listSector.add(j, g.getSector(j % g.getNumberSectorByWidth(),
-								j / g.getNumberSectorByWidth()));*/
+						tabUnit[j] = new ArrayList<ICoord>();
 					}
 					for (ICoord c : list) {
-						mapUnit.get(c.getRow() / g.getHeightSector() * g.getNumberSectorByWidth() 
-								+ c.getCol() / g.getWidthSector()).add(c);
+						tabUnit[c.getRow() / g.getHeightSector() * g.getNumberSectorByWidth() 
+								+ c.getCol() / g.getWidthSector()].add(c);
 					}
 					
 					for (int j = 0; j < g.size(); ++j) {
-						List<ICoord> l = mapUnit.get(j);
-						if (l != null) {
+						if (tabUnit[j] != null) {
 							int nbCellWithoutValueOnUnit = 0;
 							for (ICoord c : g.getSector(j / g.getWidthSector(), 
 									j % g.getWidthSector())) {
@@ -227,19 +250,17 @@ public class IdenticalCandidates extends ReportGenerator {
 									++nbCellWithoutValueOnUnit;
 								}
 							}
-							if (l.size() == i && l.size() < nbCellWithoutValueOnUnit) {
-								listCouple.add(new Couple<Unit, List<ICoord>>(Unit.SECTOR,l));
+							if (tabUnit[j].size() == i && tabUnit[j].size() < nbCellWithoutValueOnUnit) {
+								res[i].add(new Couple<Unit, List<ICoord>>(Unit.SECTOR,tabUnit[j]));
 							}
 						}
 					}
 					
 				}
 			}
-			res.put(i, listCouple);
 		}
 		return res;
 	}
-	
 
 	//CLASSE INTERNE
 	
