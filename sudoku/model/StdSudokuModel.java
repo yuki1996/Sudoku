@@ -180,7 +180,12 @@ public class StdSudokuModel implements SudokuModel {
 	@Override
 	public void resolve() {
 		ruleManager.findRule();
-		ruleManager.generateCommand().act();;
+		Command cmd = ruleManager.generateCommand();
+		if (cmd == null) {
+			//ecrire un truc
+			return;
+		}
+		cmd.act();
 	}
 
 	public void reset() {
