@@ -69,12 +69,17 @@ public class StdSudokuModel implements SudokuModel {
 					}
 				}
 			}
-			gridSoluce = (StdGridModel) gridPlayer.clone();
+			gridSoluce = (StdGridModel) gridPlayer.clone();/*
 			RuleManager rm = new RuleManager(gridSoluce);
 			while (!gridSoluce.isFull()) {
 				rm.findRule();
-				rm.generateCommand().act();
-			}
+				Command r = rm.generateCommand();
+				if (r != null) {
+					r.act();
+				} else {
+					rm.backtracking();
+				}
+			}*/
 		} finally {
 			fr.close();
 		}

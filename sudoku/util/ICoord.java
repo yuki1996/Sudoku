@@ -50,9 +50,4 @@ public interface ICoord {
      * Indique si la coordonnée est sur la meme colonne que c.
      */
     boolean isOnSameCol(ICoord c);
-    
-    /**
-     * Indique si la coordonnée est sur la même région que c.
-     */
-    boolean isOnSameSector(ICoord c, int  nbSectorHeight, int nbSectorWidth);
 }
