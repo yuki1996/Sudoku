@@ -98,6 +98,7 @@ public class Cell extends JPanel {
 			}
 			this.add(cards[k], displayables[k-1].getText());
 		}
+		cardLayout.show(this, String.valueOf(model.getValue()));
 	}
 	
 	private void createController() {
