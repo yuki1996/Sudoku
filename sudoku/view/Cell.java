@@ -1,4 +1,4 @@
-package sudoku.model.gui;
+package sudoku.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
