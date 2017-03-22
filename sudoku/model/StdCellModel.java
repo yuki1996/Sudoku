@@ -71,6 +71,7 @@ public class StdCellModel implements CellModel {
 		clone.value = this.getValue();
 		clone.modifiable = this.isModifiable();
 		clone.candidates = this.candidates.clone();
+		clone.propertySupport = new PropertyChangeSupport(clone);
 		return clone;
 		
 	}
