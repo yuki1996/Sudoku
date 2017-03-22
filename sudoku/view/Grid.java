@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -14,18 +16,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
-import sudoku.model.CellModel;
 import sudoku.model.GridModel;
-import sudoku.model.StdGridModel;
+import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
-import sudoku.util.Coord;
 
 public class Grid extends JPanel {
 	
 	// ATTRIBUTS
 	public final int BORDER_SIZE = 1;
 	
-	private final int SIZE = 900;
+	private final int SIZE = 600;
 	
 	private GridModel model;
 	
@@ -99,17 +99,17 @@ public class Grid extends JPanel {
 			JFrame mainFrame = new JFrame();
 			SudokuModel model;
 			public Bla() {
-//				try {
-//					model = new StdSudokuModel(new File(filename));
-//				} catch (IOException ioe) {
-//					System.out.println("fichier \"" + filename + "\" introuvable");
-//				}
-//				mainFrame.add(new Grid(model.getGridPlayer()), BorderLayout.CENTER);
-//				mainFrame.add(new Grid(model.getGridSoluce()), BorderLayout.CENTER);
-				GridModel grid = new StdGridModel(3,3);
+				try {
+					model = new StdSudokuModel(new File(filename));
+				} catch (IOException ioe) {
+					System.out.println("fichier \"" + filename + "\" introuvable");
+				}
+				mainFrame.add(new Grid(model.getGridPlayer()), BorderLayout.WEST);
+				mainFrame.add(new Grid(model.getGridSoluce()), BorderLayout.EAST);
+				//GridModel grid = new StdGridModel(3,3);
 				//grid.setValue(new Coord(1, 1), 1);
-				grid.removeCandidate(new Coord(1, 2), 5);
-				mainFrame.add(new Grid(grid), BorderLayout.CENTER);
+				//grid.removeCandidate(new Coord(1, 2), 5);
+				//mainFrame.add(new Grid(grid), BorderLayout.CENTER);
 				mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 			
