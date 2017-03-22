@@ -87,6 +87,7 @@ public class Cell extends JPanel {
 			for (int k = 0; k < candidates.length; ++k) {
 				candidates[k].setLayout(new GridBagLayout()); {
 					candidates[k].add(candidateDisplayables[k]);
+					candidateDisplayables[k].setVisible(model.isCandidate(k + 1));
 				}
 				cards[0].add(candidates[k]);
 			}

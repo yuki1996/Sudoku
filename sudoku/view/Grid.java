@@ -25,7 +25,7 @@ public class Grid extends JPanel {
 	// ATTRIBUTS
 	public final int BORDER_SIZE = 1;
 	
-	private final int SIZE = 900;
+	private final int SIZE = 600;
 	
 	private GridModel model;
 	
