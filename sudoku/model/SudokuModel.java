@@ -83,6 +83,16 @@ public interface SudokuModel {
 	 */
 	String help();
 	
+	/**
+	 * Retourne vrai si on peut annuler la dernière action, faux sinon.
+	 */
+	boolean canUndo();
+	
+	/**
+	 * Retourne vrai si on peut remettre la dernière action annulée, faux sinon.
+	 */
+	boolean canRedo();
+	
 	//COMMANDES
 	
 	/**
@@ -180,4 +190,21 @@ public interface SudokuModel {
 	 * </pre>
 	 */
 	void reset();
+	
+	/**
+	 * Annule la dernière action.
+	 * @pre <pre>
+	 *      canUndo()
+	 * </pre>
+	 */
+	void undo();
+	
+	/**
+	 * Remet la dernière action annulée.
+	 * @pre <pre>
+	 *      canRedo()
+	 * </pre>
+	 */
+	void redo();
+	
 }

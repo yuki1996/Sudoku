@@ -60,5 +60,11 @@ public class StdHistory<E> implements History<E> {
         Contract.checkCondition(getCurrentPosition() > 0);
         forwardStack.push(previousStack.pop());
     }
+
+	@Override
+	public void clear() {
+		previousStack.clear();
+		forwardStack.clear();
+	}
     
 }
