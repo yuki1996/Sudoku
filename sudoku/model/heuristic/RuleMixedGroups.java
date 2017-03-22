@@ -10,7 +10,7 @@ import sudoku.model.heuristic.Report.CellSetName;
 import sudoku.util.Couple;
 import sudoku.util.ICoord;
 
-public class RuleIsolatedGroups extends ReportGenerator {
+public class RuleMixedGroups extends ReportGenerator {
 	//COMMANDES
 	@Override
 	protected Report generate(GridModel grid) {
@@ -51,45 +51,40 @@ public class RuleIsolatedGroups extends ReportGenerator {
 				listArg.add(c);
 			}
 		}
-		Set<ICoord> possiblyChangedCells = new HashSet<ICoord>(listArg);
 		Couple<Set<Integer>, List<ICoord>> couple = getValidGroup(grid, new HashSet<Integer>(), 
-				listArg, new ArrayList<ICoord>(), novalueCellNb, new ArrayList<ICoord>());
+				listArg, new ArrayList<ICoord>(), new ArrayList<ICoord>(), novalueCellNb);
 		if (couple == null) {
 			return null;
 		}
+		
 		RemoveCandidateReport res = new RemoveCandidateReport(grid);
-		res.setCellSet(CellSetName.DELETION_UNITS, unit);
+		res.setValues(couple.getFirst());
 		res.setCellSet(CellSetName.DECISIVE_UNITS, unit);
-		String str = "Les cellules";
+		res.setCellSet(CellSetName.DELETION_UNITS, unit);
+		Set<ICoord> decisiveCells = new HashSet<ICoord>(listArg);
+		decisiveCells.removeAll(couple.getSecond());
+		res.setCellSet(CellSetName.DECISIVE_CELLS, decisiveCells);
+		
+		String str = "Comme ces cellules";
 		for (ICoord coord : couple.getSecond()) {
 			str += " L" + coord.getRow() + "C" + coord.getCol();
-			res.addCell(CellSetName.DECISIVE_CELLS, coord);
-		}
-		str += " n'ont pas d'autres candidats que:";
-		for (Integer j : couple.getFirst()) {
-			res.addValue(j);
-			str += " " + j.toString();
+			res.addCell(CellSetName.DELETION_CELLS, coord);
 		}
 		
-		possiblyChangedCells.removeAll(couple.getSecond());
-		Set<ICoord> changedCells = new HashSet<ICoord>();
-		for (ICoord c : possiblyChangedCells) {
-			for (Integer i : couple.getFirst()) {
-				if (grid.getCell(c).isCandidate(i)) {
-					changedCells.add(c);
-					break;
+		Set<Integer> keepCandidates = new HashSet<Integer>();
+		for (ICoord coord : couple.getSecond()) {
+			for (int i = 1; i <= grid.numberCandidates(); ++i) {
+				if (grid.getCell(coord).isCandidate(i) && ! couple.getFirst().contains(i)) {
+					keepCandidates.add(i);
 				}
 			}
 		}
-		res.setCellSet(CellSetName.DELETION_CELLS, changedCells);
-		
-		str += ".\nOn peut donc retirer ces candidats des cellules";
-		for (ICoord coord : changedCells) {
-			if (! grid.getCell(coord).hasValue()) {
-				str += " L" + coord.getRow() + "C" + coord.getCol();
-			}
+		str += " sont les seules à avoir les candidats ";
+		for (Integer j : keepCandidates) {
+			str += " " + j.toString();
 		}
-		str += ".";
+		
+		str += ",\non peut leur retirer leurs autres candidats.";
 		res.setDescription(str);
 		return res;
 	}
@@ -101,16 +96,18 @@ public class RuleIsolatedGroups extends ReportGenerator {
 	 * De plus, la liste et l'ensemble ont une taille strictement inférieure a novalueCellNb.
 	 */
 	private Couple<Set<Integer>, List<ICoord>> getValidGroup(GridModel g, Set<Integer> set, 
-			List<ICoord> l, List<ICoord> lres, int novalueCellNb, List<ICoord> lrest) {
+			List<ICoord> lbase, List<ICoord> lexc, List<ICoord> lrest, int novalueCellNb) {
 		int setSize = set.size();
-		int resSize = lres.size();
-		if (setSize >= novalueCellNb || resSize >= novalueCellNb) {
+		int excSize = lexc.size();
+		
+		if (novalueCellNb == setSize) {
 			return null;
 		}
-		if (setSize == resSize) {
-			List<ICoord> test = new ArrayList<ICoord>(l);
-			test.addAll(lrest);
-			for (ICoord c : test) {
+		
+		if (setSize == excSize && excSize != 0) {
+			List<ICoord> lres = new ArrayList<ICoord>(lbase);
+			lres.addAll(lrest);
+			for (ICoord c : lres) {
 				for (Integer i : set) {
 					if (g.getCell(c).isCandidate(i)) {
 						return new Couple<Set<Integer>, List<ICoord>>(set, lres);
@@ -118,24 +115,28 @@ public class RuleIsolatedGroups extends ReportGenerator {
 				}
 			}
 		}
-		List<ICoord> list = new ArrayList<ICoord>(l);
-		for (ICoord c : l) {
+		
+		List<ICoord> newLbase = new ArrayList<ICoord>(lbase);
+		for (ICoord c : lbase) {
 			Set<Integer> newSet = new HashSet<Integer>(set);
+			
 			for (int j = 1; j <= g.numberCandidates(); ++j) {
 				if (g.getCell(c).isCandidate(j)) {
 					newSet.add(j);
 				}
 			}
-			list.remove(c);
-			lres.add(c);
-			Couple<Set<Integer>, List<ICoord>> res = getValidGroup(g, newSet, list, lres, novalueCellNb, lrest);
+			newLbase.remove(c);
+			lexc.add(c);
+			Couple<Set<Integer>, List<ICoord>> res = getValidGroup(g, newSet, newLbase, 
+					lexc, new ArrayList<ICoord>(lrest), novalueCellNb);
 			if (res != null) {
 				return res;
 			}
-			lres.remove(c);
+			lexc.remove(c);
 			lrest.add(c);
 			
 		}
 		return null;
 	}
 }
+

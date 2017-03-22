@@ -17,12 +17,16 @@ public final class Main {
 		
 		//Creation
 		SudokuModel sudo = new StdSudokuModel(new File("./grille4.txt"));
+		affiche_possibilite(new Coord(2,6), sudo);
+		affiche_possibilite(new Coord(2,7), sudo);
+		affiche_possibilite(new Coord(2,8), sudo);
 		System.out.println(sudo.help());
+		sudo.resolve();
 		affiche_grille(sudo);
-		affiche_possibilite(new Coord(2,4), sudo);
-		affiche_possibilite(new Coord(3,4), sudo);
-		affiche_possibilite(new Coord(4,4), sudo);
-		affiche_possibilite(new Coord(5,4), sudo);
+		affiche_possibilite(new Coord(2,6), sudo);
+		affiche_possibilite(new Coord(2,7), sudo);
+		affiche_possibilite(new Coord(2,8), sudo);
+		System.out.println(sudo.help());
 		/*
 		System.out.println(sudo.help());
 		sudo.resolve(sudo.getGridPlayer());
