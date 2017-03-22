@@ -1,9 +1,9 @@
-package sudoku.model.gui;
+package sudoku.view;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
+import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import sudoku.model.CellModel;
 import sudoku.model.StdCellModel;
 
+// A SUPPRIMER
 public class Cell extends JPanel {
 	
 	// ATTRIBUTS
@@ -30,10 +31,11 @@ public class Cell extends JPanel {
 	
 	private CellModel model;
 	
-	private JLabel[] displayables;	// definition d'une classe plus appropriée plus tard
-	private JLabel[] candidateDisplayables;
 	private JPanel[] cards;
 	private JPanel[] candidates;
+	
+	private JLabel[] displayables;
+	private JLabel[] candidateDisplayables;
 	
 	private CardLayout cardLayout;
 	
@@ -56,14 +58,13 @@ public class Cell extends JPanel {
 	}
 	
 	private void createView() {
-		displayables = new JLabel[] {new JLabel("1"), new JLabel("2"), new JLabel("3"),
-									new JLabel("4"), new JLabel("5"), new JLabel("6"),
-									new JLabel("7"), new JLabel("8"), new JLabel("9")};
-		candidateDisplayables = new JLabel[displayables.length];
+		displayables = new JLabel[9];
+		candidateDisplayables = new JLabel[9];
 		for (int k = 0; k < displayables.length; ++k) {
-			candidateDisplayables[k] = new JLabel(displayables[k].getText());
-			displayables[k].setFont(displayables[k].getFont().deriveFont(15.0f));
-			candidateDisplayables[k].setFont(displayables[k].getFont().deriveFont(10.0f));
+			displayables[k] = new JLabel(String.valueOf(k + 1));
+			displayables[k].setFont(new Font("Verdana", Font.BOLD, 30));
+			candidateDisplayables[k] = new JLabel(String.valueOf(k + 1));
+			candidateDisplayables[k].setFont(new Font("Verdana", Font.BOLD, 10));
 		}
 		
 		cards = new JPanel[model.getCardinalCandidates() + 1];
@@ -101,13 +102,13 @@ public class Cell extends JPanel {
 	
 	private void createController() {
 
-		for (int k = 0; k < candidates.length; ++k) {
+		for (int k = 1; k < cards.length; ++k) {
 			cards[k].addMouseListener(new MouseAdapter() {
 	
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (model.isModifiable()) {
-						if (SwingUtilities.isLeftMouseButton(e)) { // clique gauche
+						if (SwingUtilities.isLeftMouseButton(e)) {
 							model.removeValue();
 						}
 					}

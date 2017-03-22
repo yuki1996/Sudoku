@@ -57,12 +57,16 @@ class RemoveCandidateReport implements Report {
 		values.add(n);
 	}
 	
+	public void setValues(Set<Integer> newSet) {
+		values = newSet;
+	}
+	
 	public void setCellSet(CellSetName csn, Set<ICoord> newSet) {
 		cellSets.put(csn, newSet);
 	}
 
 	@Override
-	public Map<sudoku.model.heuristic.Report.CellSetName, Set<ICoord>> importantSets() {
+	public Map<CellSetName, Set<ICoord>> importantSets() {
 		return cellSets;
 	}
 

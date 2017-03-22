@@ -32,7 +32,6 @@ public class RemoveCandidate extends AbstractCommand {
 
 	@Override
 	protected void undoIt() {
-		Contract.checkCondition(!cell.hasValue(), "");
 		cell.addCandidate(value);
 	}
 	

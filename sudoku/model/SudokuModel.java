@@ -36,7 +36,7 @@ import sudoku.util.ICoord;
  *    </pre>
  *    
  */
-interface SudokuModel {
+public interface SudokuModel {
 	
 	//REQUÊTES
 	/**

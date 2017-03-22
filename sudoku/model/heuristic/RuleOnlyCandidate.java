@@ -20,10 +20,14 @@ public class RuleOnlyCandidate extends ReportGenerator {
 				ICoord c = new Coord(i, j);
 				if (grid.getCell(c).isModifiable() && ! grid.getCell(c).hasValue()) {
 					//parcourt tableau des candidats de la cellule
-					for (int m = 1; m <= grid.numberCandidates() && k <= 1; m++) {
+					for (int m = 1; m <= grid.numberCandidates(); m++) {
 						if (grid.getCell(c).isCandidate(m)) {
 							++k;
 							l = m;
+						}
+						if (k > 1) {
+							l = -1;
+							break;
 						}
 					}
 				}
@@ -33,7 +37,6 @@ public class RuleOnlyCandidate extends ReportGenerator {
 					r.setDescription(string);
 					return r;
 				}
-				l = -1;
 			}
 		}
 		return null;
