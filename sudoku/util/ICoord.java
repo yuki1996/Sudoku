@@ -1,0 +1,58 @@
+package sudoku.util;
+
+/**
+ * Type des coordonnées (non mutables).
+ * 
+ * 
+ * @inv <pre>
+ *     equals(c) <==>
+ *         c != null
+ *         && c.getClass() == getClass()
+ *         && c.getCol() == getCol()
+ *         && c.getRow() == getRow()
+ *     
+ * @cons
+ * $POST$  
+ * 		getCol() == c
+ * 		getRow() == r
+ * </pre>
+ */
+public interface ICoord {
+
+    // REQUETES
+    
+    /**
+     * Indique si cette coordonnée est similaire à k.
+     */
+    boolean equals(Object k);
+    
+    /**
+     * Indice de la colonne.
+     */
+    int getCol();
+    
+    /**
+     * Indice de la ligne.
+     */
+    int getRow();
+    
+    /**
+     * Une représentation textuelle de cette coordonnée.
+     */
+    String toString();
+    
+    /**
+     * Indique si la coordonnée est sur la meme ligne que c.
+     */
+    boolean isOnSameRow(ICoord c);
+    
+    /**
+     * Indique si la coordonnée est sur la meme colonne que c.
+     */
+    boolean isOnSameCol(ICoord c);
+    
+    /**
+     * Indique si la coordonnée est sur la même région que c.
+     */
+    boolean isOnSameSector(ICoord c, int  nbSectorHeight, int nbSectorWidth);
+}
