@@ -32,7 +32,9 @@ public class RemoveCandidate extends AbstractCommand {
 
 	@Override
 	protected void undoIt() {
-		cell.addCandidate(value);
+		if (cell.isModifiable()) {
+			cell.addCandidate(value);
+		}
 	}
 	
 }

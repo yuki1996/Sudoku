@@ -16,21 +16,19 @@ public final class Main {
 	public static void main(String[] args) throws IOException {
 		
 		//Creation
-		SudokuModel sudo = new StdSudokuModel(new File("./grille4.txt"));
-		System.out.println(sudo.help());
+		SudokuModel sudo = new StdSudokuModel(new File("./grille_diabolique1.txt"));
+		/*System.out.println(sudo.help());
 		sudo.resolve();
-		affiche_grille(sudo);
-		/*
-		System.out.println(sudo.help());
-		sudo.resolve(sudo.getGridPlayer());
-		affiche_grille(sudo);
-		affiche_possibilite(new Coord(1,2), sudo);
-		*/
-		/*while (!sudo.getGridPlayer().isFull() ) {
+		affiche_grille(sudo);*/
+		System.out.println("solution made");
+		int i = 0;
+		while (!sudo.getGridPlayer().isFull()) {
+			System.out.println("etape " + i);
 			System.out.println(sudo.help());
 			sudo.resolve();
 			affiche_grille(sudo);
-		}*/
+			++i;
+		}
 		System.out.println(sudo.isWin() ? "gagné\n" : "perdu\n");
 		
 	}
