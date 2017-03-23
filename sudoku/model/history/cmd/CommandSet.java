@@ -1,5 +1,6 @@
 package sudoku.model.history.cmd;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import sudoku.model.GridModel;

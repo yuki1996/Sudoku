@@ -22,6 +22,7 @@ import sudoku.model.CellModel;
 import sudoku.model.StdCellModel;
 
 // A SUPPRIMER
+@SuppressWarnings("serial")
 public class Cell extends JPanel {
 	
 	// ATTRIBUTS
@@ -60,11 +61,12 @@ public class Cell extends JPanel {
 	private void createView() {
 		displayables = new JLabel[9];
 		candidateDisplayables = new JLabel[9];
+		Font font = new Font("Verdana", Font.BOLD, 30);
 		for (int k = 0; k < displayables.length; ++k) {
 			displayables[k] = new JLabel(String.valueOf(k + 1));
-			displayables[k].setFont(new Font("Verdana", Font.BOLD, 30));
+			displayables[k].setFont(font);
 			candidateDisplayables[k] = new JLabel(String.valueOf(k + 1));
-			candidateDisplayables[k].setFont(new Font("Verdana", Font.BOLD, 10));
+			candidateDisplayables[k].setFont(font.deriveFont(10.0f));
 		}
 		
 		cards = new JPanel[model.getCardinalCandidates() + 1];
@@ -87,6 +89,7 @@ public class Cell extends JPanel {
 			for (int k = 0; k < candidates.length; ++k) {
 				candidates[k].setLayout(new GridBagLayout()); {
 					candidates[k].add(candidateDisplayables[k]);
+					candidateDisplayables[k].setVisible(model.isCandidate(k + 1));
 				}
 				cards[0].add(candidates[k]);
 			}
@@ -102,7 +105,7 @@ public class Cell extends JPanel {
 	}
 	
 	private void createController() {
-
+		// vers le modèle
 		for (int k = 1; k < cards.length; ++k) {
 			cards[k].addMouseListener(new MouseAdapter() {
 	
@@ -110,7 +113,8 @@ public class Cell extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					if (model.isModifiable()) {
 						if (SwingUtilities.isLeftMouseButton(e)) {
-							model.removeValue();
+							Cell.this.firePropertyChange(CellModel.VALUE,
+									model.getValue(), 0);
 						}
 					}
 				}
@@ -124,15 +128,14 @@ public class Cell extends JPanel {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					System.out.println("clicked " + n);
 					if (model.isModifiable()) {
 						if (SwingUtilities.isLeftMouseButton(e)
 						&& model.isCandidate(n)) {
-							System.out.println("gauche");
-							model.setValue(n);
+							Cell.this.firePropertyChange(CellModel.VALUE,
+									model.getValue(), n);
 						} else if (SwingUtilities.isRightMouseButton(e)) {
-							System.out.println("droite");
-							model.toggleCandidate(n);
+							Cell.this.firePropertyChange(CellModel.CANDIDATE,
+									0, n);
 						}
 					}
 				}
@@ -150,6 +153,7 @@ public class Cell extends JPanel {
 			
 		}
 		
+		// reçu du modèle
 		model.addPropertyChangeListener(CellModel.VALUE, new PropertyChangeListener() {
 
 			@Override
@@ -165,7 +169,6 @@ public class Cell extends JPanel {
 				IndexedPropertyChangeEvent ievt =
 						(IndexedPropertyChangeEvent) evt;
 				int index = ievt.getIndex() - 1;
-				System.out.println("recu " + index);
 				candidateDisplayables[index].setVisible(model.isCandidate(index + 1));
 				candidates[index].repaint();
 			}
