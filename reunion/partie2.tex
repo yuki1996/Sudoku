@@ -1,0 +1,97 @@
+\definecolor{Zgris}{rgb}{0.87,0.85,0.85}
+
+\newsavebox{\BBbox}
+\newenvironment{DDbox}[1]{
+\begin{lrbox}{\BBbox}\begin{minipage}{\linewidth}}
+{\end{minipage}\end{lrbox}\noindent\colorbox{Zgris}{\usebox{\BBbox}} \\
+[.5cm]}
+
+\section{manuel technique}
+
+\subsection{Mode de communication}
+
+Pour développer notre lanceur de commandes, 
+nous avons créer une structure que 
+nous partageons en mémoire partagée :
+
+
+\begin{DDbox}{\linewidth}
+  \begin{Verbatim}
+      //structure des informations du clients
+      struct dd {
+	      char pipe[PIPE_SIZE + 1];
+	      char tube[TUBE_SIZE + 1];
+	      char requete[REQUETE_SIZE + 1];
+      };
+      typedef struct dd dd;
+
+      // Nos variables en mémoire partagée.
+      struct fifo {
+        sem_t numero;
+	sem_t mutex;
+	sem_t vide;
+	sem_t plein;
+	// Position d'ajout dans le tampon
+	int tete;      
+	// Position de suppression dans le tampon
+	int queue;    
+	// La structure contenant les informations des N clients
+	dd buffer[N]; 
+      };
+
+      #define TAILLE_SHM (sizeof(struct fifo))
+  \end{Verbatim}
+\end{DDbox}
+
+\newpage
+
+Pour cela, il nous a fallu définir les noms 
+et les tailles des différents éléments utilisés :
+
+\begin{DDbox}{\linewidth}
+  \begin{Verbatim}
+    #define TAILLE_SHM (sizeof(struct fifo))
+
+    /**
+    * Un nom de segment de mémoire partagé 
+    * avec un identifiant pour nous assurer de son unicité.
+    */
+    #define NOM_SHM "/mon_shm_a_moi_58942298536542745545"
+    #define NOM_FIFO_ENTRANT "mon_tube_nomme_1488864545622"
+    #define NOM_FIFO_SORTANT "mon_tube_nomme_1488862545623"
+
+    // Taille limite du nombre de clients en même temps
+    #define N 10
+    #define PIPE_SIZE 1024
+    #define TUBE_SIZE 1024
+    #define REQUETE_SIZE 1024
+    #define RESULTAT_SIZE 1024
+  \end{Verbatim}
+\end{DDbox}
+
+
+\subsection{client}
+Ce programme gère les demandes des clients, 
+il s'occupe d'ajouter les requètes des clients dans la mémoire partagée.
+
+\subsection{demon}
+Ce programme, lancé en arrière plan, tourne toujours 
+et gère les requètes des clients récupérées depuis la mémoire partagée.  
+
+\newpage
+
+\subsection{Difficultés rencontrées}
+Au cours de l'implantation de ce projet, 
+nous avons rencontré quelques difficultés :
+
+\begin{enumerate}
+ \item la prise de connaissance du sujet, 
+ où nous avons du gérer des critères spécifiques (utilisation de tubes, de pipes etc.)
+ \item le choix des structures pour le partage de mémoire,
+ \item la création du démon, afin que ce dernier reste en arrière plan,
+ \item la communication entre les différents acteurs, ou comment gérer 
+ la communication entre un démon et un ou plusieurs clients,
+ \item la gestion de plusieurs clients,
+ \item les signaux,
+ \item le temps imparti du projet. 
+\end{enumerate}

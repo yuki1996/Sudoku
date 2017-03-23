@@ -1,0 +1,20 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}Fonctionnalit\IeC {\'e}s}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Fonctionnalit\IeC {\'e}s obligatoires}{3}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}Model}{3}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}Vue}{3}{subsubsection.1.1.2}
+\contentsline {subsection}{\numberline {1.2}Fonctionnalit\IeC {\'e}s facultatives}{4}{subsection.1.2}
+\contentsline {subsubsection}{\numberline {1.2.1}Model}{4}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.2}Vue}{4}{subsubsection.1.2.2}
+\contentsline {section}{\numberline {2}Implantation}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Model}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Pr\IeC {\'e}sentation du paquetage}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Pr\IeC {\'e}sentation des diff\IeC {\'e}rentes interfaces et leurs sp\IeC {\'e}cifications}{5}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}ISudoku}{5}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}IGrid}{5}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}ICell}{5}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}IModifiableCell}{5}{subsection.2.7}
+\contentsline {subsection}{\numberline {2.8}UnmodifiableCell}{5}{subsection.2.8}
+\contentsline {subsection}{\numberline {2.9}EnumError}{5}{subsection.2.9}
+\contentsline {subsection}{\numberline {2.10}Vue}{5}{subsection.2.10}
+\contentsline {subsection}{\numberline {2.11}Contr\IeC {\^o}leur}{5}{subsection.2.11}

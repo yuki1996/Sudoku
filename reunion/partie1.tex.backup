@@ -1,0 +1,79 @@
+\section{Manuel utilisateur}
+
+\subsection{Contenu du dossier}
+Notre projet est constitué de cinq fichiers :
+\begin{enumerate}
+\item client.c,
+\item demon.c,
+\item projet.h,
+\item Makefile,
+\item rapport.pdf;
+\end{enumerate}
+\vspace{\parskip}
+
+
+\subsection{Utilisation}
+Pour utiliser le lanceur de commandes, 
+il suffit, dans un premier temps, d'écrire dans un terminal la commande 'make' 
+afin de compiler l'ensemble du dossier.
+
+Ensuite, après avoir compilé, vous obtiendrez deux exécutables : 'demon' et 'client'.
+
+Il est impératif de lancer d'abord le démon avant le client en écrivant : './demon'.
+
+Chaque requète se verra exécuter dans son ordre d'arrivé dans le démon 
+et il ne pourra y avoir au plus dix requètes.
+
+Ainsi, il est possible, de lancer dix clients qui vont demander une requète chacun, 
+un client qui demande neuf requètes et un autre qui ne pose qu'une seule requète 
+ou encore un unique client qui demande dix requètes par exemple.
+
+Pour lancer le ou les clients, il suffit d'ouvrir un second terminal et d'écrire : './client' puis, 
+de suivre les instructions affichés qui vous demanderont de taper une commande.
+
+Pour valider une requète, il suffit d'appuyer simultanément sur les touches CTRL et D.
+
+Si vous souhaitez supprimer les '.o' et les exécutables nouvellement créés, il vous suffit 
+d'utiliser la commande 'make clean' qui effectuera le nettoyage.  
+
+\newpage
+\subsection{Jeu d'exemples}
+
+Pour expliquer le fonctionnement de l'application, 
+vous pouvez constater dans la figure~\ref{exemple1}, ci-dessous 
+le lancement d'un démon et d'un client, ce dernier demandant la requète : 'ls -l'.
+Comme vous pouvez le constater, le chiffre 10 à côté de client signifie 
+que nous en sommes à la toute première requète du tout premier client 
+et que ce dernier peut encore demander 10 requètes.
+
+\begin{figure}[ht]
+  \caption{\label{exemple1} exemple 'ls -l'}
+  \includegraphics[width=15cm]{images/exemple1.png}
+\end{figure}
+
+\newpage
+
+Puis, dans la figure~\ref{exemple2}, ci-dessous,
+l'utilisateur a demandé une nouvelle requète : 'pwd'.
+ 
+\begin{figure}[ht]
+  \caption{\label{exemple2} exemple 'pwd'}
+  \includegraphics[width=15cm]{images/exemple2.png}
+\end{figure}
+
+Enfin, pour le dernier exemple, figure~\ref{exemple3}, 
+nous pouvons constater que le démon gère 
+les requètes de deux clients qui
+ont demandé respectivement : 'pwd' et 'touch toto.txt'.
+
+\begin{figure}[ht]
+  \caption{\label{exemple3} exemple 'pwd' et 'touch toto.txt'}
+  \includegraphics[width=15cm]{images/exemple3.png}
+\end{figure}
+
+\newpage
+\section{manuel technique}
+
+\subsection{Mode de communication}
+
+

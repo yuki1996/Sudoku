@@ -1,0 +1,23 @@
+\BOOKMARK [1][-]{section*.2}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.1}{Vocabulaire utilis\351}{}% 2
+\BOOKMARK [1][-]{section.2}{Jouabilit\351}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Fonctionnalit\351s obligatoires}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.2}{Fonctionnalit\351s facultatives}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Implantation}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{SudokuModel}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{GridModel}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{CellModel}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.4}{Command}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.5}{History}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.6}{RuleManager}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.7}{Report}{section.3}% 13
+\BOOKMARK [1][-]{section.4}{Heuristiques implant\351es}{}% 14
+\BOOKMARK [2][-]{subsection.4.1}{Un seul candidat : \(only candidate\)}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.2}{Un candidat unique : \(one candidate\)}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.3}{Des jumeaux/tripl\351s : \(pair/triplet\)}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.4}{Interactions entre r\351gions}{section.4}% 18
+\BOOKMARK [2][-]{subsection.4.5}{Candidats identiques}{section.4}% 19
+\BOOKMARK [2][-]{subsection.4.6}{X-Wing}{section.4}% 20
+\BOOKMARK [2][-]{subsection.4.7}{Groupes isol\351s}{section.4}% 21
+\BOOKMARK [2][-]{subsection.4.8}{Groupes m\351lang\351s}{section.4}% 22
+\BOOKMARK [1][-]{section.5}{Annexes}{}% 23
