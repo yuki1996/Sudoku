@@ -6,13 +6,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,12 +18,9 @@ import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -34,15 +28,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import sudoku.model.GridModel;
-import sudoku.model.StdGridModel;
+import sudoku.model.StdSudokuModel;
+import sudoku.model.SudokuModel;
+import sudoku.view.Grid;
 
 //import com.sun.media.sound.Toolkit;
 
@@ -91,8 +84,8 @@ public class GameV4 implements MouseListener {
 	// timer pour générer le rafraîchissement
     private Timer timer;	
 	
-	private BeanGrid grid;
-	private GridModel gridModel;
+	private Grid grid;
+	private SudokuModel model;
 	
 	private JTextField textArea;
 	
@@ -123,14 +116,14 @@ public class GameV4 implements MouseListener {
 	
 	public void createModel() {
 		// ceci est un exemple :
-		grid = new BeanGrid(HEIGHT_GRID, WIDTH_GRID, 
-				HEIGHT_CELL, WIDTH_CELL, VALUES);
-		gridModel = new StdGridModel(WIDTH_SECTOR, HEIGHT_SECTOR);	
+		model = new StdSudokuModel(WIDTH_SECTOR, HEIGHT_SECTOR);
     }
   
 	private void createView() {
 		final int frameWidth = 800;
         final int frameHeight = 600;
+       
+		grid = new Grid(model);
          
         mainFrame = new JFrame("Game");
         mainFrame.setPreferredSize(new Dimension(frameWidth, frameHeight));
@@ -267,7 +260,7 @@ public class GameV4 implements MouseListener {
     	textArea.setPreferredSize(new Dimension(780, 50));
     	textArea.setEditable(false);
     	
-    	digitButton = grid.getDigitButton();
+    	//digitButton = grid.getDigitButton();
  
     	//startTime = System.currentTimeMillis();
     	//currentTime = new JLabel("" + (System.currentTimeMillis() - startTime));
@@ -279,14 +272,10 @@ public class GameV4 implements MouseListener {
 		mainFrame.setJMenuBar(createJMenuBar());
 		
 		// Grille de sudoku
-		JPanel p = new JPanel(new GridLayout(1, 1)); {
-			JPanel q = grid.makeGrid();
-			p.add(q);
-		}
-		mainFrame.add(p, BorderLayout.CENTER);
+		mainFrame.add(grid, BorderLayout.CENTER);
 		
 		// Barre des raccourcis menu
-		p = new JPanel(new GridLayout(1, 1)); {
+		JPanel p = new JPanel(new GridLayout(1, 1)); {
 			JPanel q = new JPanel(new GridLayout(6, 1)); {
 				JPanel r = new JPanel(new GridLayout(1, 2)); {
 					r.add(undoAction);
