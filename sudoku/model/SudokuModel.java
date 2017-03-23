@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import sudoku.model.history.cmd.Command;
 import sudoku.util.ICoord;
 
 /**
@@ -82,6 +83,16 @@ public interface SudokuModel {
 	 * Apporte un indice.
 	 */
 	String help();
+	
+	/**
+	 * Retourne vrai si on peut annuler la dernière action, faux sinon.
+	 */
+	boolean canUndo();
+	
+	/**
+	 * Retourne vrai si on peut remettre la dernière action annulée, faux sinon.
+	 */
+	boolean canRedo();
 	
 	//COMMANDES
 	
@@ -180,4 +191,29 @@ public interface SudokuModel {
 	 * </pre>
 	 */
 	void reset();
+
+	/**
+	 * Réalise la commande cmd et l'ajoute à l'historique.
+	 * @pre <pre>
+	 * 		cmd != null
+	 * </pre>
+	 */
+	void act(Command cmd);
+	
+	/**
+	 * Annule la dernière action.
+	 * @pre <pre>
+	 *      canUndo()
+	 * </pre>
+	 */
+	void undo();
+	
+	/**
+	 * Remet la dernière action annulée.
+	 * @pre <pre>
+	 *      canRedo()
+	 * </pre>
+	 */
+	void redo();
+	
 }

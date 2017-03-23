@@ -12,17 +12,21 @@ public class RemoveValue extends AbstractCommand {
 	private int value;
 
 	public RemoveValue(GridModel grid, ICoord coord) {
+		this(grid, grid.getCell(coord));
+		Contract.checkCondition(grid.isValidCoord(coord), "mauvaise coordonnée");
+	}
+	
+	public RemoveValue(GridModel grid, CellModel cell) {
 		super(grid);
 		Contract.checkCondition(grid != null, "la grille est null");
 		Contract.checkCondition(cell != null, "la coordonnée est null");
-		Contract.checkCondition(grid.isValidCoord(coord), "mauvaise coordonnée");
-		cell = grid.getCell(coord);
+		this.cell = cell;
 		this.value = cell.getValue();
 	}
 
 	@Override
 	protected void doIt() {
-		Contract.checkCondition(!cell.hasValue(), "");
+		Contract.checkCondition(cell.hasValue(), "");
 		cell.removeValue();
 	}
 
