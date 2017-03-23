@@ -1,7 +1,12 @@
 package sudoku.model.heuristic;
 
+import java.util.Map;
+import java.util.Set;
+
 import sudoku.model.GridModel;
+import sudoku.model.heuristic.Report.CellSetName;
 import sudoku.model.history.cmd.Command;
+import sudoku.util.ICoord;
 import util.Contract;
 
 public class RuleManager {
@@ -31,6 +36,13 @@ public class RuleManager {
 		  return r.generateCommand();
 	  }
 	  return null;
+  }
+  
+  public Map<CellSetName, Set<ICoord>> importantSets() {
+	  if (lastReport == null) {
+		  return null;
+	  }
+	  return lastReport.importantSets();
   }
   
   //COMMANDES

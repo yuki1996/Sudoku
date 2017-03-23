@@ -149,33 +149,41 @@ public class StdSudokuModel implements SudokuModel {
 	public boolean canUndo() {
 		return history.getCurrentPosition() > 0;
 	}
-  
+
 	//COMMANDES
 	public void setValue(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && n > 0
 				&& 1 <= n  && n <= getGridPlayer().numberCandidates());
-		act(new AddValue(gridPlayer, c, n));
+		Command cmd = new AddValue(gridPlayer, c, n);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void removeValue(ICoord c) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c));
-		act(new RemoveValue(gridPlayer, c));
+		Command cmd = new RemoveValue(gridPlayer, c);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void addCandidate(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
-		act(new AddCandidate(gridPlayer, c, n));
+		Command cmd = new AddCandidate(gridPlayer, c, n);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void removeCandidate(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
-		act(new RemoveCandidate(gridPlayer, c, n));
+		Command cmd = new RemoveCandidate(gridPlayer, c, n);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void finish() {
@@ -191,15 +199,18 @@ public class StdSudokuModel implements SudokuModel {
 			for (int i = 0; i < getGridPlayer().size(); ++i) {
 				for (int j = 0; j < getGridPlayer().size(); ++j) {
 					if (! getGridPlayer().getCell(new Coord(i, j)).hasValue()) {
-						act(new AddValue(getGridPlayer(), new Coord(i, j), 
-							getGridSoluce().getCell(new Coord(i, j)).getValue()));
+						cmd = new AddValue(getGridPlayer(), new Coord(i, j), 
+							getGridSoluce().getCell(new Coord(i, j)).getValue());
+						cmd.act();
+						history.add(cmd);
 						return;
 					}
 					
 				}
 			}
 		}
-		act(cmd);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void reset() {
@@ -229,12 +240,6 @@ public class StdSudokuModel implements SudokuModel {
 			ois.close();
 		}
 	}
-
-	public void act(Command cmd) {
-		Contract.checkCondition(cmd != null, "cmd est null");
-		cmd.act();
-		history.add(cmd);
-	}
 	
 	public void undo() {
 		Contract.checkCondition(canUndo());
@@ -247,5 +252,4 @@ public class StdSudokuModel implements SudokuModel {
 		history.goForward();
 		history.getCurrentElement().act();
 	}
-	
 }

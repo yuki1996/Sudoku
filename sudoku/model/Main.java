@@ -30,6 +30,7 @@ public final class Main {
 			++i;
 		}
 		System.out.println(sudo.isWin() ? "gagné\n" : "perdu\n");
+		
 	}
 
 	//OUTILS
@@ -125,6 +126,9 @@ public final class Main {
 			System.out.println("-----");
 		}
 	}
+	
+
+
 
 	private static void affiche_grille_region_colonne(SudokuModel sudo) {
 		Contract.checkCondition(sudo != null);
