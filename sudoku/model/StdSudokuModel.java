@@ -10,7 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import sudoku.model.heuristic.RuleManager;
 import sudoku.model.history.History;
@@ -142,34 +141,49 @@ public class StdSudokuModel implements SudokuModel {
 		ruleManager.findRule();
 		return ruleManager.describe();
 	}
-
+	
+	public boolean canRedo() {
+		return history.getCurrentPosition() < history.getEndPosition();
+	}
+	
+	public boolean canUndo() {
+		return history.getCurrentPosition() > 0;
+	}
 
 	//COMMANDES
 	public void setValue(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && n > 0
 				&& 1 <= n  && n <= getGridPlayer().numberCandidates());
-		history.add(new AddValue(gridPlayer, c, n));
+		Command cmd = new AddValue(gridPlayer, c, n);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void removeValue(ICoord c) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c));
-		history.add(new RemoveValue(gridPlayer, c));
+		Command cmd = new RemoveValue(gridPlayer, c);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void addCandidate(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
-		history.add(new AddCandidate(gridPlayer, c, n));
+		Command cmd = new AddCandidate(gridPlayer, c, n);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void removeCandidate(ICoord c, int n) {
 		Contract.checkCondition(c != null
 				&& isValidCoord(c) && 1 <= n 
 				&& n <= getGridPlayer().numberCandidates());
-		history.add(new RemoveCandidate(gridPlayer, c, n));
+		Command cmd = new RemoveCandidate(gridPlayer, c, n);
+		cmd.act();
+		history.add(cmd);
 	}
 
 	public void finish() {
@@ -182,14 +196,26 @@ public class StdSudokuModel implements SudokuModel {
 		ruleManager.findRule();
 		Command cmd = ruleManager.generateCommand();
 		if (cmd == null) {
-			//ecrire un truc
-			return;
+			for (int i = 0; i < getGridPlayer().size(); ++i) {
+				for (int j = 0; j < getGridPlayer().size(); ++j) {
+					if (! getGridPlayer().getCell(new Coord(i, j)).hasValue()) {
+						cmd = new AddValue(getGridPlayer(), new Coord(i, j), 
+							getGridSoluce().getCell(new Coord(i, j)).getValue());
+						cmd.act();
+						history.add(cmd);
+						return;
+					}
+					
+				}
+			}
 		}
 		cmd.act();
+		history.add(cmd);
 	}
 
 	public void reset() {
 		getGridPlayer().reset();
+		history.clear();
 	}	
 	
 	public void save(String name) throws IOException {
@@ -213,5 +239,17 @@ public class StdSudokuModel implements SudokuModel {
 		} finally {
 			ois.close();
 		}
+	}
+	
+	public void undo() {
+		Contract.checkCondition(canUndo());
+		history.getCurrentElement().act();
+		history.goBackward();
+	}
+	
+	public void redo() {
+		Contract.checkCondition(canRedo());
+		history.goForward();
+		history.getCurrentElement().act();
 	}
 }

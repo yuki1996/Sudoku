@@ -89,4 +89,11 @@ public interface History<E> {
      *     getCurrentPosition() == old getCurrentPosition() - 1 </pre>
      */
     void goBackward();
+    
+    /**
+     * Vide l'historique.
+     * @post <pre>
+     *     getEndPosition() == 0
+     */
+    void clear();
 }
