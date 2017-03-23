@@ -2,21 +2,22 @@ package sudoku.model.heuristic;
 
 enum Rule {
 	
-	ONLY_CANDIDATE(new RuleOnlyCandidate()),
 	
 	ONE_CANDIDATE(new RuleOneCandidate()),
 	
+	ONLY_CANDIDATE(new RuleOnlyCandidate()),
+	
 	PAIR_TRIPLET(new RulePairTriplet()),
 	
-	INTERACTION_BETWEEN_SECTORS(null),
+	INTERACTION_BETWEEN_SECTORS(new RuleInteractionBetweenSector()),
 	
-	IDENTICAL_CANDIDATES(null),
+	IDENTICAL_CANDIDATES(new IdenticalCandidates()),
 	
-	ISOLATED_GROUPS(null),
+	X_WING(new RuleXWing()),
 	
-	MIXED_GROUPS(null),
+	ISOLATED_GROUPS(new RuleIsolatedGroups()),
 	
-	X_WING(null),
+	MIXED_GROUPS(new RuleMixedGroups()),
 	
 	XY_WING(null),
 	

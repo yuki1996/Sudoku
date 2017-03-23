@@ -9,8 +9,6 @@ import java.io.Serializable;
  *      0 <= getValue()
  *      getValue() != 0 <==> hasValue()
  *      getCardinalCandidates() > 0
- *      candidates().length == getCardinalCandidates()
- *      forall int i : canTakeValue(i) <==> candidates()[i - 1] && isModifiable()
  *      
  * @cons <pre>
  *     $DESC$ Une cellule modifiable sans valeur.
@@ -23,7 +21,7 @@ import java.io.Serializable;
  *     		getCardinalCandidates() == cardinal
  *     		! hasValue()
  *      	isModifiable()
- *         	forall int i : candidates()[i]
+ *         	forall int i : isCandidate(i)
  *    </pre>
  *    
  * @cons <pre>
@@ -36,22 +34,21 @@ import java.io.Serializable;
  *     $POST$
  *     	    getValue() == value
  *         	isModifiable() == modifiable
- *          forall int i : candidates()[i]
+ *          forall int i :isCandidate(i)
  *          getCardinalCandidates() == cardinal
  *    </pre>
  *    
  * @cons <pre>
  *     $DESC$ Une cellule modifiable sans valeur ayant un tableau de candidats.
  *     
- *     $ARGS$ boolean[] Candidates 
+ *     $ARGS$ boolean[] candidates 
  *     
  *     $PRE$ candidates != null && candidates.length > 0
  *         
  *     $POST$ 
  *          ! hasValue()
  *          isModifiable()
- *         	candidates().equals(candidates)
- *          getCardinalCandidates() == Candidates.length
+ *          getCardinalCandidates() == candidates.length
  *    </pre>
  */
 public interface CellModel extends Serializable, Cloneable  {
@@ -108,11 +105,11 @@ public interface CellModel extends Serializable, Cloneable  {
 	void setValue(int n);
 	
 	/**
-	 * Met la valeur de la cellule à 0 si elle est modifiable.
+	 * Enlève la valeur de la cellule si elle est modifiable.
 	 * @pre
 	 *      isModifiable()
 	 * @post
-	 *      getValue() == 0
+	 *      ! hasValue()
 	 */
 	void removeValue();
 	
@@ -122,7 +119,7 @@ public interface CellModel extends Serializable, Cloneable  {
 	 *      0 < n <= getCardinalCandidates()
 	 *      isModifiable()
 	 * @post
-	 * 		candidates()[n - 1]
+	 * 		isCandidates(n)
 	 */
 	void addCandidate(int n);
 	
@@ -132,7 +129,7 @@ public interface CellModel extends Serializable, Cloneable  {
 	 *      0 < n <= getCardinalCandidates()
 	 *      isModifiable()
 	 * @post
-	 * 		! candidates()[n - 1]
+	 * 		! isCandidates(n)
 	 */
 	void removeCandidate(int n);
 	
@@ -140,10 +137,10 @@ public interface CellModel extends Serializable, Cloneable  {
 	 * Alterne la présence du candidat n.
 	 * Supprime le candidat n s'il est présent, l'ajoute sinon.
 	 * @pre
-	 * 		0 < n <= getCandidates()
+	 * 		0 < n <= getCardinalCandidates()
 	 * 		isModifiable()
 	 * @post
-	 * 		candidates()[n - 1] == old !candidates()[n - 1]
+	 * 		isCandidates(n) == old !isCandidates(n)
 	 */
 	void toggleCandidate(int n);
 	
@@ -159,7 +156,7 @@ public interface CellModel extends Serializable, Cloneable  {
 	 * @post
 	 *     	    getValue() == 0
 	 *         	isModifiable() == true
-	 *         	forall int i : candidates()[i]
+	 *         	forall int i : isCandidates(i)
 	 */
 	void reset();
 	

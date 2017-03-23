@@ -28,24 +28,24 @@ import sudoku.util.ICoord;
  *         getGridPlayer().getWidth() == width
  *         getGridPlayer().getHeight() == height
  *         
- *         forall int i,j : getGridPlayer().cells[i][j].value() == 0 &&
+ *         forall int i,j : ! getGridPlayer().cells[i][j].hasValue() &&
  *         				    getGridPlayer().cells[i][j].isModifiable()
  *         
- *         forall int i,j : getGridSoluce().cells[i][j].value() == 0 &&
+ *         forall int i,j : ! getGridSoluce().cells[i][j].hasValue() &&
  *         				    getGridSoluce().cells[i][j].isModifiable()
  *    </pre>
  *    
  */
-interface SudokuModel {
+public interface SudokuModel {
 	
 	//REQUÊTES
 	/**
-	 * Retourne la grille de Sudoku du joueur.
+	 * Retourne la grille du joueur.
 	 */
 	GridModel getGridPlayer();
 	
 	/**
-	 * Retourne la grille solution du Sudoku.
+	 * Retourne la grille solution.
 	 */
 	GridModel getGridSoluce();
 	
@@ -79,35 +79,20 @@ interface SudokuModel {
 	boolean isValidCoord(ICoord coord);
 	
 	/**
-	 * Apporte un indice en surbrilant une case (la grille n'est pas modifiée).
+	 * Apporte un indice.
 	 */
 	String help();
 	
 	//COMMANDES
-	/**
-	 * Mise à jour des possibilités par méthode triviale de la coordonnée.
-	 * Supprime la value de la coordonnée des possibilités sur la région, colonne, ligne de c.
-	 *  @pre : <pre>
-	 * 		c != null
-	 * 		isValidCoord(c)
-	 * 		 getGridPlayer().getCell(c).getValue() > 0
-	 * </pre>
-	 * @post: 
-	 * <pre>
-	 * 		int n =  getGridPlayer().getCell(c).getValue()
-	 * 		forall ICell cell in cells() : getGridPlayer().getUnitCells(c) => !cell.possibilities().[n - 1]
-	 * </pre>
-	 */
-	void updateEasyPossibilities(ICoord c);
 	
 	/**
 	 * Ajout la valeur n dans la cellule de coordonnée c
 	 * @pre : <pre>
 	 * 		c != null
 	 * 		isValidCoord(c)
-	 * 		1 <= n <= getGridPlayer().numberPossibility()
+	 * 		1 <= n <= getGridPlayer().numberCandidates()
 	 * 		isModifiableCell(c);
-	 * 		getGridPlayer().getCell(c).canTakeValue(n)
+	 * 		getGridPlayer().getCell(c).isCandidate(n)
 	 * </pre>
 	 * @post <pre>
 	 * 		getGridPlayer().getCell(c).getValue() == n
@@ -129,32 +114,32 @@ interface SudokuModel {
 	void removeValue(ICoord c);
 	
 	/**
-	 * Ajoute la valeur n dans les possibilités la cellule de coordonnée c.
+	 * Ajoute la valeur n dans les candidates la cellule de coordonnée c.
 	 * @pre : <pre>
 	 * 		c != null
 	 * 		isValidCoord(c)
-	 * 		1 <= n <= getGridPlayer().numberPossibility()
+	 * 		1 <= n <= getGridPlayer().numberCandidates()
 	 * 		isModifiableCell(c);
 	 * </pre>
 	 * @post <pre>
-	 * 		getGridPlayer().getCell(c).possibility[n - 1]
+	 * 		getGridPlayer().getCell(c).isCandidate(n)
 	 * </pre>
 	 */
-	void addPossibility(ICoord c, int n);
+	void addCandidate(ICoord c, int n);
 	
 	/**
-	 * Supprime la valeur n dans les possibilités la cellule de c.
+	 * Supprime la valeur n dans les candidates la cellule de c.
 	 * @pre : <pre>
 	 * 		c != null
 	 * 		isValidCoord(c)
-	 * 		1 <= n <= getGridPlayer().numberPossibility()
+	 * 		1 <= n <= getGridPlayer().numberCandidates()
 	 * 		isModifiableCell(c);
 	 * </pre>
 	 * @post <pre>
-	 * 		! getGridPlayer().getCell(c).possibility[n - 1]
+	 * 		! getGridPlayer().getCell(c).isCandidate(n)
 	 * </pre>
 	 */
-	void removePossibility(ICoord c, int n);
+	void removeCandidate(ICoord c, int n);
 	
 	
 	/**
@@ -166,12 +151,9 @@ interface SudokuModel {
 	void finish();
 	
 	/**
-	 * Résous pas à pas la grille ajout la valeur dans une case
-	  * @pre: <pre>
-	 * 		g != null 
-	 * </pre> 
+	 * Résous pas à pas la grille joueur
 	 */
-	void resolve(GridModel g);
+	void resolve();
 	
 	/**
 	 * Enregistre la grille.

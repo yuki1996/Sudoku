@@ -12,7 +12,7 @@ public class StdCellModel implements CellModel {
 	private boolean modifiable;
 	private boolean[] candidates;
 	
-	private PropertyChangeSupport propertySupport;
+	private transient PropertyChangeSupport propertySupport;
 	
 	//CONSTRUCTEURS
 	
@@ -34,7 +34,7 @@ public class StdCellModel implements CellModel {
 		propertySupport = new PropertyChangeSupport(this);
 	}
 	
-	//REQUETES
+	//REQUÊTES
 
 	public int getCardinalCandidates() {
 		return candidates.length;
@@ -66,23 +66,13 @@ public class StdCellModel implements CellModel {
 		try {
 			clone = (StdCellModel) super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new InternalError("echec clonage");
+			throw new InternalError("Échec clonage");
 		}
 		clone.value = this.getValue();
 		clone.modifiable = this.isModifiable();
 		clone.candidates = this.candidates.clone();
+		clone.propertySupport = new PropertyChangeSupport(clone);
 		return clone;
-		
-	}
-	
-	public boolean equals(Object obj) {
-		if ((obj != null) && (obj.getClass() == this.getClass())) {
-			StdCellModel o = (StdCellModel) obj;
-			return this.isModifiable() == o.isModifiable() 
-					&& this.getValue() == o.getValue()
-					&& Arrays.equals(this.candidates,o.candidates);
-		}
-		return false;
 		
 	}
 	
@@ -144,7 +134,7 @@ public class StdCellModel implements CellModel {
 		for (int i = 1; i <= candidates.length; i++) {
 			addCandidate(i);
 		}
-		setValue(0);
+		removeValue();
 		modifiable = true;
 	}
 	

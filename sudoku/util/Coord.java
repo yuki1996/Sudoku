@@ -9,7 +9,7 @@ public final class Coord implements ICoord {
 
     // CONSTRUCTEURS
     
-    public Coord( int r,int c) {
+    public Coord(int r, int c) {
         row = r;
         col = c;
     }
@@ -47,4 +47,10 @@ public final class Coord implements ICoord {
     public boolean isOnSameCol(ICoord c) {
     	return col == c.getCol();
     }
+    
+	public boolean isOnSameSector(ICoord c, int  nbSH, int nbSW) {
+		int unit1 = (c.getRow() / nbSH) * nbSW + (c.getCol() / nbSW) + 1;;
+		int unit2 = (row / nbSH) * nbSW + (col / nbSW) + 1;
+		return unit1 == unit2;
+	}
 }

@@ -32,7 +32,7 @@ public class RuleOneCandidate extends ReportGenerator {
 					//parcourt tableau des candidats de la cellule
 					for (int k = 0; k < grid.numberCandidates(); k++) {
 						//le candidat existe dans la cellule
-						if (c.isCandidate(k)) {
+						if (c.isCandidate(k + 1)) {
 							tabI[k] += 1;
 							tabCol[k] = i;
 							tabRow[k] = j;
@@ -70,7 +70,7 @@ public class RuleOneCandidate extends ReportGenerator {
 					//parcourt tableau des candidats de la cellule
 					for (int k = 0; k < grid.numberCandidates(); k++) {
 						//le candidat existe dans la cellule
-						if (c.isCandidate(k)) {
+						if (c.isCandidate(k + 1)) {
 							tabI[k] += 1;
 							tabCol[k] = j;
 							tabRow[k] = i;
@@ -115,7 +115,7 @@ public class RuleOneCandidate extends ReportGenerator {
 							//parcourt tableau des candidats de la cellule
 							for (int k = 0; k < grid.numberCandidates(); k++) {
 								//le candidat existe dans la cellule et qu'il n'est pas déjà apparu
-								if (c.isCandidate(k)) {
+								if (c.isCandidate(k + 1)) {
 									tabI[k] += 1; 
 									tabRow[k] = m;
 									tabCol[k] = n;
@@ -132,7 +132,7 @@ public class RuleOneCandidate extends ReportGenerator {
 						int value = k + 1;
 						ICoord coord = new Coord(tabRow[k],tabCol[k]);
 						SetValueReport r = new SetValueReport(grid, coord, value);
-						for (ICoord cd : grid.getSectorCoord(tabRow[k], tabCol[k])) {
+						for (ICoord cd : grid.getSector(tabRow[k], tabCol[k])) {
 							r.addDecisiveUnits(cd);
 						}
 						String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette région.";

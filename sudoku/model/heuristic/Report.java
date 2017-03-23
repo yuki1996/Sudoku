@@ -33,5 +33,5 @@ public interface Report {
 	 * Renvoie la commande à executer pour faire les changements indiquer par la 
 	 * regle.
 	 */
-	Command getCommand();
+	Command generateCommand();
 }
