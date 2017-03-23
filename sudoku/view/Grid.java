@@ -6,16 +6,18 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
+import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
@@ -27,13 +29,12 @@ public class Grid extends JPanel {
 	
 	private final int SIZE = 600;
 	
-	private GridModel model;
+	private SudokuModel model;
 	
-	private JLabel[] symbols;
-	private JPanel squareGrid;	// la classe Grid n'est qu'une enveloppe
+	private Cell[][] cells;
 	
 	// CONSTRUCTEUR
-	public Grid(GridModel model) {
+	public Grid(SudokuModel model) {
 		createModel(model);
 		createView();
 		placeComponents();
@@ -41,55 +42,71 @@ public class Grid extends JPanel {
 	}
 	
 	// REQUETES
-	public GridModel getModel() {
+	public SudokuModel getModel() {
 		return model;
 	}
 	
 	// OUTILS
-	private void createModel(GridModel model) {
+	private void createModel(SudokuModel model) {
 		this.model = model;
 	}
 	
 	private void createView() {
-		squareGrid = new JPanel();
-		squareGrid.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+		GridModel grid = model.getGridPlayer();
 		this.setPreferredSize(new Dimension(SIZE, SIZE));
+		cells = new Cell[grid.size()][grid.size()];
+		for (int k = 0; k < grid.size(); ++k) {
+			for (int j = 0; j < grid.size(); ++j) {
+				cells[k][j] = new Cell(grid.cells()[k][j]);
+			}
+		}
 	}
 	
 	private void placeComponents() {
+		GridModel grid = model.getGridPlayer();
 		this.setLayout(new BorderLayout()); {	// layout à changer
-			squareGrid.setLayout(new GridLayout(model.getNumberSectorByHeight(),
-					model.getNumberSectorByWidth())); {
-				for (int k = 0; k < model.numberCandidates(); ++k) {
-					JPanel q = new JPanel(new GridLayout(model.getHeightSector(),
-							model.getWidthSector())); {
-						for (int j = 0; j < model.numberCandidates(); ++j) {
-							int row = (k / model.getNumberSectorByWidth())
-									* model.getWidthSector()
-									+ j / model.getWidthSector();
-							int col = (k % model.getNumberSectorByHeight())
-									* model.getHeightSector()
-									+ j % model.getHeightSector();
-							q.add(new Cell(model.cells()[row][col]));
+			JPanel p = new JPanel(new GridLayout(grid.getNumberSectorByHeight(),
+					grid.getNumberSectorByWidth())); {
+				for (int k = 0; k < grid.numberCandidates(); ++k) {
+					JPanel q = new JPanel(new GridLayout(grid.getHeightSector(),
+							grid.getWidthSector())); {
+						for (int j = 0; j < grid.numberCandidates(); ++j) {
+							int row = (k / grid.getNumberSectorByWidth())
+									* grid.getWidthSector()
+									+ j / grid.getWidthSector();
+							int col = (k % grid.getNumberSectorByHeight())
+									* grid.getHeightSector()
+									+ j % grid.getHeightSector();
+							q.add(cells[row][col]);
 						}
 					}
 					q.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
-					squareGrid.add(q);
+					p.add(q);
 				}
 			}
+			p.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+			this.add(p, BorderLayout.CENTER);
 		}
-		this.add(squareGrid, BorderLayout.CENTER);
 	}
 	
 	private void createController() {
-		squareGrid.addComponentListener(new ComponentAdapter() {
+		PropertyChangeListener listener = new PropertyChangeListener() {
 
 			@Override
-			public void componentResized(ComponentEvent e) {
+			public void propertyChange(PropertyChangeEvent evt) {
+				CellModel c = ((Cell) evt.getSource()).getModel();
+				GridModel g = model.getGridPlayer();
+				
 				
 			}
-
-        });
+			
+		};
+		
+		for (Cell[] ctab : cells) {
+			for (Cell c : ctab) {
+				c.addPropertyChangeListener(listener);
+			}
+		}
 	}
 	
 	// TEST
@@ -104,8 +121,7 @@ public class Grid extends JPanel {
 				} catch (IOException ioe) {
 					System.out.println("fichier \"" + filename + "\" introuvable");
 				}
-				mainFrame.add(new Grid(model.getGridPlayer()), BorderLayout.WEST);
-				mainFrame.add(new Grid(model.getGridSoluce()), BorderLayout.EAST);
+				mainFrame.add(new Grid(model), BorderLayout.CENTER);
 				//GridModel grid = new StdGridModel(3,3);
 				//grid.setValue(new Coord(1, 1), 1);
 				//grid.removeCandidate(new Coord(1, 2), 5);
