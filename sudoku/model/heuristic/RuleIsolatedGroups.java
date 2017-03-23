@@ -114,6 +114,9 @@ public class RuleIsolatedGroups extends ReportGenerator {
 			for (ICoord c : test) {
 				for (Integer i : set) {
 					if (g.getCell(c).isCandidate(i)) {
+						System.out.println("l :" + l.contains(new Coord(1,6)));
+						System.out.println("lrest :" + lrest.contains(new Coord(1,6)));
+						System.out.println("coord " + c.getRow() + c.getCol());
 						return new Couple<Set<Integer>, List<ICoord>>(set, lres);
 					}
 				}

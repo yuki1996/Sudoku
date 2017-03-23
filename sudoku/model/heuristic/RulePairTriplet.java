@@ -81,6 +81,8 @@ public class RulePairTriplet extends ReportGenerator {
 								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
 										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 									r.addCell(CellSetName.DELETION_CELLS, coord);
+									//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ k);
+									
 								} else {
 									r.addCell(CellSetName.DELETION_UNITS, coord);
 								}
@@ -92,6 +94,8 @@ public class RulePairTriplet extends ReportGenerator {
 						} else {
 							for (ICoord coord : decisiveCellsCol) {
 								r.addCell(CellSetName.DECISIVE_CELLS, coord);
+								//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") : "+ k);
+								
 								for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
 									r.addCell(CellSetName.DECISIVE_UNITS, cd);
 								}
@@ -101,6 +105,8 @@ public class RulePairTriplet extends ReportGenerator {
 								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
 										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 									r.addCell(CellSetName.DELETION_CELLS, coord);
+									//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ") supprime "+ k);
+									
 								} else {
 									r.addCell(CellSetName.DELETION_UNITS, coord);
 								}
@@ -112,11 +118,12 @@ public class RulePairTriplet extends ReportGenerator {
 						}
 						
 
-						if (r.getCellSet(CellSetName.DELETION_CELLS).size() != 0) {
-							r.setDescription(s);
-							return r;
+						if (r.getCellSet(CellSetName.DELETION_CELLS).size() == 0) {
+							r = null;
+							break;
 						}
-						
+						r.setDescription(s);
+						return r;
 					}
 					existRow = false;
 					existCol = false;
