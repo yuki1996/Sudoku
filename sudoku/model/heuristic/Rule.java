@@ -7,7 +7,7 @@ enum Rule {
 	
 	ONLY_CANDIDATE(new RuleOnlyCandidate()),
 	
-	PAIR_TRIPLET(null),
+	PAIR_TRIPLET(new RulePairTriplet()),
 	
 	INTERACTION_BETWEEN_SECTORS(new RuleInteractionBetweenSector()),
 	
