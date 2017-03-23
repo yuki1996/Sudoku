@@ -135,7 +135,7 @@ public class Cell extends JPanel {
 									model.getValue(), n);
 						} else if (SwingUtilities.isRightMouseButton(e)) {
 							Cell.this.firePropertyChange(CellModel.CANDIDATE,
-									model.isCandidate(n), !model.isCandidate(n));
+									0, n);
 						}
 					}
 				}
