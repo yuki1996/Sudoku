@@ -7,6 +7,7 @@ import java.util.Set;
 
 import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report.CellSetName;
+import sudoku.util.Coord;
 import sudoku.util.Couple;
 import sudoku.util.ICoord;
 
@@ -121,6 +122,7 @@ public class RuleIsolatedGroups extends ReportGenerator {
 		List<ICoord> list = new ArrayList<ICoord>(l);
 		for (ICoord c : l) {
 			Set<Integer> newSet = new HashSet<Integer>(set);
+			List<ICoord> newlrest = new ArrayList<ICoord>(lrest);
 			for (int j = 1; j <= g.numberCandidates(); ++j) {
 				if (g.getCell(c).isCandidate(j)) {
 					newSet.add(j);
@@ -128,12 +130,12 @@ public class RuleIsolatedGroups extends ReportGenerator {
 			}
 			list.remove(c);
 			lres.add(c);
-			Couple<Set<Integer>, List<ICoord>> res = getValidGroup(g, newSet, list, lres, novalueCellNb, lrest);
+			Couple<Set<Integer>, List<ICoord>> res = getValidGroup(g, newSet, list, lres, novalueCellNb, newlrest);
 			if (res != null) {
 				return res;
 			}
 			lres.remove(c);
-			lrest.add(c);
+			newlrest.add(c);
 			
 		}
 		return null;
