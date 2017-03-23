@@ -10,9 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Timer;
@@ -39,7 +36,7 @@ import sudoku.view.Grid;
 
 //import com.sun.media.sound.Toolkit;
 
-public class GameV4 implements MouseListener {
+public class GameV4 {
 	
 	// CONSTANTES
 	// hauteur et largeur de la grille
@@ -71,7 +68,6 @@ public class GameV4 implements MouseListener {
 	private JMenuItem undoMenu;
 	private JMenuItem doMenu;	
 	
-	private JButton[] digitButton;
 	private JButton pause;
 	private JButton reset;
 	private JButton resolve;
@@ -187,9 +183,9 @@ public class GameV4 implements MouseListener {
     	pause = new JButton();
     	pause.setBackground(Color.WHITE);
     	//pause.setIcon(new ImageIcon(getClass().getResource("pictures/play.png")));
-    	pause.setIcon(
-    			new ImageIcon(
-    					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+//    	pause.setIcon(
+//    			new ImageIcon(
+//    					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
     	pause.setMargin(new Insets(0, 0, 0, 0));    	
     	pause.setPreferredSize(new Dimension(50, 90));
     	pause.setName("pause");
@@ -199,9 +195,9 @@ public class GameV4 implements MouseListener {
     	reset = new JButton();
     	reset.setBackground(Color.WHITE);
     	// reset.setIcon(new ImageIcon(getClass().getResource("pictures/delete.jpg")));
-    	reset.setIcon(
-    			new ImageIcon(
-    					new ImageIcon(getClass().getResource("pictures/delete.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+//    	reset.setIcon(
+//    			new ImageIcon(
+//    					new ImageIcon(getClass().getResource("pictures/delete.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
     	reset.setMargin(new Insets(0, 0, 0, 0));
     	reset.setPreferredSize(new Dimension(50, 90));
     	reset.setToolTipText("réinitialisation de la grille");
@@ -210,9 +206,9 @@ public class GameV4 implements MouseListener {
     	solution= new JButton();
     	solution.setBackground(Color.WHITE);
 //    	solution.setIcon(new ImageIcon(getClass().getResource("pictures/solution.jpg")));
-    	solution.setIcon(
-    			new ImageIcon(
-    					new ImageIcon(getClass().getResource("pictures/solution.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+//    	solution.setIcon(
+//    			new ImageIcon(
+//    					new ImageIcon(getClass().getResource("pictures/solution.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
     	solution.setMargin(new Insets(0, 0, 0, 0));
     	solution.setPreferredSize(new Dimension(50, 90));
     	solution.setToolTipText("solution complète");
@@ -220,9 +216,9 @@ public class GameV4 implements MouseListener {
     	resolve  = new JButton();
     	resolve.setBackground(Color.WHITE);
 //    	resolve.setIcon(new ImageIcon(getClass().getResource("pictures/step.png")));7
-    	resolve.setIcon(
-    			new ImageIcon(
-    					new ImageIcon(getClass().getResource("pictures/step.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+//    	resolve.setIcon(
+//    			new ImageIcon(
+//    					new ImageIcon(getClass().getResource("pictures/step.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
     	resolve.setMargin(new Insets(0, 0, 0, 0));
     	resolve.setPreferredSize(new Dimension(50, 90));
     	resolve.setToolTipText("résoudre pas à pas");
@@ -230,9 +226,9 @@ public class GameV4 implements MouseListener {
     	undoAction  = new JButton();
     	undoAction.setBackground(Color.WHITE);
 //    	undoAction.setIcon(new ImageIcon(getClass().getResource("pictures/undo.png")));
-    	undoAction.setIcon(
-    			new ImageIcon(
-    					new ImageIcon(getClass().getResource("pictures/undo.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+//    	undoAction.setIcon(
+//    			new ImageIcon(
+//    					new ImageIcon(getClass().getResource("pictures/undo.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
     	undoAction.setMargin(new Insets(0, 0, 0, 0));
     	undoAction.setPreferredSize(new Dimension(50, 90));
     	undoAction.setToolTipText("annuler l'action");
@@ -240,9 +236,9 @@ public class GameV4 implements MouseListener {
     	doAction = new JButton();
     	doAction.setBackground(Color.WHITE);
 //    	doAction.setIcon(new ImageIcon(getClass().getResource("pictures/do.png")));
-    	doAction.setIcon(
-    			new ImageIcon(
-    					new ImageIcon(getClass().getResource("pictures/do.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+//    	doAction.setIcon(
+//    			new ImageIcon(
+//    					new ImageIcon(getClass().getResource("pictures/do.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
     	doAction.setMargin(new Insets(0, 0, 0, 0));
     	doAction.setPreferredSize(new Dimension(50, 90));
     	doAction.setToolTipText("refaire l'action");
@@ -394,13 +390,6 @@ public class GameV4 implements MouseListener {
             }
         });
         
-        // gestion des possibilités
-        int n = (HEIGHT_GRID * WIDTH_GRID) * HEIGHT_CELL ;
-    	n *= n;
-        for (int i = 0 ; i < n ; ++i) {
-        	digitButton[i].addMouseListener(null);
-        }
-        
         // vérification avant de quitter définitivement le programme
         mainFrame.addWindowListener(new WindowAdapter() {
   		  public void windowClosing(WindowEvent e) {
@@ -470,27 +459,6 @@ public class GameV4 implements MouseListener {
 //        	}
 //		});
         
-        for (int k = 0 ; k < n ; ++k) {
-	        digitButton[k].addMouseListener(new MouseAdapter(){
-	        	public void mousePressed(MouseEvent mouseEvent) { 
-	        		JButton button = (JButton) mouseEvent.getSource();
-	        		int i = Integer.parseInt(button.getName());
-	        		
-	                // clic gauche
-	        		if (SwingUtilities.isLeftMouseButton(mouseEvent)) {  
-	        			digitButton[i].setBackground(Color.BLUE);
-	        			digitButton[i].setForeground(Color.WHITE);
-	                } 
-	        		
-	        		// clic droit
-	        		if (SwingUtilities.isRightMouseButton(mouseEvent)) { 
-	        			digitButton[i].setBackground(Color.BLACK); 
-	        			digitButton[i].setForeground(Color.WHITE);
-	                }  
-	        	}
-			});
-        }
-   
         mainFrame.addKeyListener(new KeyAdapter() {
   	      public void keyPressed(KeyEvent e) {
   	    	int code = e.getKeyCode();
@@ -519,36 +487,6 @@ public class GameV4 implements MouseListener {
         //registerKetStroke();
 	}
 	
-	// gestion de la souris
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-  
 	/**
 	 * Retourne une JMenuBar.
 	 */
