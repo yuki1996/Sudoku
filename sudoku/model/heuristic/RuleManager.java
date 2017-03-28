@@ -33,6 +33,10 @@ public class RuleManager {
 	  return null;
   }
   
+  public Report getLastReport() {
+	  return lastReport;
+  }
+  
   //COMMANDES
   
   public void findRule() {
