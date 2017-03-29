@@ -178,6 +178,7 @@ public class StdGridModel implements GridModel {
 		Set<ICoord> set = getRow(coord);
 		set.addAll(getCol(coord));
 		set.addAll(getSector(coord));
+		set.remove(coord);
 		return set;
 	}
 	
@@ -223,6 +224,7 @@ public class StdGridModel implements GridModel {
 		Set<CellModel> set = getRowCell(coord);
 		set.addAll(getColCell(coord));
 		set.addAll(getSectorCell(coord));
+		set.remove(cells()[coord.getRow()][coord.getCol()]);
 		return set;
 	}
 
