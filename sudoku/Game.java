@@ -389,6 +389,11 @@ public class Game {
                 solutionMenu();
             }
         });
+        solution.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                solutionMenu();
+            }
+        });
         
         // refait l'action
         doMenu.addActionListener(new ActionListener() {
@@ -529,7 +534,19 @@ public class Game {
 	
 	// gestion des fonctions 
 	private void newGame() {
-		new Game().display();
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter flt = new FileNameExtensionFilter(
+				"Fichier", "txt");
+		fc.setFileFilter(flt);
+		int res = fc.showOpenDialog(mainFrame);
+		if (res == JFileChooser.APPROVE_OPTION) {
+			try {
+				sudokuModel = new StdSudokuModel(fc.getSelectedFile());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void open() {
@@ -611,12 +628,17 @@ public class Game {
 	}
     
 	private void resetMenu() {
+		while (sudokuModel.canUndo()) {
+			sudokuModel.undo();
+		}
 		sudokuModel.reset();
 		textArea.setText("");
 		JOptionPane.showMessageDialog(null, "Réinitialisation de la grille", "réinitialisation", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private void resolveMenu() {
+		String describe = sudokuModel.help();
+		textArea.setText(describe);
 		sudokuModel.resolve();
 	}
 	
@@ -633,6 +655,7 @@ public class Game {
 	private void doMenu() {
 		if (sudokuModel.canRedo()) {
 			sudokuModel.redo();
+			textArea.setText("");
 		}
 		if (!sudokuModel.canRedo()) {
 			doMenu.enable(false);
@@ -642,6 +665,7 @@ public class Game {
 	private void undoMenu() {
 		if (sudokuModel.canUndo()) {
 			sudokuModel.undo();
+			textArea.setText("");
 		}
 		if (!sudokuModel.canUndo()) {
 			undoMenu.enable(false);
