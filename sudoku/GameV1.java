@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,6 +16,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,12 +25,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import sudoku.model.GridModel;
+import sudoku.model.StdGridModel;
 
 //import com.sun.media.sound.Toolkit;
 
-public class Game implements MouseListener {
+public class GameV1 implements MouseListener {
 	
 	// CONSTANTES
 	// hauteur et largeur de la grille
@@ -63,14 +72,21 @@ public class Game implements MouseListener {
 	private JButton reset;
 	private JButton resolve;
 	private JButton solution;
+	private JButton undoAction;
+	private JButton doAction;
+	
+	private JLabel time;
 	
 	private BeanGrid grid;
+	private GridModel gridModel;
+	
+	private JTextField textArea;
 	
 	//private long startTime;
 	//private JLabel currentTime;
 	
 	// CONSTRUCTEURS
-	public Game() {
+	public GameV1() {
 		createModel();
 		createView();
 		placeComponents();
@@ -94,10 +110,11 @@ public class Game implements MouseListener {
 		// ceci est un exemple :
 		grid = new BeanGrid(HEIGHT_GRID, WIDTH_GRID, 
 				HEIGHT_CELL, WIDTH_CELL, VALUES);
+		gridModel = new StdGridModel(WIDTH_SECTOR, HEIGHT_SECTOR);		
     }
   
 	private void createView() {
-		final int frameWidth = 1000;
+		final int frameWidth = 800;
         final int frameHeight = 600;
          
         mainFrame = new JFrame("Game");
@@ -119,10 +136,66 @@ public class Game implements MouseListener {
     	undoMenu = new JMenuItem("Annuler l'action");
     	doMenu = new JMenuItem("Refaire l'action");
     	
-    	pause = new JButton("démarrer");
-    	reset = new JButton("réinitialiser");
-    	resolve = new JButton("résoudre");
-    	solution = new JButton("solution");
+    	pause = new JButton();
+    	pause.setBackground(Color.WHITE);
+    	//pause.setIcon(new ImageIcon(getClass().getResource("pictures/play.png")));
+    	pause.setIcon(
+    			new ImageIcon(
+    					new ImageIcon(getClass().getResource("pictures/play.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+    	pause.setMargin(new Insets(0, 0, 0, 0));    	
+    	pause.setPreferredSize(new Dimension(50, 90));
+    	
+    	reset = new JButton();
+    	reset.setBackground(Color.WHITE);
+    	// reset.setIcon(new ImageIcon(getClass().getResource("pictures/delete.jpg")));
+    	reset.setIcon(
+    			new ImageIcon(
+    					new ImageIcon(getClass().getResource("pictures/delete.jpg")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+    	reset.setMargin(new Insets(0, 0, 0, 0));
+    	reset.setPreferredSize(new Dimension(50, 90));
+    	
+    	solution= new JButton();
+    	solution.setBackground(Color.WHITE);
+//    	solution.setIcon(new ImageIcon(getClass().getResource("pictures/solution.jpg")));
+    	solution.setIcon(
+    			new ImageIcon(
+    					new ImageIcon(getClass().getResource("pictures/solution.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+    	solution.setMargin(new Insets(0, 0, 0, 0));
+    	solution.setPreferredSize(new Dimension(50, 90));
+    	
+    	resolve  = new JButton();
+    	resolve.setBackground(Color.WHITE);
+//    	resolve.setIcon(new ImageIcon(getClass().getResource("pictures/step.png")));7
+    	resolve.setIcon(
+    			new ImageIcon(
+    					new ImageIcon(getClass().getResource("pictures/step.png")).getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
+    	resolve.setMargin(new Insets(0, 0, 0, 0));
+    	resolve.setPreferredSize(new Dimension(50, 90));
+    	
+    	undoAction  = new JButton();
+    	undoAction.setBackground(Color.WHITE);
+//    	undoAction.setIcon(new ImageIcon(getClass().getResource("pictures/undo.png")));
+    	undoAction.setIcon(
+    			new ImageIcon(
+    					new ImageIcon(getClass().getResource("pictures/undo.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+    	undoAction.setMargin(new Insets(0, 0, 0, 0));
+    	undoAction.setPreferredSize(new Dimension(50, 90));
+    	
+    	doAction = new JButton();
+    	doAction.setBackground(Color.WHITE);
+//    	doAction.setIcon(new ImageIcon(getClass().getResource("pictures/do.png")));
+    	doAction.setIcon(
+    			new ImageIcon(
+    					new ImageIcon(getClass().getResource("pictures/do.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT)));
+    	doAction.setMargin(new Insets(0, 0, 0, 0));
+    	doAction.setPreferredSize(new Dimension(50, 90));
+    	
+    	time = new JLabel("00:00");
+    	time.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    	
+    	textArea = new JTextField("-- Aide : -- \n");
+    	textArea.setPreferredSize(new Dimension(780, 50));
+    	textArea.setEditable(false);
     	
     	digitButton = grid.getDigitButton();
  
@@ -131,73 +204,47 @@ public class Game implements MouseListener {
 	}
 	
 	private void placeComponents() {
-		// barre de menu
+		// Barre de menu
 		mainFrame.setJMenuBar(createJMenuBar());
 		
-		JPanel p = new JPanel(new GridLayout(1, 2)); {
+		// Grille de sudoku
+		JPanel p = new JPanel(new GridLayout(1, 1)); {
 			JPanel q = grid.makeGrid();
-			p.add(q, BorderLayout.WEST);
-			
-			q = new JPanel(new GridLayout(3, 1)); {
-				JPanel r = new JPanel(new GridLayout(2, 2)); {
-					JPanel s = new JPanel(); {
-						s.add(new JLabel("Progression : "));
-					}
-					r.add(s);
-					
-					s = new JPanel(); {
-						s.add(new JLabel("00%"));
-					}
-					r.add(s);
-					
-					s = new JPanel(); {
-						s.add(new JLabel("Temps : "));
-					}
-					r.add(s);
-					
-					s = new JPanel(); {
-						s.add(new JLabel("00:00"));
-					}
-					r.add(s);
-				}
-				q.add(r);
-				
-				r = new JPanel(new GridLayout(2, 2)); {
-					// Pause
-					JPanel s = new JPanel(); {
-						s.add(pause);
-					}
-					r.add(s);
-					
-					// remise à zéro
-					s = new JPanel(); {
-						s.add(reset);
-					}
-					r.add(s);
-					
-					// résoudre la cellule
-					s = new JPanel(); {
-						s.add(resolve);
-					}
-					r.add(s);
-					
-					// donner la solution complète
-					s = new JPanel(); {
-						s.add(solution);
-					}			
-					r.add(s);
-				}
-				q.add(r);
-				
-				JTextArea text = new JTextArea("-- Création de grille --\n"); 
-				text.append("-- Aide --\n");
-				q.add(text);
-				text.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			}
-			p.add(q, BorderLayout.EAST);
+			p.add(q);
 		}
-		mainFrame.add(p);
+		mainFrame.add(p, BorderLayout.CENTER);
 		
+		// Barre des raccourcis menu
+		p = new JPanel(new GridLayout(1, 1)); {
+			JPanel q = new JPanel(new GridLayout(6, 1)); {
+				JPanel r = new JPanel(new GridLayout(1, 2)); {
+					r.add(undoAction);
+					r.add(doAction);
+				}
+				q.add(r);
+				
+				r = new JPanel(new GridLayout(1, 1)); {
+					r.add(time);
+				}
+				r.setBackground(Color.WHITE);
+				
+				q.add(r);
+				q.add(pause);
+				q.add(reset);
+				q.add(solution);
+				q.add(resolve);
+			}
+			p.add(q);
+		}
+		mainFrame.add(p, BorderLayout.EAST);
+		
+		// Zone de texte
+		p = new JPanel(new GridLayout(1, 1)); {
+			JScrollPane scroll = new JScrollPane(textArea);
+			p.add(scroll);
+			scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		}
+		mainFrame.add(p, BorderLayout.SOUTH);
 	}
 
 	private void createController() {
@@ -207,7 +254,7 @@ public class Game implements MouseListener {
 		// Nouvelle grille
 		newGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	new Game().display();
+            	new GameV1().display();
             }
         });
 		
@@ -436,7 +483,7 @@ public class Game implements MouseListener {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Game().display();
+                new GameV1().display();
             }
         });
 	}

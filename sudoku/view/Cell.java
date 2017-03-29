@@ -16,18 +16,21 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import sudoku.model.CellModel;
 import sudoku.model.StdCellModel;
 
 // A SUPPRIMER
+@SuppressWarnings("serial")
 public class Cell extends JPanel {
 	
 	// ATTRIBUTS
-	private static final Color DEFAULT_COLOR = Color.WHITE;
-	// le dernier parametre est pour la transparence
-	private static final Color HOVER_COLOR = new Color(128, 128, 128, 128);
+	private static final Color DEFAULT_BACKGROUND = Color.WHITE;
+	private static final Color HOVER_BACKGROUND = new Color(100, 100, 100, 80);
+	private static final Color MODIF_COLOR = Color.BLUE;
+	private static final Color NMODIF_COLOR = Color.BLACK;
 	
 	private CellModel model;
 	
@@ -60,24 +63,34 @@ public class Cell extends JPanel {
 	private void createView() {
 		displayables = new JLabel[9];
 		candidateDisplayables = new JLabel[9];
+		Font font = new Font("Verdana", Font.BOLD, 30);
 		for (int k = 0; k < displayables.length; ++k) {
-			displayables[k] = new JLabel(String.valueOf(k + 1));
-			displayables[k].setFont(new Font("Verdana", Font.BOLD, 30));
-			candidateDisplayables[k] = new JLabel(String.valueOf(k + 1));
-			candidateDisplayables[k].setFont(new Font("Verdana", Font.BOLD, 10));
+			displayables[k] = new JLabel(String.valueOf(k + 1),
+					SwingConstants.CENTER);
+			displayables[k].setFont(font);
+			displayables[k].setForeground(model.isModifiable()
+									? MODIF_COLOR : NMODIF_COLOR);
+			candidateDisplayables[k] = new JLabel(String.valueOf(k + 1),
+					SwingConstants.CENTER);
+			candidateDisplayables[k].setFont(font.deriveFont(10.0f));
+			candidateDisplayables[k].setForeground(model.isModifiable()
+									? MODIF_COLOR : NMODIF_COLOR);
 		}
 		
 		cards = new JPanel[model.getCardinalCandidates() + 1];
 		for (int k = 0; k < cards.length; ++k) {
 			cards[k] = new JPanel();
-			cards[k].setBackground(DEFAULT_COLOR);
+			cards[k].setBackground(HOVER_BACKGROUND);
+			cards[k].setOpaque(false);
 		}
 		candidates = new JPanel[model.getCardinalCandidates()];
 		for (int k = 0; k < candidates.length; ++k) {
 			candidates[k] = new JPanel();
-			candidates[k].setBackground(DEFAULT_COLOR);
+			candidates[k].setBackground(HOVER_BACKGROUND);
+			candidates[k].setOpaque(false);
 		}
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.setBackground(DEFAULT_BACKGROUND);
 		cardLayout = new CardLayout();
 	}
 	
@@ -85,7 +98,7 @@ public class Cell extends JPanel {
 		this.setLayout(cardLayout);
 		cards[0].setLayout(new GridLayout(3, 3)); {
 			for (int k = 0; k < candidates.length; ++k) {
-				candidates[k].setLayout(new GridBagLayout()); {
+				candidates[k].setLayout(new GridLayout(1, 1)); {
 					candidates[k].add(candidateDisplayables[k]);
 					candidateDisplayables[k].setVisible(model.isCandidate(k + 1));
 				}
@@ -93,6 +106,7 @@ public class Cell extends JPanel {
 			}
 		}
 		this.add(cards[0], "0");
+		
 		for (int k = 1; k < cards.length; ++k) {
 			cards[k].setLayout(new GridBagLayout()); {
 				cards[k].add(displayables[k-1]);
@@ -103,19 +117,32 @@ public class Cell extends JPanel {
 	}
 	
 	private void createController() {
-
+		// vers le modèle
 		for (int k = 1; k < cards.length; ++k) {
+			final int n = k;
 			cards[k].addMouseListener(new MouseAdapter() {
 	
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (model.isModifiable()) {
 						if (SwingUtilities.isLeftMouseButton(e)) {
-							model.removeValue();
+							Cell.this.firePropertyChange(CellModel.VALUE,
+									model.getValue(), 0);
 						}
 					}
 				}
-	
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					cards[n].setOpaque(true);
+					cards[n].repaint();
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					cards[n].setOpaque(false);
+					cards[n].repaint();
+				}
 			});
 		}
 		
@@ -125,32 +152,34 @@ public class Cell extends JPanel {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					System.out.println("clicked " + n);
 					if (model.isModifiable()) {
 						if (SwingUtilities.isLeftMouseButton(e)
 						&& model.isCandidate(n)) {
-							System.out.println("gauche");
-							model.setValue(n);
+							Cell.this.firePropertyChange(CellModel.VALUE,
+									model.getValue(), n);
 						} else if (SwingUtilities.isRightMouseButton(e)) {
-							System.out.println("droite");
-							model.toggleCandidate(n);
+							Cell.this.firePropertyChange(CellModel.CANDIDATE,
+									0, n);
 						}
 					}
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					candidates[n - 1].setBackground(HOVER_COLOR);
+					candidates[n - 1].setOpaque(true);
+					candidates[n - 1].repaint();
 				}
 
 				@Override
 				public void mouseExited(MouseEvent e) {
-					candidates[n - 1].setBackground(DEFAULT_COLOR);
+					candidates[n - 1].setOpaque(false);
+					candidates[n - 1].repaint();
 				}
 			});
 			
 		}
 		
+		// reçu du modèle
 		model.addPropertyChangeListener(CellModel.VALUE, new PropertyChangeListener() {
 
 			@Override
@@ -166,7 +195,6 @@ public class Cell extends JPanel {
 				IndexedPropertyChangeEvent ievt =
 						(IndexedPropertyChangeEvent) evt;
 				int index = ievt.getIndex() - 1;
-				System.out.println("recu " + index);
 				candidateDisplayables[index].setVisible(model.isCandidate(index + 1));
 				candidates[index].repaint();
 			}

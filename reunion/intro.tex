@@ -1,0 +1,57 @@
+\section*{Introduction} % Pas de numérotation
+\addcontentsline{toc}{section}{Introduction} % Ajout dans la table des matières
+
+Ce projet a pour objectif de réaliser un lanceur de commandes.
+L'utilisateur pourra ainsi sélectionner le programme et exécuter 
+tous les commandes du système Unix exactement de la même façon 
+que le ferait un terminal.
+Les commandes pourront être accompagnés d'options qui seront gérées également.
+% \vspace{\parskip}
+\smallskip
+
+Le projet est ainsi constitué de deux programmes :
+\begin{itemize} % liste classique
+\item un démon qui lancera les commandes ;
+\item un client capable de transmettre les commandes à exécuter au démon.
+\end{itemize}
+%\vspace{\parskip} % espace entre paragraphes
+\smallskip
+
+De plus, la communication entre démon et client se fait 
+obligatoirement selon le schéma suivant :
+\begin{itemize}
+ \item les clients transmettent leurs requètes 
+       grâce à une file synchronisée implémentée 
+       à l'aide d'un segment de mémoire partagé ;
+ \item la requète du client sera constitué 
+       de la commande à exécuter et de ses 
+       éventuels arguments et le nom de deux 
+       tubes nommés pipe1 et tube2 ;
+ \item la commande sera exécutée par 
+       le démon qui aura redirigé 
+       l'entrée standard de celle-ci 
+       vers pipe1 et 
+       la sortie standard vers tube2 ;  
+ \item le client transmettra alors à 
+       la commmande toutes les données 
+       lues sur son entrée standard 
+       grâce à pipe1 et il affichera 
+       toutes les données reçues sur tube2
+       sur sa sortie standard ;
+ \item toutes les requètes reçues par 
+       le démon seront traitées par des threads dédiés.
+\end{itemize}
+\vspace{\parskip}
+
+Le démon devra gérer correctement tout phénomène de zombies 
+ainsi que toutes demandes de terminaisons via des signaux.
+
+Chaque acteur devra libérer proprement les ressources utilisées.
+
+Le segment de mémoire partagé où seront stockés 
+les requètes des clients devra pouvoir contenir plusieurs requètes 
+et sont fonctionnement sera de type FIFO, 
+les requètes seront récupérées par le démon 
+dans l'ordre où elles ont été stockées 
+dans le segment de mémoire par le client.
+

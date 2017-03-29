@@ -1,0 +1,13 @@
+\select@language {french}
+\contentsline {section}{Introduction}{4}{section*.2}
+\contentsline {section}{\numberline {1}Manuel utilisateur}{5}{section.1}
+\contentsline {subsection}{\numberline {1.1}Contenu du dossier}{5}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Utilisation}{5}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Jeu d'exemples}{6}{subsection.1.3}
+\contentsline {section}{\numberline {2}manuel technique}{9}{section.2}
+\contentsline {subsection}{\numberline {2.1}Mode de communication}{9}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}client}{10}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}demon}{10}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{11}{subsection.2.4}
+\contentsline {section}{Conclusion}{12}{section*.3}
+\contentsline {section}{R\IeC {\'e}f\IeC {\'e}rences}{13}{section*.4}
