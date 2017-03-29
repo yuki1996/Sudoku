@@ -27,7 +27,7 @@ import sudoku.model.StdCellModel;
 public class Cell extends JPanel {
     
     // ATTRIBUTS
-    private static final Color DEFAULT_BACKGROUND = Color.WHITE;
+    public static final Color DEFAULT_BACKGROUND = Color.WHITE;
     private static final Color HOVER_BACKGROUND = new Color(100, 100, 100, 80);
     private static final Color MODIF_COLOR = Color.BLUE;
     private static final Color NMODIF_COLOR = Color.BLACK;
