@@ -178,6 +178,12 @@ public class Grid extends JPanel {
     
     private void highlightCells(Map<CellSetName, Set<ICoord>> cells,
     		boolean paint) {
+    	
+    	disjoint(cells, CellSetName.DECISIVE_UNITS,
+    			CellSetName.DECISIVE_CELLS);
+    	disjoint(cells, CellSetName.DELETION_UNITS,
+    			CellSetName.DELETION_CELLS);
+    	
     	for (Entry<CellSetName, Set<ICoord>> e : cells.entrySet()) {
     		Set<ICoord> set = e.getValue();
     		Color c = paint ? e.getKey().getColor() : Cell.DEFAULT_BACKGROUND;
@@ -185,6 +191,14 @@ public class Grid extends JPanel {
     			this.cells[coord.getRow()][coord.getCol()].setBackground(c);
     		}
     	}
+    }
+    
+    private void disjoint(Map<CellSetName, Set<ICoord>> cells,
+    		CellSetName bigger, CellSetName smaller) {
+
+    	Set<ICoord> unit = cells.get(bigger);
+    	unit.removeAll(cells.get(smaller));
+    	cells.put(bigger, unit);
     }
     
     // TEST

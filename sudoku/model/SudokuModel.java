@@ -194,7 +194,6 @@ public interface SudokuModel {
 	 */
 	void load(File fichier) throws IOException, ClassNotFoundException;
 	
-	
 	/**
 	 * Réinitialise la grille Player.
 	 * @post <pre>

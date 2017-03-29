@@ -257,6 +257,8 @@ public class StdSudokuModel implements SudokuModel {
         cmd.act();
         history.add(cmd);
         propertySupport.firePropertyChange(FINISH, false, isWin());
+        propertySupport.firePropertyChange(LAST_REPORT, getLastReport(),
+        		null);
     }
     
     public void undo() {

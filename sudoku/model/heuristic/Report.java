@@ -11,10 +11,10 @@ import sudoku.util.ICoord;
 public interface Report {
 
 	public enum CellSetName {
-		DECISIVE_CELLS(new Color(0, 0, 255)),
-		DECISIVE_UNITS(new Color(100, 100, 255)),
-		DELETION_CELLS(new Color(255, 0, 0)),
-		DELETION_UNITS(new Color(255, 100, 100));
+		DECISIVE_CELLS(new Color(80, 80, 255)),
+		DECISIVE_UNITS(new Color(150, 150, 255)),
+		DELETION_CELLS(new Color(255, 80, 80)),
+		DELETION_UNITS(new Color(255, 150, 150));
 		
 		private Color color;
 		
