@@ -254,20 +254,22 @@ public class StdGridModel implements GridModel {
 		for (int i = 0; i < size(); i++) {
 			for (int j = 0; j < size(); j++) {
 				if (cells[i][j].isModifiable()) {
-					cells[i][j].removeValue();
+					cells[i][j].reset();
 				}
 			}
 		}
 	}
 
-	@Override
-	public void clear() {
-		for (int i = 0; i < size(); i++) {
-			for (int j = 0; j < size(); j++) {
-				cells[i][j] = new StdCellModel(size());
-			}
-		}
-	}
+	// foireux : on ne peut pas changer les cellules
+	//		sans avertir qui que ce soit
+//	@Override
+//	public void clear() {
+//		for (int i = 0; i < size(); i++) {
+//			for (int j = 0; j < size(); j++) {
+//				cells[i][j] = new StdCellModel(size());
+//			}
+//		}
+//	}
 
 	@Override
 	public void setValue(ICoord coord, int value) {

@@ -231,7 +231,7 @@ public interface GridModel extends Serializable, Cloneable {
 	 *         				 cells[i][j].isModifiable()
 	 * </pre>
 	 */
-	void clear();
+	//void clear();
 	
 	/**
 	 * Change la valeur de la cellule de coord par value.
