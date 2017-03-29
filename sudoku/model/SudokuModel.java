@@ -40,6 +40,9 @@ import sudoku.util.ICoord;
  */
 public interface SudokuModel {
 	
+	// ATTRIBUTS
+	public static final String LAST_REPORT = "report";
+	
 	//REQUÊTES
 	/**
 	 * Retourne la grille du joueur.
