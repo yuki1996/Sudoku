@@ -10,8 +10,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.RuleManager;
@@ -33,7 +37,6 @@ public class StdSudokuModel implements SudokuModel {
     public static final int HISTORY_SIZE = 1024;
     
     private GridModel gridPlayer;
-    private GridModel gridSoluce;
     private RuleManager ruleManager; 
     private History<Command> history;
     
@@ -43,7 +46,6 @@ public class StdSudokuModel implements SudokuModel {
     public StdSudokuModel(int width, int height)  {
         Contract.checkCondition(width > 0 && height > 0);
         gridPlayer = new StdGridModel(width, height);
-        gridSoluce = new StdGridModel(width, height);
         ruleManager = new RuleManager(gridPlayer);
         history = new StdHistory<Command>(HISTORY_SIZE);
         
@@ -61,7 +63,6 @@ public class StdSudokuModel implements SudokuModel {
             final int width = Integer.parseInt(tokens[0]);
             final int height = Integer.parseInt(tokens[1]);
             
-            gridSoluce = new StdGridModel(width, height);
             gridPlayer = new StdGridModel(width, height);
 
             ruleManager = new RuleManager(gridPlayer);
@@ -78,17 +79,6 @@ public class StdSudokuModel implements SudokuModel {
                     }
                 }
             }
-            gridSoluce = (StdGridModel) gridPlayer.clone();
-            RuleManager rm = new RuleManager(gridSoluce);
-            while (!gridSoluce.isFull()) {
-                rm.findRule();
-                Command r = rm.generateCommand();
-                if (r != null) {
-                    r.act();
-                } else {
-                    rm.backtracking();
-                }
-            }
         } finally {
             fr.close();
         }
@@ -99,52 +89,29 @@ public class StdSudokuModel implements SudokuModel {
         return gridPlayer;
     }
 
-    public GridModel getGridSoluce() {
-        return gridSoluce;
-    }
     
     public boolean isWin() {
-        CellModel[][] tabPlayer = getGridPlayer().cells();
-        CellModel[][] tabSoluce = getGridSoluce().cells();
-        if (!getGridPlayer().isFull()) {
-            return false;
-        }
-        for (int i = 0 ; i < tabPlayer.length; i++) {
-            for (int j = 0 ; j < tabPlayer[i].length; j++) {
-                if (tabPlayer[i][j].getValue() != tabSoluce[i][j].getValue()) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return getGridPlayer().isFull() && check().isEmpty();
     }
 
     public boolean isModifiableCell(ICoord coord) {
         Contract.checkCondition(coord != null
                 && isValidCoord(coord));
-        return getGridSoluce().getCell(coord).isModifiable();
+        return getGridPlayer().getCell(coord).isModifiable();
     }
 
-    public List<ICoord> check() {
-        List<ICoord> list = new LinkedList<ICoord>();
-        CellModel[][] tabPlayer  = getGridPlayer().cells();
-        CellModel[][] tabSoluce  = getGridSoluce().cells();
-        for (int i = 0 ; i < tabPlayer.length; i++) {
-            for (int j = 0 ; j < tabPlayer[i].length; j++) {
-                if (tabPlayer[i][j].getValue() != 0) {
-                    if (tabPlayer[i][j].getValue() != tabSoluce[i][j].getValue()) {
-                        list.add(new Coord(i, j));
-                    }
-                }
-            }
-        }
-        return list;
+    public Set<ICoord> check() {
+        Set<ICoord> set = new HashSet<ICoord>();
+        set.addAll(checkLine());
+        set.addAll(checkColumn());
+        set.addAll(checkSector());
+        return set;
     }
 
     public boolean isValidCoord(ICoord coord) {
         Contract.checkCondition(coord != null);
-        return 0 <= coord.getCol() && coord.getCol() < getGridSoluce().size()
-                && 0 <= coord.getRow() && coord.getRow() < getGridSoluce().size();
+        return 0 <= coord.getCol() && coord.getCol() < getGridPlayer().size()
+                && 0 <= coord.getRow() && coord.getRow() < getGridPlayer().size();
     }
 
     public String help() {
@@ -195,21 +162,26 @@ public class StdSudokuModel implements SudokuModel {
     }
 
     public void finish() {
-        gridPlayer = getGridSoluce();
+    	while (!gridPlayer.isFull()) {
+            resolve();
+        }
     }
 
 
     @Override
     public void resolve() {
-        ruleManager.findRule();
+    	ruleManager.findRule();
         Command cmd = ruleManager.generateCommand();
         if (cmd == null) {
             for (int i = 0; i < getGridPlayer().size(); ++i) {
                 for (int j = 0; j < getGridPlayer().size(); ++j) {
                     if (! getGridPlayer().getCell(new Coord(i, j)).hasValue()) {
-                        act(new AddValue(getGridPlayer(), new Coord(i, j), 
-                            getGridSoluce().getCell(new Coord(i, j)).getValue()));
-                        return;
+                        for (int k = 1; k <= getGridPlayer().numberCandidates(); ++k) {
+                        	if (getGridPlayer().getCell(new Coord(i, j)).isCandidate(k)) {
+		                        act(new AddValue(getGridPlayer(), new Coord(i, j), k));
+		                        return;
+                        	}
+                        }
                     }
                     
                 }
@@ -219,7 +191,7 @@ public class StdSudokuModel implements SudokuModel {
     }
 
     public void reset() {
-        getGridPlayer().reset();
+        //getGridPlayer().reset();
         history.clear();
     }
     
@@ -229,7 +201,6 @@ public class StdSudokuModel implements SudokuModel {
         ObjectOutputStream oos =  new ObjectOutputStream(new FileOutputStream(fichier)) ;
         try {
             oos.writeObject(getGridPlayer());
-            oos.writeObject(getGridSoluce());
         } finally {
             oos.close();
         }
@@ -241,9 +212,7 @@ public class StdSudokuModel implements SudokuModel {
         GridModel oldModel = gridPlayer;
         try {
         	GridModel gp = (GridModel) ois.readObject();
-        	GridModel gs = (GridModel) ois.readObject();
             gridPlayer = gp;
-            gridSoluce = gs;
         } finally {
             ois.close();
         }
@@ -276,5 +245,86 @@ public class StdSudokuModel implements SudokuModel {
     public void addPropertyChangeListener(String propertyName,
 			PropertyChangeListener l) {
     	propertySupport.addPropertyChangeListener(propertyName, l);
+    }
+    
+    private Set<ICoord> checkLine() {
+    	Set<ICoord> setFinish = new HashSet<ICoord>();
+    	Map<Integer, List<ICoord>> map = new HashMap<Integer, List<ICoord>>();
+        for (int i = 0; i < getGridPlayer().size(); i++) {
+        	for (int k = 1; k <= getGridPlayer().numberCandidates(); k++) {
+	    		map.put(k, new ArrayList<ICoord>());
+	    	}
+        	for (int j = 0; j < getGridPlayer().size(); j++) {
+        		if (getGridPlayer().cells()[i][j].hasValue()) {
+        			int value = getGridPlayer().cells()[i][j].getValue();
+        			List<ICoord> l = map.get(value);
+        			Coord c = new Coord(i, j);
+        			if (!l.isEmpty()) {
+        				setFinish.add(l.get(0));
+        				setFinish.add(c);
+        			}
+        			l.add(c);
+        			map.put(value, l);
+        		}
+      	   }
+        	
+        }
+        return setFinish;
+    }
+
+    private Set<ICoord> checkColumn() {
+    	Set<ICoord> setFinish = new HashSet<ICoord>();
+    	Map<Integer, List<ICoord>> map = new HashMap<Integer, List<ICoord>>();
+        for (int i = 0; i < getGridPlayer().size(); i++) {
+        	for (int k = 1; k <= getGridPlayer().numberCandidates(); k++) {
+	    		map.put(k, new ArrayList<ICoord>());
+	    	}
+        	for (int j = 0; j < getGridPlayer().size(); j++) {
+        		if (getGridPlayer().cells()[j][i].hasValue()) {
+        			int value = getGridPlayer().cells()[j][i].getValue();
+        			List<ICoord> l = map.get(value);
+        			Coord c = new Coord(j, i);
+        			if (!l.isEmpty()) {
+        				setFinish.add(l.get(0));
+        				setFinish.add(c);
+        			}
+        			l.add(c);
+        			map.put(value, l);
+        		}
+      	   }
+        	
+        }
+        return setFinish;
+    }
+
+    private Set<ICoord> checkSector() {
+    	Set<ICoord> setFinish = new HashSet<ICoord>();
+    	Map<Integer, List<ICoord>> map = new HashMap<Integer, List<ICoord>>();
+
+		int nbSW = getGridPlayer().getNumberSectorByWidth();
+		int nbSH = getGridPlayer().getNumberSectorByHeight();
+		
+		for (int i = 0; i < getGridPlayer().getWidthSector(); i++) {
+			for (int j = 0; j < getGridPlayer().getHeightSector(); j++) {
+				for (int k = 1; k <= getGridPlayer().numberCandidates(); k++) {
+		    		map.put(k, new ArrayList<ICoord>());
+				}
+				for (int m = i * nbSW; m < getGridPlayer().getHeightSector() * (i + 1); m++) {
+					for (int n = j * nbSH; n < getGridPlayer().getWidthSector() * (j + 1); n++) {
+						int value = getGridPlayer().cells()[m][n].getValue();
+	        			List<ICoord> l = map.get(value);
+	        			Coord c = new Coord(m, n);
+	        			if (!l.isEmpty()) {
+	        				setFinish.add(l.get(0));
+	        				setFinish.add(c);
+	        			}
+	        			l.add(c);
+	        			map.put(value, l);
+	        		}
+	      	   }
+	        	
+	       }
+        }
+        return setFinish;
     }
 }

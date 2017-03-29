@@ -3,7 +3,7 @@ package sudoku.model;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
 import sudoku.model.heuristic.Report;
 import sudoku.model.history.cmd.Command;
@@ -13,10 +13,8 @@ import sudoku.util.ICoord;
  * @inv <pre>
  * 		isWin() <==> getGridPlayer().isFull() && check().isEmpty()
  * 		isModifiableCell(c) <==> getGridPlayer().getCell(c).isModifiable()
- * 		 isValidCoord(coord) <==> 0 <= coord.getCol() < getGridSoluce().size()
- *				&& 0 <= coord.getRow() < getGridSoluce().size()
- *		getGridPlayer().getWidth() == getGridSoluce().getWidth()
- *		getGridPlayer().getHeight() == getGridSoluce().getHeight() 
+ * 		 isValidCoord(coord) <==> 0 <= coord.getCol() < getGridPlayer().size()
+ *				&& 0 <= coord.getRow() < getGridPlayer().size()=
  * </pre>
  * 
  * @cons <pre>
@@ -34,8 +32,6 @@ import sudoku.util.ICoord;
  *         forall int i,j : ! getGridPlayer().cells[i][j].hasValue() &&
  *         				    getGridPlayer().cells[i][j].isModifiable()
  *         
- *         forall int i,j : ! getGridSoluce().cells[i][j].hasValue() &&
- *         				    getGridSoluce().cells[i][j].isModifiable()
  *    </pre>
  *    
  */
@@ -53,11 +49,6 @@ public interface SudokuModel {
 	GridModel getGridPlayer();
 	
 	/**
-	 * Retourne la grille solution.
-	 */
-	GridModel getGridSoluce();
-	
-	/**
 	 * Retourne si on a gagné.
 	 */
 	boolean isWin();
@@ -73,10 +64,10 @@ public interface SudokuModel {
 	boolean isModifiableCell(ICoord coord);
 	
 	/**
-	 * Retourne la liste des coordonnées des cellules ayant une valeur différente
+	 * Retourne l'ensemble des coordonnées des cellules ayant une valeur différente
 	 * de la getGridSoluce().
 	 */
-	List<ICoord> check(); 
+	Set<ICoord> check(); 
 	
 	/**
 	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et getGrid().size().
@@ -168,7 +159,7 @@ public interface SudokuModel {
 	/**
 	 * Résous la partie.
 	 * @post <pre>
-	 * 		getGridPlayer() == getGridSoluce()
+	 * 		getGridPlayer().iswin()
 	 * </pre>
 	 */
 	void finish();
