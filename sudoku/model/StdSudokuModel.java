@@ -1,5 +1,6 @@
 package sudoku.model;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.File;
@@ -220,7 +221,7 @@ public class StdSudokuModel implements SudokuModel {
     public void reset() {
         getGridPlayer().reset();
         history.clear();
-    }    
+    }
     
     public void save(String name) throws IOException {
         Contract.checkCondition(name != null && !name.equals(""));
@@ -237,18 +238,23 @@ public class StdSudokuModel implements SudokuModel {
     public void load(File fichier) throws ClassNotFoundException, IOException {
         Contract.checkCondition(fichier != null);
         ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
+        GridModel oldModel = gridPlayer;
         try {
-            gridPlayer = (StdGridModel) ois.readObject();
-            gridSoluce = (StdGridModel) ois.readObject();
+        	GridModel gp = (GridModel) ois.readObject();
+        	GridModel gs = (GridModel) ois.readObject();
+            gridPlayer = gp;
+            gridSoluce = gs;
         } finally {
             ois.close();
         }
+        propertySupport.firePropertyChange(GRID, oldModel, gridPlayer);
     }
 
     public void act(Command cmd) {
         Contract.checkCondition(cmd != null, "cmd est null");
         cmd.act();
         history.add(cmd);
+        propertySupport.firePropertyChange(FINISH, false, isWin());
     }
     
     public void undo() {
@@ -263,4 +269,8 @@ public class StdSudokuModel implements SudokuModel {
         history.getCurrentElement().act();
     }
     
+    public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener l) {
+    	propertySupport.addPropertyChangeListener(propertyName, l);
+    }
 }

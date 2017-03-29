@@ -197,6 +197,7 @@ public class Game {
     	// pause
     	pause = new JButton();
     	pause.setBackground(Color.WHITE);
+    	System.out.println(getClass().getResource("."));
     	pause.setIcon(
     			new ImageIcon(
     					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));

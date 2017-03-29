@@ -1,5 +1,6 @@
 package sudoku.model;
 
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +41,9 @@ import sudoku.util.ICoord;
  */
 public interface SudokuModel {
 	
-	// ATTRIBUTS
+    // PROPRIETES
+    public static final String GRID = "grid";
+    public static final String FINISH = "finish";
 	public static final String LAST_REPORT = "report";
 	
 	//REQUÊTES
@@ -225,4 +228,6 @@ public interface SudokuModel {
 	 */
 	void redo();
 	
+	void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener l);
 }
