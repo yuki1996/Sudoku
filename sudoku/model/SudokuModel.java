@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import sudoku.model.heuristic.Report;
 import sudoku.model.history.cmd.Command;
 import sudoku.util.ICoord;
 
@@ -83,6 +84,11 @@ public interface SudokuModel {
 	 * Apporte un indice.
 	 */
 	String help();
+	
+	/**
+	 * Renvoie le dernier rapport de recherche d'heuristique.
+	 */
+	Report getLastReport();
 	
 	/**
 	 * Retourne vrai si on peut annuler la dernière action, faux sinon.

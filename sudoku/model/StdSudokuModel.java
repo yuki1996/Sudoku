@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.RuleManager;
 import sudoku.model.history.History;
 import sudoku.model.history.StdHistory;
@@ -140,6 +141,10 @@ public class StdSudokuModel implements SudokuModel {
 	public String help() {
 		ruleManager.findRule();
 		return ruleManager.describe();
+	}
+	
+	public Report getLastReport() {
+		return ruleManager.getLastReport();
 	}
 	
 	public boolean canRedo() {
