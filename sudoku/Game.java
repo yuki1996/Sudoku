@@ -36,7 +36,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
-import sudoku.model.history.cmd.Command;
 import sudoku.view.Grid;
 
 //import com.sun.media.sound.Toolkit;
@@ -197,7 +196,6 @@ public class Game {
     	// pause
     	pause = new JButton();
     	pause.setBackground(Color.WHITE);
-    	System.out.println(getClass().getResource("."));
     	pause.setIcon(
     			new ImageIcon(
     					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -537,12 +535,17 @@ public class Game {
 	private void open() {
 		// TODO
 		JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter flt = new FileNameExtensionFilter("Fichier", "txt");
+		FileNameExtensionFilter flt = new FileNameExtensionFilter(
+				"Fichier de sauvegarde (.sav)", "sav");
 		fc.setFileFilter(flt);
 		int res = fc.showOpenDialog(mainFrame);
 		if (res == JFileChooser.APPROVE_OPTION) {
 			try {
-				sudokuModel= new StdSudokuModel(fc.getSelectedFile());
+				sudokuModel.load(fc.getSelectedFile());
+			} catch (ClassNotFoundException e) {
+				JOptionPane.showMessageDialog(null,
+					"Le fichier selectionné n'est probablement "
+					+ "pas une sauvegarde");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -552,12 +555,18 @@ public class Game {
 	
 	private void save() {
 		// TODO
-		String name = "Enregistrement1";
-		try {
-			sudokuModel.save(name);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter flt = new FileNameExtensionFilter(
+				"Fichier de sauvegarde (.sav)", "sav");
+		fc.setFileFilter(flt);
+		int res = fc.showOpenDialog(mainFrame);
+		if (res == JFileChooser.APPROVE_OPTION) {
+			try {
+				sudokuModel.save(fc.getSelectedFile().getAbsolutePath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
     

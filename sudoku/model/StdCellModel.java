@@ -167,8 +167,8 @@ public class StdCellModel implements CellModel {
         
         for (PropertyChangeListener l :
                 propertySupport.getPropertyChangeListeners(propertyName)) {
-            other.addPropertyChangeListener(propertyName, l);
             propertySupport.removePropertyChangeListener(l);
+            other.addPropertyChangeListener(propertyName, l);
         }
     }
 

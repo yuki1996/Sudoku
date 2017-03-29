@@ -39,6 +39,10 @@ public class RuleManager {
   
   //COMMANDES
   
+  public void setGrid(GridModel g) {
+	  grid = g;
+  }
+  
   public void findRule() {
 		lastReport = null;
 		for (int i = 0 ; i < Rule.values().length && lastReport == null; i++) {

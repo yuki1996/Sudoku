@@ -247,6 +247,8 @@ public class StdSudokuModel implements SudokuModel {
         } finally {
             ois.close();
         }
+        history.clear();
+        ruleManager.setGrid(gridPlayer);
         propertySupport.firePropertyChange(GRID, oldModel, gridPlayer);
     }
 

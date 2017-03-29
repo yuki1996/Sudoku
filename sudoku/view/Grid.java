@@ -8,6 +8,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -19,12 +22,15 @@ import sudoku.model.CellModel;
 import sudoku.model.GridModel;
 import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
+import sudoku.model.heuristic.Report;
+import sudoku.model.heuristic.Report.CellSetName;
 import sudoku.model.history.cmd.AddCandidate;
 import sudoku.model.history.cmd.AddValue;
 import sudoku.model.history.cmd.Command;
 import sudoku.model.history.cmd.RemoveCandidate;
 import sudoku.model.history.cmd.RemoveValue;
 import sudoku.util.Coord;
+import sudoku.util.ICoord;
 
 public class Grid extends JPanel {
     
@@ -145,6 +151,40 @@ public class Grid extends JPanel {
                 c.addPropertyChangeListener(CellModel.VALUE, cellListener);
             }
         }
+        
+        model.addPropertyChangeListener(SudokuModel.GRID,
+        		new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						setModel(model);
+					}
+        	
+        });
+        
+        model.addPropertyChangeListener(SudokuModel.LAST_REPORT,
+        		new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						boolean paint = evt.getOldValue() == null;
+						highlightCells(((Report) (paint
+							? evt.getNewValue() : evt.getOldValue()))
+							.importantSets(), paint);
+					}
+        	
+        });
+    }
+    
+    private void highlightCells(Map<CellSetName, Set<ICoord>> cells,
+    		boolean paint) {
+    	for (Entry<CellSetName, Set<ICoord>> e : cells.entrySet()) {
+    		Set<ICoord> set = e.getValue();
+    		Color c = paint ? e.getKey().getColor() : Cell.DEFAULT_BACKGROUND;
+    		for (ICoord coord : set) {
+    			this.cells[coord.getRow()][coord.getCol()].setBackground(c);
+    		}
+    	}
     }
     
     // TEST
