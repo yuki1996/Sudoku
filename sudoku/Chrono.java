@@ -1,20 +1,58 @@
 package sudoku;
 
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * Créer un chronomètre.
+ * 
+ * @inv 
+ * 		
+ * 
+ */
 public class Chrono {
-	// Fonctions pour le chronometre
-	static long chrono = 0 ;
-
-	// Lancement du chrono
-	static void Go_Chrono() {
-	chrono = java.lang.System.currentTimeMillis() ;
+	private long start;
+	private long pause;
+	
+	public Chrono() {
+		long time = System.currentTimeMillis();
+		start = time;
+		pause = time;
 	}
-
-	// Arret du chrono
-	static void Stop_Chrono() {
-	long chrono2 = java.lang.System.currentTimeMillis() ;
-	long temps = chrono2 - chrono ;
-	System.out.println("Temps ecoule = " + temps + " ms") ;
-	} 
+	
+	// requetes
+	public long getTimeStart() {
+		return start;
+	}
+	
+	public long getTimepause() {
+		return pause;
+	}
+	
+	public long getTime() {
+		pause = System.currentTimeMillis();
+		return pause - start;
+	}
+	
+	public String getChrono() {
+		long time = getTime();
+		
+		//hh:mm:ss
+		return String.format("%02d:%02d:%02d", 
+		    TimeUnit.MILLISECONDS.toHours(time),
+		    TimeUnit.MILLISECONDS.toMinutes(time) - 
+		    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)),
+		    TimeUnit.MILLISECONDS.toSeconds(time) - 
+		    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+	}
+	
+	// commandes
+	public void pause() {
+		pause = System.currentTimeMillis();
+	}
+	
+	public void start() {
+		start = System.currentTimeMillis();
+		pause = System.currentTimeMillis();
+	}
 }
