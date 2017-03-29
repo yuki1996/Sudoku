@@ -20,6 +20,7 @@ import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -31,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
@@ -505,16 +507,20 @@ public class Game {
 	
 	private void open() {
 		// TODO
-		File file = new File("grille2.txt");
-		try {
-			sudokuModel.load(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter flt = new FileNameExtensionFilter("Fichier", "txt");
+		fc.setFileFilter(flt);
+		int res = fc.showOpenDialog(mainFrame);
+		if (res == JFileChooser.APPROVE_OPTION) {
+			try {
+				sudokuModel= new StdSudokuModel(fc.getSelectedFile());
+				grid = new Grid(sudokuModel);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		display();
 	}
 	
 	private void save() {
@@ -546,7 +552,7 @@ public class Game {
     	   pause.setName("start");
     	   pause.setIcon(
        			new ImageIcon(
-       					new ImageIcon(getClass().getResource("pictures/play.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+       					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
        	   chrono.pause();
            mainFrame.hide();
            String[] msg = {"Reprendre le jeu", "Quittez le jeu"};

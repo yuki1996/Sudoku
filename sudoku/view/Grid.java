@@ -131,7 +131,7 @@ public class Grid extends JPanel {
 	// TEST
 	public static void main(String[] args) {
 		class Bla {
-			private static final String filename = "grille_diabolique1.txt";
+			private static final String filename = "grille2.txt";
 			JFrame mainFrame = new JFrame();
 			SudokuModel model;
 			public Bla() {
