@@ -1,89 +1,71 @@
+\section{Interface}
 
-\definecolor{Zgris}{rgb}{0.87,0.85,0.85}
+Notre application se présente de la manière suivante :\\
+une barre de menu situé au nord de la fenêtre vous permettra de choisir 
+une action à réaliser parmi toutes les fonctionnalités qui vous sont proposés.\\
+\\
+La grille de sudoku occupe le centre de notre application et se retrouve accompagnée 
+d'une colonne, à l'est de la fenêtre, vous permettant de sélectionner 
+parmi des boutons raccourcis, les fonctionnalités les plus utilisés tel défaire, 
+refaire une action, demander un indice, réinitialiser la grille etc, puis, 
+une zone d'aide, situé en bas de la grille.\\
 
-\newsavebox{\BBbox}
-\newenvironment{DDbox}[1]{
-\begin{lrbox}{\BBbox}\begin{minipage}{\linewidth}}
-{\end{minipage}\end{lrbox}\noindent\colorbox{Zgris}{\usebox{\BBbox}} \\
-[.5cm]}
+Il vous est également possible d'utiliser votre clavier afin de profiter 
+des fonctionnalités que vous offre notre application.\\
+Pour ce faire, il vous suffit de saisir la combinaison appropriée, combinaison 
+que vous pourrez retrouver en consultant les listes des fonctionnalités disponibles dans le menu, 
+au nord de l'application, où coïncide chaque fonctionnalité avec sa combinaison 
+de la forme CTRL+LETTRE, qu'il vous suffit d'utiliser en appuyant simultanément 
+sur la touche contrôle et la lettre correspondante à l'action souhaîtée. 
 
-\section{manuel technique}
-\parskip=0.5pt
-\subsection{Mode de communication}
-\parskip=0.5pt
-Pour développer notre lanceur de commandes, 
-nous avons du créer une structure que 
-nous partageons en mémoire partagée :
+\begin{figure}[ht]
+  \caption{\label{annexe1} une partie de sudoku}
+  \includegraphics [width=130mm]{images/interface.png} \\[0.5cm]
+\end{figure}
 
-\begin{DDbox}{\linewidth}
-  \begin{Verbatim}
-      //structure des informations du clients
-      struct dd {
-	      char pipe[PIPE_SIZE + 1];
-	      char tube[TUBE_SIZE + 1];
-	      char requete[REQUETE_SIZE + 1];
-      };
-      typedef struct dd dd;
+\newpage
+\section{Difficultés rencontrées}
+Lors de la conception de notre projet, nous avons rencontrés quelques difficultés :
+\begin{itemize}
+ \item gestion du temps, où chaque semaine, nous nous fixions des objectifs à atteindre,
+ \item utilisation et prise en main du logiciel git et du site 
+	    \href{https://github.com/yuki1996/Sudoku}{github.com}, 
+ \item respect des demandes de la part du client, 
+ \item incompatibilité/réajustement lors de réunion de différents travaux des membres du groupe
+\end{itemize}
 
-      // Nos variables en mémoire partagée.
-      struct fifo {
-        sem_t numero;
-	sem_t mutex;
-	sem_t vide;
-	sem_t plein;
-	int tete;      // Position d'ajout dans le tampon
-	int queue;     // Position de suppression dans le tampon
-	dd buffer[N];  // La structure contenant les informations des N clients
-      };
 
-      #define TAILLE_SHM (sizeof(struct fifo))
-  \end{Verbatim}
-\end{DDbox}
+\section{Conclusion}
+Ce projet nous a apporté une grande expérience car il s'agit 
+de notre premier ``gros'' projet en équipe de plus de deux personnes.
 
-Pour cela, il nous a fallu définir les noms 
-et les tailles des différents éléments utilisés :
+Afin de réaliser un travail commun, nous avons opté pour un service 
+de gestion de développement de logiciels, utilisant le logiciel 
+de gestion de versions Git ainsi que le service web d'hébergement \url{https://github.com/}.
 
-\begin{DDbox}{\linewidth}
-  \begin{Verbatim}
-    #define TAILLE_SHM (sizeof(struct fifo))
+Ce dernier fut pour nous d'une grande aide, ce fut une toute nouvelle façon de 
+procéder que nous a donné comme opportunité ce projet même si la prise en main 
+fut assez compliqué.
 
-    /**
-    * Un nom de segment de mémoire partagé 
-    * avec un identifiant pour nous assurer de son unicité.
-    */
-    #define NOM_SHM "/mon_shm_a_moi_58942298536542745545"
-    #define NOM_FIFO_ENTRANT "mon_tube_nomme_1488864545622"
-    #define NOM_FIFO_SORTANT "mon_tube_nomme_1488862545623"
+Pour finir, ce projet fut pour nous très enrichissant car il nous a permi de réunir
+l'ensemble de nos connaissances au sein d'un même projet. Nous avons fait le choix 
+de développer notre application dans le langage de programmation Java, qui est un langage
+très intéressant pour les dévellopements d'applications graphiques.
 
-    // Taille limite du nombre de clients en même temps
-    #define N 10
-    #define PIPE_SIZE 1024
-    #define TUBE_SIZE 1024
-    #define REQUETE_SIZE 1024
-    #define RESULTAT_SIZE 1024
-  \end{Verbatim}
-\end{DDbox}
+\section{Annexes}
 
-\subsection{client}
-Ce programme gère les demandes des clients, 
-il s'occupe d'ajouter les requètes des clients dans la mémoire partagée.
+\begin{figure}[ht]
+  \caption{\label{annexe1} Diagramme model}
+  \includegraphics [width=160mm]{images/model.png} \\[0.5cm]
+\end{figure}
 
-\subsection{demon}
-Ce programme, lancé en arrière plan, tourne toujours 
-et gère les requètes des clients récupérées depuis la mémoire partagée.  
+\begin{figure}[ht]
+  \caption{\label{annexe2} Diagramme history}
+  \includegraphics [width=140mm]{images/history.png} \\[0.5cm]
+\end{figure}
 
-\subsection{Difficultés rencontrées}
-Au cours de l'implantation de ce projet, 
-nous avons rencontré quelques difficultés :
+\begin{figure}[ht]
+  \caption{\label{annexe3} Diagramme heuristic}
+  \includegraphics [width=140mm]{images/heuristic.png} \\[0.5cm]
+\end{figure}
 
-\begin{enumerate}
- \item la prise de connaissance du sujet, 
- où nous avons du gérer des critères spécifiques (utilisation de tubes, de pipes etc.)
- \item le choix des structures pour le partage de mémoire,
- \item la création du démon, afin que ce dernier reste en arrière plan,
- \item la communication entre les différents acteurs, ou comment gérer 
- la communication entre un démon et un ou plusieurs clients,
- \item la gestion de plusieurs clients,
- \item les signaux,
- \item le temps imparti du projet. 
-\end{enumerate}

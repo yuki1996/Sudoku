@@ -1,7 +1,8 @@
 \section{Vocabulaire utilisé}
 Cette section a pour but de répertorier 
-les différents mots de vocabulaire que nous emploierons dans la suite, 
-pour la partie code, nous utiliserons les équivalents 
+les différents mots de vocabulaire que nous emploierons dans la suite.\\
+\\
+Pour la partie code, nous utiliserons les équivalents 
 de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
 
 \begin{itemize}
@@ -46,11 +47,16 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
 
   \item Candidat (candidate) :
   les candidats sont les diverses possibilités de symboles pour une case donnée. 
-  Le principe du jeu est de réduire les candidats pour obtenir le symbole 
-  final à faire figurer dans la case.
+  Le principe du jeu est de réduire les nombres de candidats pour obtenir le symbole 
+  final à faire figurer dans la case.\\
+  
+  \item Valeur (Value) : 
+  une valeur est représentée par un unique symbole pour une case donnée.
+  L'objectif étant de fixer une valeur dans chaque case et de trouver les bonnes valeurs.
+  
 \end{itemize}
 
-\section{Jouabilité}
+\section{Fonctionnalités}
 
 \subsection{Fonctionnalités obligatoires}
 
@@ -63,13 +69,13 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
   
   \item Sauvegarde/chargement d’une partie :
   afin de procéder à une sauvegarde, l'utilisateur peut enregistrer la grille actuelle 
-  dans un fichier et, peut la récupérer ensuite grâce à une option de chargement. \\
+  dans un fichier et peut la récupérer ensuite grâce à une option de chargement. \\
   
   \item Réinitialisation de la grille :
   option permettant de remettre la grille de sudoku telle qu'elle était à son chargement. \\
   
   \item Modification d’une cellule :
-  une cellule devra être modifiable afin de pouvoir ajouter/retirer des valeurs. \\
+  une cellule devra être modifiable afin de pouvoir ajouter/retirer des candidats. \\
   
   \item Valeur définitive :
   dans une cellule, on pourra fixer une valeur définitive qui ne sera plus modifiable par la suite. \\
@@ -105,24 +111,18 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
   
   \item Refaire : permet de défaire l'action annuler. \\
 
-  \item Raccourcis clavier : gestion des appuies simultanés de touches du clavier 
+  \item Raccourcis clavier : gestion des appuis simultanés de touches du clavier 
   générant des possibilités inscrites dans le menu tel les sauvegardes/chargements 
   de nouvelles grilles, l'annulation/réactivation d'une action etc.  \\  
-  
-  \item Modification d’une cellule : une cellule devra pouvoir être modifiable 
-  et ceci de façon visible comme par exemple 
-  grâce à un changement de couleur et/ou un changement de taille. \\
   
   \item Demande d’aide : système permettant à l'utilisateur 
   de bénéficier d'une aide en cas de problème. \\
 
   \item Tutoriel : quelques explications pour tous ceux qui désirent (ré)apprendre 
-  comment résoudre un sudoku, quelles sont les règles, comment cela fonctionne etc.
-  (annexe~\ref{annexe4} : tutoriel)\\ 
+  à résoudre un sudoku, quelles sont les règles, comment cela fonctionne etc.\\ 
   
   \item Guide : quelques explications sur l'utilisation de l'application 
-  (gestion des boutons, comment jouer etc.).
-  (annexe~\ref{annexe5} : guide)
+  (gestion des boutons, comment jouer etc.).\\
  
   \item Masquer la grille pendant la pause : lorsque l'utilisateur appuyera sur le bouton pause, 
   ce dernier verrouillera la session de jeu et ainsi, 
@@ -138,11 +138,8 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
   si n vaut 2, l'utilisateur pourra utiliser une grille de deux cases sur deux, 
   offrant une grille de 4 cases au total.   \\
 
- \item Timer : système permettant à l'utilisateur de connaître 
+ \item Chronomètre : système permettant à l'utilisateur de connaître 
  le temps qu'il a mis à résoudre une grille.  \\
- 
- \item Start/Pause : arrête momentanément le timer, ce dernier reprendra son décompte 
- lorsque l'utilisateur aura de nouveau cliquer sur ce bouton.  \\
  
  \item Éditeur/générateur : possibilités pour l'utilisateur 
  de créer ses propres grilles selon des niveaux de difficultés. \\
@@ -156,34 +153,34 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
 Pour implanter notre sudoku, nous avons choisit de fonctionner selon le modèle MVC, 
 c'est-à-dire le système Modèle-Vue-Contrôleur. Afin de visualiser notre organisation, 
 des diagrammes ont été réalisés et sont disponibles en annexe 
-(annexe~\ref{annexe1} : diagramme model,
-annexe~\ref{annexe2} : diagramme history,
-annexe~\ref{annexe3} : diagramme heuristic).
+(annexe 7 : diagramme model,
+annexe 8 : diagramme history,
+annexe 9 : diagramme heuristic).
 
 \subsection{SudokuModel}
-Le sudoku possède deux grilles(GridModel) : celle du joueur, la solution et un historique.
-La grille solution est générée par application des heuristiques 
-à l'aide d'un gestionnaire d'heuristiques (RuleManager).
-La grille joueur est le résultat des interactions du joueur(ajouter/supprimer un candidat ou 
-sélectionner/désélectionner une valeur).
-L'historique répertorie les actions du joueur avec possibilité d'annuler son actions.
-Le joueur a gagné quand sa grille et la grille solution sont identiques.
-La partie est finie quand le joueur a rempli toutes les cases de sa grille d'une valeur.
-À tout moment le joueur peut demander de l'aide ou demander un indice (exécution d'une heuristique).
-On peut sauvegarder enregistrer sa partie ou générer une grille à partir d'un fichier texte
-(sur la première ligne doit se trouver la hauteur et la largeur de la grille puis sur les lignes qui
-suivent les valeurs des cases fixes du sudoku).
-Le joueur peut à tout moment réinitialiser sa partie c'est à dire mettre sa grille comme elle était 
-avant toutes intéractions de sa part, seules les valeurs des cases fixes restent.
+Le sudoku possède une grille pour le joueur (GridModel) et un historique.\\ 
+La grille du joueur est le résultat des interactions du joueur (ajouter/supprimer 
+un candidat ou sélectionner/désélectionner une valeur). \\
+L’historique répertorie les actions du joueur avec possibilité d’annuler ses actions.\\ 
+Le joueur a gagné quand sa grille est finie, sans conflits de nombres 
+(deux 6 sur la même ligne par exemple).\\
+La partie est finie quand le joueur a rempli toutes les cases de sa grille d’une valeur. 
+À tout moment le joueur peut demander de l’aide ou demander un indice (exécution d’une
+heuristique). On peut sauvegarder ou enregistrer sa partie ou encore générer une grille
+à partir d’un fichier texte (sur la première ligne doit se trouver la hauteur
+et la largeur de la grille puis sur les lignes qui suivent les valeurs des cases
+fixes du sudoku). Le joueur peut à tout moment réinitialiser sa partie, c’est
+à dire, mettre sa grille comme elle était avant toutes interactions de sa part,
+seules les valeurs des cases fixes restent.
 
 \subsection{GridModel}
 Une grille possède une taille n (hauteur x largeur) fixe, inchangeable donnée en paramètre lors de l'initialisation et
 un tableau à double entrée (lignes, colonnes) de cellules (ModelCell).
-La grille connait son nombre de valeurs/candidats possibles : [1,n].
+La grille connait son nombre de valeurs/candidats possibles.
 Une coordonnée (ICoord) représente une des cases du tableau : elle commence de 0 et va jusqu'à n - 1.
 Elle peut donner la cellule par rapport à une coordonnée et inversement, mais aussi un ensemble de cellules d'une
 unité (colonne, ligne, région) d'une cellule en lui donnant soit sa coordonnée soit elle-même en paramètre.
-La grille posède un détecteur de validation de coordonnée pour vérifier que la coordonnée soit toujours dans le tableau. 
+La grille possède un détecteur de validation de coordonnée pour vérifier que la coordonnée est toujours dans le tableau. 
 De même que SudokuModel, on peut ajouter/supprimer un candidat de la grille ou ajouter/supprimer (si ce n'est pas une 
 case fixe) une valeur.
 
@@ -191,7 +188,7 @@ case fixe) une valeur.
 Une cellule possède un tableau de candidat.
 Une cellule peut être soit modifiable c'est-à-dire qu'on peut modifier sa valeur ou soit fixe, immuable : 
 ce sont les cases du départ de la grille. 
-Comme la grille, elle connait son nombre de valeurs/candidats possibles : [1,n] qui est donné en paramètre.
+Comme la grille, elle connait son nombre de valeurs/candidats possibles qui est donné en paramètre.
 La cellule a soit une valeur, soit une liste de candidats possibles. 
 On peut ajouter/supprimer un candidat de la cellule ou ajouter/supprimer (si ce 
 n'est pas une case fixe) une valeur. On peut aussi demander à tout moment sa valeur, si une valeur est un candidat
@@ -213,9 +210,9 @@ plus récent, ajouter un élément dans l'historique à cet instant fait dispara
 Deux comportements possibles existent pour une heuristique : soit on trouve la valeur à mettre dans la case 
 (exemple : seul candidat), soit on peut supprimer des candidats dans les cases de la grille (exemple : jumeaux et triplet)
 ce qui réduit les possibiltés de valeurs à chaque boucle d'heuristique.
-Le gestionnaire va parcourir les plus simples aux plus complexes heuristiques (qui sont classées dans une classe énumerative Rule où
+Le gestionnaire va parcourir les heuristiques de la plus simple à la plus complexe (qui sont classées dans une classe énumerative Rule où
 chaque algorithme de résolution est associé à une unique heuristique) pour trouver celle qui apporte une solution.
-le gestionnaire peut demander à tout moment la description ou l'execution de la dernière solution trouvée.
+Le gestionnaire peut demander à tout moment la description ou l'execution de la dernière solution trouvée.
 L'heuristique choisie est un rapport (Report).
 
 \subsection{Report}
@@ -226,7 +223,19 @@ une exécution des commandes (suppression candidats ou ajout valeur).
 \section{Heuristiques implantées}
 \subsection{Un seul candidat : (only candidate)}
 C'est l'heuristique la plus simple. Si une case ne contient qu'un candidat c'est que ce candidat est la valeur 
-finale de la case obligatoirement.
+finale de la case obligatoirement.\\
+\\
+
+Exemple : \\
+On peut voir ici que sur la première ligne et la deuxième colonne se trouve le candidat 4.
+Comme étant le seul 4 dans la région, de ce fait, on peut le sélectionner comme valeur.\\
+
+\begin{figure}[ht]
+  \caption{\label{annexe1} seul candidat}
+  \includegraphics [width=80mm]{images/only-candidate.png} \\[0.5cm]
+\end{figure}
+
+\newpage
 
 \subsection{Un candidat unique : (one candidate)}
 Prenons maintenant une ligne complète. Dans les cases vides, nous avons noté la liste des candidats potentiels. 
@@ -234,6 +243,16 @@ Chaque chiffre de 1 à 9 devant obligatoirement se trouver sur la ligne de faço
 de toutes les cases de la ligne, un candidat n'apparait qu'une seule fois, alors c'est qu'il doit effectivement 
 être placé dans cette case.
 Il est possible d'utiliser cette méthode dans toutes les unités de la grille (lignes, colonnes, régions).
+
+Exemple :
+On peut voir ici que sur la première ligne, septième colonne, il y a un seul candidat 
+dans la case. Donc il n'y a qu'une solution : 5.\\
+
+\begin{figure}[ht]
+  \caption{\label{annexe2} candidat unique}
+  \includegraphics [width=100mm]{images/one-candidate.png} \\[0.5cm]
+\end{figure}
+
 
 \subsection{Des jumeaux/triplés : (pair/triplet)}
 Il n'est pas toujours possible de découvrir dès le début l'emplacement final et définitif d'un symbole. 
@@ -251,12 +270,35 @@ Il est possible d'utiliser cette méthode dans toutes les régions alignées (ho
 et dans toutes les lignes ou colonnes.
 Si à l’intérieur d’un bloc, un chiffre n’est possible que dans une ligne/colonne, alors
 nous pouvons en déduire que ce chiffre ne peut pas être présent dans les cases de cette
-ligne/colonne n’appartenant pas au bloc.
+ligne/colonne n’appartenant pas au bloc.\\
+\\
+Exemple :\\
+On peut voir ici que sur la région centrale, les 1 sont uniquement présents 
+et alignés sur la verticale.
+Si bien qu'on peut en déduire qu'un des deux 1 est la solution, 
+donc on peut supprimer les autres de la colonne.\\
+
+\begin{figure}[ht]
+  \caption{\label{annexe3} jumeaux, triplés}
+  \includegraphics [width=100mm]{images/PairTriplet.png} \\[0.5cm]
+\end{figure}
+
+\newpage
 
 \subsection{Interactions entre régions}
 Si à l’interieur d’une ligne/colonne, un chiffre n’est possible que dans un bloc, alors
 nous pouvons en déduire que ce chiffre ne peut pas être présent dans les autres cases de
-ce bloc.
+ce bloc.\\
+\\
+
+Exemple :\\
+Dans cet exemple, on peut constater que R7 et R9 que le 8 n'est pas présent sur L8. 
+On peut donc supprimer les 8 dans la R8 à l'exception de ceux sur L8.
+
+\begin{figure}[ht]
+  \caption{\label{annexe4} Interactions entre régions}
+  \includegraphics [width=100mm]{images/InteractionBetweenSector.png} \\[0.5cm]
+\end{figure}
 
 \subsection{Candidats identiques}
 Cette méthode ne donne pas la possibilité de répondre à la question du choix,
@@ -291,6 +333,20 @@ Cette méthode s'applique dans les cas suivants, avec 2 candidats:\\
 - dans 2 régions, en supprimant les candidats dans 2 colonnes\\
 \\
 Il est possible d'utiliser cette méthode dans toutes les unités de la grille (régions, lignes, colonnes).
+\\
+
+Exemple :\\
+Dans cet exemple, il n'est possible de trouver le candidat 5 
+qu'à deux emplacements des lignes L2 et L8.\\ 
+De plus, ces candidats font partie des colonnes communes L5 et L7.\\ 
+Il est donc possible de supprimer tous les autres candidats 5 de ces 2 colonnes. 
+
+\begin{figure}[ht]
+  \caption{\label{annexe5} XWing}
+  \includegraphics [width=100mm]{images/XWing.png} \\[0.5cm]
+\end{figure}
+
+\newpage
 
 \subsection{Groupes isolés}
 Si 3 candidats se retrouvent seuls dans 3 cases, il est possible de savoir qu'ils finiront bien dans ces 3 cases. 
