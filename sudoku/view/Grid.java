@@ -79,9 +79,11 @@ public class Grid extends JPanel {
 				}
             });
         } else {
+        	this.removeAll();
             createView();
             placeComponents();
             createController();
+            this.revalidate();
         }
     }
     
@@ -110,12 +112,12 @@ public class Grid extends JPanel {
                     JPanel q = new JPanel(new GridLayout(grid.getHeightSector(),
                             grid.getWidthSector())); {
                         for (int j = 0; j < grid.numberCandidates(); ++j) {
-                            int row = (k / grid.getNumberSectorByWidth())
-                                    * grid.getWidthSector()
-                                    + j / grid.getWidthSector();
-                            int col = (k % grid.getNumberSectorByHeight())
-                                    * grid.getHeightSector()
-                                    + j % grid.getHeightSector();
+                            int row = grid.getHeightSector()
+                            		* (k / grid.getNumberSectorByWidth())
+                            		+ j / grid.getWidthSector();
+                            int col = grid.getWidthSector()
+                            		* (k % grid.getNumberSectorByWidth())
+                            		+ j % grid.getWidthSector();
                             q.add(cells[row][col]);
                         }
                     }
