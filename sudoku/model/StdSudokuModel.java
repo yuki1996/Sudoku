@@ -189,7 +189,9 @@ public class StdSudokuModel implements SudokuModel {
     }
 
     public void reset() {
-        //getGridPlayer().reset();
+    	while (canUndo()) {
+			undo();
+		}
         history.clear();
     }
     
