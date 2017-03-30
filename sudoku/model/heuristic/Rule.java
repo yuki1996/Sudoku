@@ -45,9 +45,7 @@ enum Rule {
 	
 	CHAINED_FORCED_CANDIDATE(null),
 	
-	NISHIO(null),
-	
-	BRUTE_FORCE(null);
+	NISHIO(null);
 	
 	private ReportGenerator myGenerator;
 	

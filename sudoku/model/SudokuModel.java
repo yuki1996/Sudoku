@@ -219,4 +219,6 @@ public interface SudokuModel {
 	
 	void addPropertyChangeListener(String propertyName,
 			PropertyChangeListener l);
+	
+	void removePropertyChangeListener(PropertyChangeListener l);
 }
