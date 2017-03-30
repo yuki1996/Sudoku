@@ -223,6 +223,7 @@ public class StdSudokuModel implements SudokuModel {
         Contract.checkCondition(cmd != null, "cmd est null");
         cmd.act();
         history.add(cmd);
+        ruleManager.clear();
         propertySupport.firePropertyChange(FINISH, false, isWin());
     }
     
@@ -230,12 +231,14 @@ public class StdSudokuModel implements SudokuModel {
         Contract.checkCondition(canUndo());
         history.getCurrentElement().act();
         history.goBackward();
+        ruleManager.clear();
     }
     
     public void redo() {
         Contract.checkCondition(canRedo());
         history.goForward();
         history.getCurrentElement().act();
+        ruleManager.clear();
     }
     
     public void addPropertyChangeListener(String propertyName,
