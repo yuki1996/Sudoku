@@ -66,7 +66,7 @@ public class RuleXWing extends ReportGenerator {
 											r.addCell(CellSetName.DECISIVE_UNITS, cd);
 										}
 									}
-									for (ICoord cd : grid.getRow(l.get(1))) {
+									for (ICoord cd : grid.getRow(coord2)) {
 										if (!r.getCellSet(CellSetName.DECISIVE_CELLS).contains(cd)) {
 											r.addCell(CellSetName.DECISIVE_UNITS, cd);
 										}
@@ -111,7 +111,7 @@ public class RuleXWing extends ReportGenerator {
 											r.addCell(CellSetName.DECISIVE_UNITS, cd);
 										}
 									}
-									for (ICoord cd : grid.getRow(l.get(1))) {
+									for (ICoord cd : grid.getRow(coord2)) {
 										if (!r.getCellSet(CellSetName.DECISIVE_CELLS).contains(cd)) {
 											r.addCell(CellSetName.DECISIVE_UNITS, cd);
 										}
@@ -194,7 +194,7 @@ public class RuleXWing extends ReportGenerator {
 											r.addCell(CellSetName.DECISIVE_UNITS, cd);
 										}
 									}
-									for (ICoord cd : grid.getCol(l.get(1))) {
+									for (ICoord cd : grid.getCol(coord2)) {
 										if (!r.getCellSet(CellSetName.DECISIVE_CELLS).contains(cd)) {
 											r.addCell(CellSetName.DECISIVE_UNITS, cd);
 										}
