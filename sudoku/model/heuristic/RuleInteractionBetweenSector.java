@@ -67,22 +67,41 @@ public class RuleInteractionBetweenSector extends ReportGenerator {
 						int value = k + 1;
 						r.addValue(value);
 						for (ICoord coord : map.get(k)) {
-							r.addCell(CellSetName.DECISIVE_CELLS, coord);
-							for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
-								r.addCell(CellSetName.DECISIVE_UNITS, cd);
-							}
+							r.addCell(CellSetName.DECISIVE_UNITS, coord);
 						}
 						for (ICoord coord : grid.getSector(map.get(k).iterator().next())) {
 							if (grid.getCell(coord).isCandidate(value) && !grid.getCell(coord).hasValue() 
-									&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
+									&& !r.getCellSet(CellSetName.DECISIVE_UNITS).contains(coord)) {
 								r.addCell(CellSetName.DELETION_CELLS, coord);
 							} else {
-								//verifier
 								r.addCell(CellSetName.DELETION_UNITS, coord);
 							}
 						}
+						for (int j = i * nbSW; j < grid.getWidthSector() * (i + 1); j++) {
+							if (j != m)  {
+								for (int l = 0; l < grid.size(); l++) {
+									CellModel cell = tabC[j][l];
+									ICoord coord = new Coord(j,l);
+									if (!r.getCellSet(CellSetName.DELETION_CELLS).contains(coord) &&
+											!r.getCellSet(CellSetName.DELETION_UNITS).contains(coord)) {
+										if (cell.isCandidate(value) && !cell.hasValue()) {
+											r.addCell(CellSetName.DECISIVE_CELLS, coord);
+										} else {
+											r.addCell(CellSetName.DECISIVE_UNITS, coord);
+										}
+									}
+								}
+							} else {
+								int col = ((ICoord) r.getCellSet(CellSetName.DELETION_UNITS).toArray()[1]).getCol();
+								int colSector = (col / grid.getWidthSector());
+								for (int l = colSector * nbSH; l < grid.getHeightSector() * (colSector + 1); l++) {
+
+									r.addCell(CellSetName.DECISIVE_UNITS, new Coord(m,l));
+								}
+							}
+						}
 						if (r.getCellSet(CellSetName.DELETION_CELLS).size() != 0) {
-							String s = "Le candidat " + value + " n'est présenté que dans 2 lignes de 2 régions. \n" +
+							String s = "Le candidat " + value + " n'est présenté que dans 2 lignes de 2 régions." +
 								" On peut donc le supprimer dans ces lignes de la 3ème region.";
 							r.setDescription(s);
 							return r;
@@ -112,7 +131,7 @@ public class RuleInteractionBetweenSector extends ReportGenerator {
 								Set<ICoord> set = map.get(k);
 								set.add(new Coord(i, n));
 								map.put(k, set);
-								unit[k] = (i / nbSH) * nbSW + ( n / nbSW) + 1;
+								unit[k] = (i / nbSH) * nbSW + (n / nbSW) + 1;
 							}
 							if (c.isCandidate(k + 1) && tabB[k] && map.get(k) != null) {
 								//le candidat existe dans la cellule et qu'il est déjà apparu dans la même région
@@ -136,22 +155,40 @@ public class RuleInteractionBetweenSector extends ReportGenerator {
 						int value = k + 1;
 						r.addValue(value);
 						for (ICoord coord : map.get(k)) {
-							r.addCell(CellSetName.DECISIVE_CELLS, coord);
-							for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
-								r.addCell(CellSetName.DECISIVE_UNITS, cd);
-							}
+							r.addCell(CellSetName.DECISIVE_UNITS, coord);
 						}
 						for (ICoord coord : grid.getSector(map.get(k).iterator().next())) {
 							if (grid.getCell(coord).isCandidate(value) && !grid.getCell(coord).hasValue() 
-									&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
+									&& !r.getCellSet(CellSetName.DECISIVE_UNITS).contains(coord)) {
 								r.addCell(CellSetName.DELETION_CELLS, coord);
 							} else {
-								//verifier
 								r.addCell(CellSetName.DELETION_UNITS, coord);
 							}
 						}
+						for (int i = j * nbSH; i < grid.getHeightSector() * (j + 1); i++) {
+							if (i != n)  {
+								for (int l = 0; l < grid.size(); l++) {
+									CellModel cell = tabC[l][i];
+									ICoord coord = new Coord(l,i);
+									if (!r.getCellSet(CellSetName.DELETION_CELLS).contains(coord) &&
+											!r.getCellSet(CellSetName.DELETION_UNITS).contains(coord)) {
+										if (cell.isCandidate(value) && !cell.hasValue()) {
+											r.addCell(CellSetName.DECISIVE_CELLS, coord);
+										} else {
+											r.addCell(CellSetName.DECISIVE_UNITS, coord);
+										}
+									}
+								}
+							} else {
+								int row = ((ICoord) r.getCellSet(CellSetName.DELETION_UNITS).toArray()[1]).getRow();
+								int rowSector = (row / grid.getWidthSector());
+								for (int l = rowSector * nbSW; l < grid.getWidthSector() * (rowSector + 1); l++) {
+									r.addCell(CellSetName.DECISIVE_UNITS, new Coord(l,n));
+								}
+							}
+						}
 						if (r.getCellSet(CellSetName.DELETION_CELLS).size() != 0) {
-							String s = "Le candidat " + value + " n'est présenté que dans 2 colonnes de 2 régions. \n" +
+							String s = "Le candidat " + value + " n'est présenté que dans 2 colonnes de 2 régions." +
 									" On peut donc le supprimer dans ces colonnes de la 3ème region.";
 							r.setDescription(s);
 							return r;
