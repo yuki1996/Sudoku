@@ -201,6 +201,12 @@ public class Grid extends JPanel {
     	disjoint(cells, CellSetName.DELETION_UNITS,
     			CellSetName.DECISIVE_CELLS);
     	
+    	disjoint(cells, CellSetName.DELETION_CELLS,
+    			CellSetName.DECISIVE_UNITS);
+
+    	disjoint(cells, CellSetName.DELETION_UNITS,
+    			CellSetName.DECISIVE_UNITS);
+    	
     	for (Entry<CellSetName, Set<ICoord>> e : cells.entrySet()) {
     		Set<ICoord> set = e.getValue();
     		Color c = paint ? e.getKey().getColor() : Cell.DEFAULT_BACKGROUND;
