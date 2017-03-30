@@ -661,7 +661,7 @@ public class Game {
 			textArea.setText("");
 		}
 		if (!sudokuModel.canRedo()) {
-			doMenu.enable(false);
+			doMenu.setEnabled(false);
 		}
 	}
 	
@@ -671,7 +671,7 @@ public class Game {
 			textArea.setText("");
 		}
 		if (!sudokuModel.canUndo()) {
-			undoMenu.enable(false);
+			undoMenu.setEnabled(false);
 		}
 	}
 	
