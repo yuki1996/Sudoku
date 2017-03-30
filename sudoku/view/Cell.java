@@ -69,6 +69,10 @@ public class Cell extends JPanel {
     private void refresh() {
         for (int k = 0; k < candidateDisplayables.length; ++k) {
             candidateDisplayables[k].setVisible(model.isCandidate(k + 1));
+            candidateDisplayables[k].setForeground(model.isModifiable()
+                    ? MODIF_COLOR : NMODIF_COLOR);
+            displayables[k].setForeground(model.isModifiable()
+                    ? MODIF_COLOR : NMODIF_COLOR);
         }
         cardLayout.show(this, String.valueOf(model.getValue()));
     }
@@ -86,13 +90,9 @@ public class Cell extends JPanel {
             displayables[k] = new JLabel(String.valueOf(k + 1),
                     SwingConstants.CENTER);
             displayables[k].setFont(font);
-            displayables[k].setForeground(model.isModifiable()
-                                    ? MODIF_COLOR : NMODIF_COLOR);
             candidateDisplayables[k] = new JLabel(String.valueOf(k + 1),
                     SwingConstants.CENTER);
             candidateDisplayables[k].setFont(font.deriveFont(10.0f));
-            candidateDisplayables[k].setForeground(model.isModifiable()
-                                    ? MODIF_COLOR : NMODIF_COLOR);
         }
         
         cards = new JPanel[model.getCardinalCandidates() + 1];

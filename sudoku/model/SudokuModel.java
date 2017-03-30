@@ -40,7 +40,6 @@ public interface SudokuModel {
     // PROPRIETES
     public static final String GRID = "grid";
     public static final String FINISH = "finish";
-	public static final String LAST_REPORT = "report";
 	
 	//REQUÊTES
 	/**
@@ -65,7 +64,7 @@ public interface SudokuModel {
 	
 	/**
 	 * Retourne l'ensemble des coordonnées des cellules ayant une valeur différente
-	 * de la getGridSoluce().
+	 * de la solution.
 	 */
 	Set<ICoord> check(); 
 	

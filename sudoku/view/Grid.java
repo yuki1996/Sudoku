@@ -24,6 +24,7 @@ import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
 import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.Report.CellSetName;
+import sudoku.model.heuristic.RuleManager;
 import sudoku.model.history.cmd.AddCandidate;
 import sudoku.model.history.cmd.AddValue;
 import sudoku.model.history.cmd.Command;
@@ -162,7 +163,7 @@ public class Grid extends JPanel {
         	
         });
         
-        model.addPropertyChangeListener(SudokuModel.LAST_REPORT,
+        model.addPropertyChangeListener(RuleManager.LAST_REPORT,
         		new PropertyChangeListener() {
 
 					@Override

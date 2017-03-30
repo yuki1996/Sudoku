@@ -116,8 +116,6 @@ public class StdSudokuModel implements SudokuModel {
 
     public String help() {
         ruleManager.findRule();
-        propertySupport.firePropertyChange(SudokuModel.LAST_REPORT,
-                null, ruleManager.getLastReport());
         return ruleManager.describe();
     }
     
@@ -226,8 +224,6 @@ public class StdSudokuModel implements SudokuModel {
         cmd.act();
         history.add(cmd);
         propertySupport.firePropertyChange(FINISH, false, isWin());
-        propertySupport.firePropertyChange(LAST_REPORT, getLastReport(),
-        		null);
     }
     
     public void undo() {
@@ -244,7 +240,11 @@ public class StdSudokuModel implements SudokuModel {
     
     public void addPropertyChangeListener(String propertyName,
 			PropertyChangeListener l) {
-    	propertySupport.addPropertyChangeListener(propertyName, l);
+    	if (propertyName.equals(RuleManager.LAST_REPORT)) {
+    		ruleManager.addPropertyChangeListener(propertyName, l);
+    	} else {
+    		propertySupport.addPropertyChangeListener(propertyName, l);
+    	}
     }
     
     private Set<ICoord> checkLine() {
