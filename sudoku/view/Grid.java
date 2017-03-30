@@ -67,6 +67,17 @@ public class Grid extends JPanel {
                     cells[k][j].setModel(grid.getCell(new Coord(k, j)));
                 }
             }
+            
+            this.model.addPropertyChangeListener(RuleManager.LAST_REPORT,
+            		new PropertyChangeListener() {
+
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					boolean paint = evt.getOldValue() == null;
+					highlightCells(((Report) (paint ? evt.getNewValue()
+						: evt.getOldValue())).importantSets(), paint);
+				}
+            });
         } else {
             createView();
             placeComponents();
@@ -166,13 +177,12 @@ public class Grid extends JPanel {
         model.addPropertyChangeListener(RuleManager.LAST_REPORT,
         		new PropertyChangeListener() {
 
-					@Override
-					public void propertyChange(PropertyChangeEvent evt) {
-						boolean paint = evt.getOldValue() == null;
-						highlightCells(((Report) (paint
-							? evt.getNewValue() : evt.getOldValue()))
-							.importantSets(), paint);
-					}
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				boolean paint = evt.getOldValue() == null;
+				highlightCells(((Report) (paint ? evt.getNewValue()
+					: evt.getOldValue())).importantSets(), paint);
+			}
         	
         });
     }
