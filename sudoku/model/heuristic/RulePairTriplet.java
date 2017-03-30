@@ -78,7 +78,7 @@ public class RulePairTriplet extends ReportGenerator {
 							}
 							for (int l = 0; l < grid.size(); l++) {
 								ICoord coord = new Coord(row, l);
-								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
+								if (grid.getCell(coord).isCandidate(k) && !grid.getCell(coord).hasValue()
 										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 									r.addCell(CellSetName.DELETION_CELLS, coord);
 								} else {
@@ -98,7 +98,7 @@ public class RulePairTriplet extends ReportGenerator {
 							}
 							for (int l = 0; l < grid.size(); l++) {
 								ICoord coord = new Coord(l, col);
-								if (grid.getCell(coord).isCandidate(k) && grid.getCell(coord).isModifiable()
+								if (grid.getCell(coord).isCandidate(k) && !grid.getCell(coord).hasValue()
 										&& !r.getCellSet(CellSetName.DECISIVE_CELLS).contains(coord)) {
 									r.addCell(CellSetName.DELETION_CELLS, coord);
 								} else {
