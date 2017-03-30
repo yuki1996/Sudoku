@@ -628,9 +628,6 @@ public class Game {
 	}
     
 	private void resetMenu() {
-		while (sudokuModel.canUndo()) {
-			sudokuModel.undo();
-		}
 		sudokuModel.reset();
 		textArea.setText("");
 		JOptionPane.showMessageDialog(null, "Réinitialisation de la grille", "réinitialisation", JOptionPane.INFORMATION_MESSAGE);
