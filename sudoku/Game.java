@@ -121,13 +121,7 @@ public class Game {
 	}
 	
 	public void createModel() {
-		// ceci est un exemple :
-		try {
-			sudokuModel = new StdSudokuModel(new File("grille2.txt"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sudokuModel = new StdSudokuModel(3, 3);
     }
   
 	private void createView() {
@@ -607,15 +601,15 @@ public class Game {
        			new ImageIcon(
        					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
        	   chrono.pause();
-           mainFrame.hide();
+           mainFrame.setVisible(false);
            String[] msg = {"Reprendre le jeu", "Quittez le jeu"};
-           String result = (String) JOptionPane.showInputDialog(null, 
+           String result = (String) JOptionPane.showInputDialog(mainFrame, 
         	 "Petite pause ! Que voulez vous faire ?",
         	 "Pause", JOptionPane.QUESTION_MESSAGE, null, msg, msg[0]);
-           if (result.compareTo("Quittez le jeu") == 0) {
+           if (result != null && result.compareTo("Quittez le jeu") == 0) {
         	   exit();
            } 
-           mainFrame.show();
+           mainFrame.setVisible(true);
         // bouton démarrer/start au moment d'appuyer, on change 
     	//   le bouton en pause et on affiche le logo adéquat.  
     	} else {
