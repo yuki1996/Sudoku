@@ -183,6 +183,12 @@ public class Grid extends JPanel {
     			CellSetName.DECISIVE_CELLS);
     	disjoint(cells, CellSetName.DELETION_UNITS,
     			CellSetName.DELETION_CELLS);
+
+    	disjoint(cells, CellSetName.DELETION_CELLS,
+    			CellSetName.DECISIVE_CELLS);
+
+    	disjoint(cells, CellSetName.DELETION_UNITS,
+    			CellSetName.DECISIVE_CELLS);
     	
     	for (Entry<CellSetName, Set<ICoord>> e : cells.entrySet()) {
     		Set<ICoord> set = e.getValue();
