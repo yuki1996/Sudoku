@@ -649,14 +649,18 @@ public class Game {
 	}
 	
 	private void resolveMenu() {
-		String describe = sudokuModel.help();
-		textArea.setText(describe);
-		sudokuModel.resolve();
+		if (!sudokuModel.isWin()) {
+			String describe = sudokuModel.help();
+			textArea.setText(describe);
+			sudokuModel.resolve();
+		}
 	}
 	
 	private void clue() {
-		String describe = sudokuModel.help();
-		textArea.setText(describe);
+		if (!sudokuModel.isWin()) {
+			String describe = sudokuModel.help();
+			textArea.setText(describe);
+		}
 	}
 	
 	private void solutionMenu() {
