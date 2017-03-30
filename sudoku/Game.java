@@ -110,15 +110,14 @@ public class Game {
 	
 	// COMMANDES
 	public void display() {
-    	refresh();
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
 	
 	// OUTILS
-	private void refresh() {
-		// rien pour l'instant
+	private void setModel(SudokuModel model) {
+		grid.setModel(model);
 	}
 	
 	public void createModel() {
@@ -542,6 +541,7 @@ public class Game {
 		if (res == JFileChooser.APPROVE_OPTION) {
 			try {
 				sudokuModel = new StdSudokuModel(fc.getSelectedFile());
+				setModel(sudokuModel);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
