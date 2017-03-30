@@ -78,6 +78,9 @@ public class RuleManager {
 	  propertySupport.addPropertyChangeListener(propertyName, l);
   }
   
+  public void removePropertyChangeListener(PropertyChangeListener l) {
+	  propertySupport.removePropertyChangeListener(l);
+  }
 
   /** The active part begins here */
   public void backtracking() {

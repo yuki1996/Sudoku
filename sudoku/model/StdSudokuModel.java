@@ -184,8 +184,9 @@ public class StdSudokuModel implements SudokuModel {
                     
                 }
             }
+        } else {
+        	act(cmd);
         }
-        act(cmd);
     }
 
     public void reset() {
@@ -250,6 +251,11 @@ public class StdSudokuModel implements SudokuModel {
     	} else {
     		propertySupport.addPropertyChangeListener(propertyName, l);
     	}
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+    		ruleManager.removePropertyChangeListener(l);
+    		propertySupport.removePropertyChangeListener(l);
     }
     
     private Set<ICoord> checkLine() {
