@@ -628,28 +628,37 @@ public class Game {
 	}
     
 	private void resetMenu() {
-		while (sudokuModel.canUndo()) {
-			sudokuModel.undo();
-		}
 		sudokuModel.reset();
 		textArea.setText("");
 		JOptionPane.showMessageDialog(null, "Réinitialisation de la grille", "réinitialisation", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private void resolveMenu() {
-		String describe = sudokuModel.help();
-		textArea.setText(describe);
-		sudokuModel.resolve();
+		if (sudokuModel.isWin()) {
+			JOptionPane.showMessageDialog(null, "Vous avez gagné", "Félicitations", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			String describe = sudokuModel.help();
+			textArea.setText(describe);
+			sudokuModel.resolve();
+		}
 	}
 	
 	private void clue() {
-		String describe = sudokuModel.help();
-		textArea.setText(describe);
+		if (sudokuModel.isWin()) {
+			JOptionPane.showMessageDialog(null, "Vous avez gagné", "Félicitations", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			String describe = sudokuModel.help();
+			textArea.setText(describe);
+		}
 	}
 	
 	private void solutionMenu() {
-		sudokuModel.finish();
-		JOptionPane.showMessageDialog(null, "Résolution de la grille", "Solution", JOptionPane.INFORMATION_MESSAGE);
+		if (sudokuModel.isWin()) {
+			JOptionPane.showMessageDialog(null, "Vous avez gagné", "Félicitations", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			sudokuModel.finish();
+			JOptionPane.showMessageDialog(null, "Résolution de la grille", "Solution", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	
 	private void doMenu() {
