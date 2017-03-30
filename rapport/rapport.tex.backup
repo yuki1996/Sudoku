@@ -42,5 +42,6 @@
   \sloppy          % Justification moins stricte : des mots ne dépasseront pas des paragraphes
   \include{intro}
   \include{partie1}
+  \include{partie2}
 \end{document}
 
