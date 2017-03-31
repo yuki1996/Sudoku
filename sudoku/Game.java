@@ -12,7 +12,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +37,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
-import sudoku.model.history.cmd.Command;
 import sudoku.view.Grid;
 
 //import com.sun.media.sound.Toolkit;
@@ -98,6 +98,9 @@ public class Game {
 	
 	// zone de texte pour l'aide
     private JTextField textArea;
+    
+    // listener
+    PropertyChangeListener finish;
 	
 	// CONSTRUCTEURS
 	public Game() {
@@ -111,20 +114,18 @@ public class Game {
 	
 	// COMMANDES
 	public void display() {
-    	refresh();
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
 	
 	// OUTILS
-	private void refresh() {
-		// rien pour l'instant
+	private void setModel(SudokuModel model) {
+		grid.setModel(model);
 	}
 	
 	public void createModel() {
-		// ceci est un exemple :
-		sudokuModel = new StdSudokuModel(WIDTH_SECTOR, HEIGHT_SECTOR);
+		sudokuModel = new StdSudokuModel(3, 3);
     }
   
 	private void createView() {
@@ -182,12 +183,12 @@ public class Game {
     	// annuler la dernière action
     	undoMenu = new JMenuItem("Annuler l'action");
     	undoMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK));
-    	undoMenu.enable(false);
+    	//undoMenu.setEnabled(false);
     	
     	// refaire l'action
     	doMenu = new JMenuItem("Refaire l'action");
     	doMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_MASK));
-    	doMenu.enable(false);
+    	//doMenu.setEnabled(false);
     	
     	// pause
     	pause = new JButton();
@@ -221,12 +222,12 @@ public class Game {
     	solution.setToolTipText("solution complète");
     	
     	// indice 
-    	clue = new JButton();
+    	clue  = new JButton();
     	clue.setBackground(Color.WHITE);
-    	clue.setIcon(
-    			new ImageIcon(
+    	clue.setIcon(new ImageIcon(
     					new ImageIcon(getClass().getResource("pictures/clue.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
     	clue.setMargin(new Insets(0, 0, 0, 0));
+    	clue.setBackground(Color.WHITE);
     	clue.setPreferredSize(new Dimension(50, 75));
     	clue.setToolTipText("Indice");
     	
@@ -250,7 +251,7 @@ public class Game {
     	undoAction.setMargin(new Insets(0, 0, 0, 0));
     	undoAction.setPreferredSize(new Dimension(50, 75));
     	undoAction.setToolTipText("annuler l'action");
-    	undoAction.enable(false);
+    	//undoAction.setEnabled(false);
     	
     	// refaire l'action
     	doAction = new JButton();
@@ -261,7 +262,7 @@ public class Game {
     	doAction.setMargin(new Insets(0, 0, 0, 0));
     	doAction.setPreferredSize(new Dimension(50, 75));
     	doAction.setToolTipText("refaire l'action");
-    	doAction.enable(false);
+    	//doAction.setEnabled(false);
     	
     	// chronomètre
     	//chrono = new Chrono();
@@ -360,6 +361,12 @@ public class Game {
                 resolveMenu();
             }
         });
+        resolve.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resolveMenu();
+            }
+        });
+
 
 		// indice
         clueMenu.addActionListener(new ActionListener() {
@@ -368,8 +375,18 @@ public class Game {
             }
         });
         
+        clue.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                clue();
+            }
+        });
         // solution finale
         solutionMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                solutionMenu();
+            }
+        });
+        solution.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 solutionMenu();
             }
@@ -381,6 +398,11 @@ public class Game {
                 doMenu();
             }
         });
+        doAction.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                doMenu();
+            }
+        });
         
         // défait l'action
         undoMenu.addActionListener(new ActionListener() {
@@ -388,6 +410,13 @@ public class Game {
                 undoMenu();
             }
         });
+        
+        undoAction.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                undoMenu();
+            }
+        });
+        
         
         // tutoriel
         tuto.addActionListener(new ActionListener() {
@@ -438,8 +467,8 @@ public class Game {
   	    		clue();
   	    	}
   	    	
-  			// p pour pause
-  			if (code == KeyEvent.VK_P) {
+  			// espace pour pause
+  			if (code == KeyEvent.VK_BACK_SPACE) {
   				pause();
   			}
   			
@@ -454,6 +483,18 @@ public class Game {
   			}
   	      }
   	    });
+        
+        
+        finish = new PropertyChangeListener() {
+    		@Override
+    		public void propertyChange(PropertyChangeEvent evt) {
+    			JOptionPane.showMessageDialog(null, "Vous avez gagné", "Félicitations", JOptionPane.INFORMATION_MESSAGE);
+    		}
+        	
+        };
+        
+        sudokuModel.addPropertyChangeListener(SudokuModel.FINISH, finish);
+        
         
         // gestion du rafraîchissement du chrono
         TimerTask actionChrono = new TimerTask() {
@@ -502,35 +543,59 @@ public class Game {
 	
 	// gestion des fonctions 
 	private void newGame() {
-		new Game().display();
-	}
-	
-	private void open() {
-		// TODO
 		JFileChooser fc = new JFileChooser();
-		FileNameExtensionFilter flt = new FileNameExtensionFilter("Fichier", "txt");
+		FileNameExtensionFilter flt = new FileNameExtensionFilter(
+				"Fichier", "txt");
 		fc.setFileFilter(flt);
 		int res = fc.showOpenDialog(mainFrame);
 		if (res == JFileChooser.APPROVE_OPTION) {
 			try {
-				sudokuModel= new StdSudokuModel(fc.getSelectedFile());
-				grid = new Grid(sudokuModel);
+		        sudokuModel.removePropertyChangeListener(finish);
+				sudokuModel = new StdSudokuModel(fc.getSelectedFile());
+				setModel(sudokuModel);
+		        sudokuModel.addPropertyChangeListener(SudokuModel.FINISH, finish);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		display();
+	}
+	
+	private void open() {
+		// TODO
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter flt = new FileNameExtensionFilter(
+				"Fichier de sauvegarde (.sav)", "sav");
+		fc.setFileFilter(flt);
+		int res = fc.showOpenDialog(mainFrame);
+		if (res == JFileChooser.APPROVE_OPTION) {
+			try {
+				sudokuModel.load(fc.getSelectedFile());
+			} catch (ClassNotFoundException e) {
+				JOptionPane.showMessageDialog(null,
+					"Le fichier selectionné n'est probablement "
+					+ "pas une sauvegarde");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void save() {
 		// TODO
-		String name = "Enregistrement1";
-		try {
-			sudokuModel.save(name);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter flt = new FileNameExtensionFilter(
+				"Fichier de sauvegarde (.sav)", "sav");
+		fc.setFileFilter(flt);
+		int res = fc.showOpenDialog(mainFrame);
+		if (res == JFileChooser.APPROVE_OPTION) {
+			try {
+				sudokuModel.save(fc.getSelectedFile().getAbsolutePath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
     
@@ -552,61 +617,75 @@ public class Game {
     	   pause.setName("start");
     	   pause.setIcon(
        			new ImageIcon(
-       					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+       					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage()
+       							.getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
        	   chrono.pause();
-           mainFrame.hide();
+           mainFrame.setVisible(false);
            String[] msg = {"Reprendre le jeu", "Quittez le jeu"};
-           String result = (String) JOptionPane.showInputDialog(null, 
+           String result = (String) JOptionPane.showInputDialog(mainFrame, 
         	 "Petite pause ! Que voulez vous faire ?",
         	 "Pause", JOptionPane.QUESTION_MESSAGE, null, msg, msg[0]);
-           if (result.compareTo("Quittez le jeu") == 0) {
+           if (result != null && result.compareTo("Quittez le jeu") == 0) {
         	   exit();
            } 
-           mainFrame.show();
+           mainFrame.setVisible(true);
         // bouton démarrer/start au moment d'appuyer, on change 
     	//   le bouton en pause et on affiche le logo adéquat.  
     	} else {
     	   pause.setName("pause");
     	   pause.setIcon(
        			new ImageIcon(
-       					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+       					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage()
+       							.getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
     	   chrono.start();
     	}
 	}
     
 	private void resetMenu() {
 		sudokuModel.reset();
-		JOptionPane.showMessageDialog(null, "Réinitialisation de la grille", "réinitialisation", JOptionPane.INFORMATION_MESSAGE);
+		textArea.setText("");
+		JOptionPane.showMessageDialog(null, "Réinitialisation de la grille", "réinitialisation", 
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private void resolveMenu() {
-		sudokuModel.check();
+		if (!sudokuModel.isWin()) {
+			String describe = sudokuModel.help();
+			textArea.setText(describe);
+			sudokuModel.resolve();
+		}
 	}
 	
 	private void clue() {
-		sudokuModel.help();
+		if (!sudokuModel.isWin()) {
+			String describe = sudokuModel.help();
+			textArea.setText(describe);
+		}
 	}
 	
 	private void solutionMenu() {
 		sudokuModel.finish();
-		JOptionPane.showMessageDialog(null, "Résolution de la grille", "Solution", JOptionPane.INFORMATION_MESSAGE);
+		/*JOptionPane.showMessageDialog(null, "Résolution de la grille", "Solution", 
+				JOptionPane.INFORMATION_MESSAGE);*/
 	}
 	
 	private void doMenu() {
 		if (sudokuModel.canRedo()) {
 			sudokuModel.redo();
+			textArea.setText("");
 		}
 		if (!sudokuModel.canRedo()) {
-			doMenu.enable(false);
+			//doMenu.setEnabled(false);
 		}
 	}
 	
 	private void undoMenu() {
 		if (sudokuModel.canUndo()) {
 			sudokuModel.undo();
+			textArea.setText("");
 		}
 		if (!sudokuModel.canUndo()) {
-			undoMenu.enable(false);
+			//undoMenu.setEnabled(false);
 		}
 	}
 	

@@ -1,9 +1,11 @@
 package sudoku.model;
 
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Set;
 
+import sudoku.model.heuristic.Report;
 import sudoku.model.history.cmd.Command;
 import sudoku.util.ICoord;
 
@@ -11,8 +13,8 @@ import sudoku.util.ICoord;
  * @inv <pre>
  * 		isWin() <==> getGridPlayer().isFull() && check().isEmpty()
  * 		isModifiableCell(c) <==> getGridPlayer().getCell(c).isModifiable()
- * 		 isValidCoord(coord) <==> 0 <= coord.getCol() < getGridSoluce().size()
- *				&& 0 <= coord.getRow() < getGridSoluce().size()
+ * 		 isValidCoord(coord) <==> 0 <= coord.getCol() < getGridPlayer().size()
+ *				&& 0 <= coord.getRow() < getGridPlayer().size()
  *		getGridPlayer().getWidth() == getGridSoluce().getWidth()
  *		getGridPlayer().getHeight() == getGridSoluce().getHeight() 
  * </pre>
@@ -34,10 +36,15 @@ import sudoku.util.ICoord;
  *         
  *         forall int i,j : ! getGridSoluce().cells[i][j].hasValue() &&
  *         				    getGridSoluce().cells[i][j].isModifiable()
+ *         
  *    </pre>
  *    
  */
 public interface SudokuModel {
+	
+    // PROPRIETES
+    public static final String GRID = "grid";
+    public static final String FINISH = "finish";
 	
 	//REQUÊTES
 	/**
@@ -45,6 +52,7 @@ public interface SudokuModel {
 	 */
 	GridModel getGridPlayer();
 	
+
 	/**
 	 * Retourne la grille solution.
 	 */
@@ -66,10 +74,10 @@ public interface SudokuModel {
 	boolean isModifiableCell(ICoord coord);
 	
 	/**
-	 * Retourne la liste des coordonnées des cellules ayant une valeur différente
-	 * de la getGridSoluce().
+	 * Retourne l'ensemble des coordonnées des cellules ayant une valeur différente
+	 * de la solution.
 	 */
-	List<ICoord> check(); 
+	Set<ICoord> check(); 
 	
 	/**
 	 * Retourne si les composantes de la coordonnée coord sont valides entre 0 et getGrid().size().
@@ -83,6 +91,11 @@ public interface SudokuModel {
 	 * Apporte un indice.
 	 */
 	String help();
+	
+	/**
+	 * Renvoie le dernier rapport de recherche d'heuristique.
+	 */
+	Report getLastReport();
 	
 	/**
 	 * Retourne vrai si on peut annuler la dernière action, faux sinon.
@@ -182,7 +195,6 @@ public interface SudokuModel {
 	 */
 	void load(File fichier) throws IOException, ClassNotFoundException;
 	
-	
 	/**
 	 * Réinitialise la grille Player.
 	 * @post <pre>
@@ -216,4 +228,8 @@ public interface SudokuModel {
 	 */
 	void redo();
 	
+	void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener l);
+	
+	void removePropertyChangeListener(PropertyChangeListener l);
 }

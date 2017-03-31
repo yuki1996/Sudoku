@@ -178,6 +178,7 @@ public class StdGridModel implements GridModel {
 		Set<ICoord> set = getRow(coord);
 		set.addAll(getCol(coord));
 		set.addAll(getSector(coord));
+		set.remove(coord);
 		return set;
 	}
 	
@@ -223,6 +224,7 @@ public class StdGridModel implements GridModel {
 		Set<CellModel> set = getRowCell(coord);
 		set.addAll(getColCell(coord));
 		set.addAll(getSectorCell(coord));
+		set.remove(cells()[coord.getRow()][coord.getCol()]);
 		return set;
 	}
 
@@ -252,20 +254,22 @@ public class StdGridModel implements GridModel {
 		for (int i = 0; i < size(); i++) {
 			for (int j = 0; j < size(); j++) {
 				if (cells[i][j].isModifiable()) {
-					cells[i][j].removeValue();
+					cells[i][j].reset();
 				}
 			}
 		}
 	}
 
-	@Override
-	public void clear() {
-		for (int i = 0; i < size(); i++) {
-			for (int j = 0; j < size(); j++) {
-				cells[i][j] = new StdCellModel(size());
-			}
-		}
-	}
+	// foireux : on ne peut pas changer les cellules
+	//		sans avertir qui que ce soit
+//	@Override
+//	public void clear() {
+//		for (int i = 0; i < size(); i++) {
+//			for (int j = 0; j < size(); j++) {
+//				cells[i][j] = new StdCellModel(size());
+//			}
+//		}
+//	}
 
 	@Override
 	public void setValue(ICoord coord, int value) {

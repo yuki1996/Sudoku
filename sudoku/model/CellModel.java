@@ -161,4 +161,8 @@ public interface CellModel extends Serializable, Cloneable  {
 	void reset();
 	
 	void addPropertyChangeListener(String property, PropertyChangeListener l);
+	
+	void removePropertyChangeListener(PropertyChangeListener l);
+	
+	void giveListeners(String propertyName, CellModel other);
 }

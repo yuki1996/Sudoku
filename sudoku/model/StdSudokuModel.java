@@ -1,5 +1,7 @@
 package sudoku.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,9 +10,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import sudoku.model.heuristic.Report;
 import sudoku.model.heuristic.RuleManager;
 import sudoku.model.history.History;
 import sudoku.model.history.StdHistory;
@@ -34,6 +39,7 @@ public class StdSudokuModel implements SudokuModel {
 	private RuleManager ruleManager; 
 	private History<Command> history;
 
+	private PropertyChangeSupport propertySupport;
 	//CONSTRUCTEUR
 	public StdSudokuModel(int width, int height)  {
 		Contract.checkCondition(width > 0 && height > 0);
@@ -41,9 +47,13 @@ public class StdSudokuModel implements SudokuModel {
 		gridSoluce = new StdGridModel(width, height);
 		ruleManager = new RuleManager(gridPlayer);
 		history = new StdHistory<Command>(HISTORY_SIZE);
+
+		propertySupport = new PropertyChangeSupport(this);
 	}
 	
 	public StdSudokuModel(File textFile) throws IOException {
+
+		propertySupport = new PropertyChangeSupport(this);
 		BufferedReader fr = new BufferedReader(new FileReader(textFile));
 		try {
 			String line = fr.readLine();
@@ -115,20 +125,20 @@ public class StdSudokuModel implements SudokuModel {
 		return getGridSoluce().getCell(coord).isModifiable();
 	}
 
-	public List<ICoord> check() {
-		List<ICoord> list = new LinkedList<ICoord>();
+	public Set<ICoord> check() {
+		Set<ICoord> set = new HashSet<ICoord>();
 		CellModel[][] tabPlayer  = getGridPlayer().cells();
 		CellModel[][] tabSoluce  = getGridSoluce().cells();
 		for (int i = 0 ; i < tabPlayer.length; i++) {
 			for (int j = 0 ; j < tabPlayer[i].length; j++) {
 				if (tabPlayer[i][j].getValue() != 0) {
 					if (tabPlayer[i][j].getValue() != tabSoluce[i][j].getValue()) {
-						list.add(new Coord(i, j));
+						set.add(new Coord(i, j));
 					}
 				}
 			}
 		}
-		return list;
+		return set;
 	}
 
 	public boolean isValidCoord(ICoord coord) {
@@ -142,6 +152,10 @@ public class StdSudokuModel implements SudokuModel {
 		return ruleManager.describe();
 	}
 	
+	public Report getLastReport() {
+		return ruleManager.getLastReport();
+	}
+
 	public boolean canRedo() {
 		return history.getCurrentPosition() < history.getEndPosition();
 	}
@@ -179,7 +193,14 @@ public class StdSudokuModel implements SudokuModel {
 	}
 
 	public void finish() {
-		gridPlayer = getGridSoluce();
+		for (int i = 0 ; i < getGridPlayer().size(); i++) {
+			for (int j = 0 ; j < getGridPlayer().size(); j++) {
+				if (getGridPlayer().cells()[i][j].isModifiable()) {
+					act(new AddValue(getGridPlayer(), new Coord(i, j), 
+							getGridSoluce().getCell(new Coord(i, j)).getValue()));
+				}
+			}
+		}
 	}
 
 
@@ -203,8 +224,10 @@ public class StdSudokuModel implements SudokuModel {
 	}
 
 	public void reset() {
-		getGridPlayer().reset();
-		history.clear();
+    	while (canUndo()) {
+			undo();
+		}
+        history.clear();
 	}	
 	
 	public void save(String name) throws IOException {
@@ -222,30 +245,55 @@ public class StdSudokuModel implements SudokuModel {
 	public void load(File fichier) throws ClassNotFoundException, IOException {
 		Contract.checkCondition(fichier != null);
 		ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichier)) ;
+		GridModel oldModel = gridPlayer;
 		try {
-			gridPlayer = (StdGridModel) ois.readObject();
-			gridSoluce = (StdGridModel) ois.readObject();
+			GridModel gp = (GridModel) ois.readObject();
+			GridModel gs = (GridModel) ois.readObject();
+			gridPlayer = gp;
+			gridSoluce = gs;
 		} finally {
-			ois.close();
+		    ois.close();
 		}
+		history.clear();
+		ruleManager.setGrid(gridPlayer);
+		propertySupport.firePropertyChange(GRID, oldModel, gridPlayer);
 	}
 
 	public void act(Command cmd) {
 		Contract.checkCondition(cmd != null, "cmd est null");
 		cmd.act();
 		history.add(cmd);
+		ruleManager.clear();
+		propertySupport.firePropertyChange(FINISH, false, isWin());
 	}
 	
 	public void undo() {
 		Contract.checkCondition(canUndo());
 		history.getCurrentElement().act();
 		history.goBackward();
+		ruleManager.clear();
 	}
 	
 	public void redo() {
 		Contract.checkCondition(canRedo());
 		history.goForward();
 		history.getCurrentElement().act();
+		ruleManager.clear();
+	}
+	
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+    		ruleManager.removePropertyChangeListener(l);
+    		propertySupport.removePropertyChangeListener(l);
+    }
+    
+    public void addPropertyChangeListener(String propertyName,
+			PropertyChangeListener l) {
+    	if (propertyName.equals(RuleManager.LAST_REPORT)) {
+    		ruleManager.addPropertyChangeListener(propertyName, l);
+    	} else {
+    		propertySupport.addPropertyChangeListener(propertyName, l);
+    	}
 	}
 	
 }
