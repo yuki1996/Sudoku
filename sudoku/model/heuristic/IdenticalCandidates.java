@@ -86,6 +86,7 @@ public class IdenticalCandidates extends ReportGenerator {
 					String str = "Les cellules";
 					for (ICoord coord : couple.getSecond()) {
 						str += " L" + coord.getRow() + "C" + coord.getCol();
+						res.addCell(CellSetName.DECISIVE_CELLS, coord);
 					}
 					str += " ont et ont uniquement les candidats";
 					for (Integer j : Candidates) {
