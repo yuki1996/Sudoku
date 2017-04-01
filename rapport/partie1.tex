@@ -153,14 +153,17 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
 Pour implanter notre sudoku, nous avons choisit de fonctionner selon le modèle MVC, 
 c'est-à-dire le système Modèle-Vue-Contrôleur. Afin de visualiser notre organisation, 
 des diagrammes ont été réalisés et sont disponibles en annexe 
-(annexe 7 : diagramme model,
-annexe 8 : diagramme history,
-annexe 9 : diagramme heuristic).
+(annexe 18 : diagramme model,
+annexe 19 : diagramme history,
+annexe 20 : diagramme heuristic).
 
 \subsection{SudokuModel}
-Le sudoku possède une grille pour le joueur (GridModel) et un historique.\\ 
-La grille du joueur est le résultat des interactions du joueur (ajouter/supprimer 
-un candidat ou sélectionner/désélectionner une valeur). \\
+Le sudoku possède deux grilles(GridModel) : celle du joueur et la solution. 
+Le sudoku est aussi composé d'un historique.\\
+La grille solution est générée par application des heuristiques à l’aide 
+d’un gestionnaire d’heuristiques (RuleManager). La grille
+joueur est le résultat des interactions du joueur(ajouter/supprimer un candidat 
+ou sélectionner/désélectionner une valeur). \\
 L’historique répertorie les actions du joueur avec possibilité d’annuler ses actions.\\ 
 Le joueur a gagné quand sa grille est finie, sans conflits de nombres 
 (deux 6 sur la même ligne par exemple).\\
@@ -227,8 +230,8 @@ finale de la case obligatoirement.\\
 \\
 
 Exemple : \\
-On peut voir ici que sur la première ligne et la deuxième colonne se trouve le candidat 4.
-Comme étant le seul 4 dans la région, de ce fait, on peut le sélectionner comme valeur.\\
+On peut voir ici que sur la troisième ligne et la sixième colonne se trouve le candidat 4.
+Comme étant le seul candidat dans cette case, de ce fait, on peut le sélectionner comme valeur.\\
 
 \begin{figure}[ht]
   \caption{\label{annexe1} seul candidat}
