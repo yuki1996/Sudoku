@@ -101,7 +101,7 @@ public class RuleInteractionBetweenSector extends ReportGenerator {
 							}
 						}
 						if (r.getCellSet(CellSetName.DELETION_CELLS).size() != 0) {
-							String s = "Le candidat " + value + " n'est présenté que dans 2 lignes de 2 régions." +
+							String s = " Intéractions entre régions : le candidat " + value + " n'est présenté que dans 2 lignes de 2 régions.\n" +
 								" On peut donc le supprimer dans ces lignes de la 3ème region.";
 							r.setDescription(s);
 							return r;
@@ -188,8 +188,8 @@ public class RuleInteractionBetweenSector extends ReportGenerator {
 							}
 						}
 						if (r.getCellSet(CellSetName.DELETION_CELLS).size() != 0) {
-							String s = "Le candidat " + value + " n'est présenté que dans 2 colonnes de 2 régions." +
-									" On peut donc le supprimer dans ces colonnes de la 3ème region.";
+							String s = " Intéractions entre régions : le candidat " + value + " n'est présenté que dans 2 colonnes de 2 régions." +
+									"\n On peut donc le supprimer dans ces colonnes de la 3ème region.";
 							r.setDescription(s);
 							return r;
 						}
