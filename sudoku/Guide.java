@@ -65,10 +65,10 @@ public class Guide {
 					+ "vous permettront de défaire l'action réalisée à l'instant \n" 
 					+ "(flèche vers la gauche), refaire l'action \n" 
 					+ "(flèche vers la droite), consulter le temps \n" 
-					+ "de résolution de la grille, demarrer le chrono, \n"
-					+ "le mettre en pause, demander une réinitialisation \n"
-					+ "de la grille, demander une résolution pas à pas \n"
-					+ "ou encore demander la solution complète.");
+					+ "de résolution de la grille, mettre en pause le jeu \n"
+					+ "demander une réinitialisation \n"
+					+ "de la grille, demander une résolution pas à pas,\n"
+					+ "demander un indice ou encore la solution complète.");
 			
 			area.setEditable(false);
 			p.add(area);

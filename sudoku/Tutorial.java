@@ -65,7 +65,7 @@ public class Tutorial {
 						+ "et une seule fois par carré de neuf cases.\n\n" 
 						+ "Au début du jeu, une vingtaine de chiffres \n" 
 						+ "sont déjà placés et il vous reste à trouver les autres.\n" 
-						+ " En effet, une grille initiale de sudoku correctement \n"
+						+ "En effet, une grille initiale de sudoku correctement \n"
 						+ "constituée ne peut aboutir qu'à une et une seule solution.\n"
 						+ "Pour trouver les chiffres manquants, tout est une question \n" 
 						+ "de logique et d'observation.\n\n"

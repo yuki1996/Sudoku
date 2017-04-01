@@ -6,3 +6,4 @@
 \contentsline {subsection}{\numberline {1.4}r\IeC {\'e}union 4}{3}{subsection.1.4}
 \contentsline {subsection}{\numberline {1.5}r\IeC {\'e}union 5}{3}{subsection.1.5}
 \contentsline {subsection}{\numberline {1.6}r\IeC {\'e}union 6}{3}{subsection.1.6}
+\contentsline {subsection}{\numberline {1.7}r\IeC {\'e}union 7}{3}{subsection.1.7}

@@ -40,6 +40,7 @@ public class StdSudokuModel implements SudokuModel {
 	private History<Command> history;
 
 	private PropertyChangeSupport propertySupport;
+	
 	//CONSTRUCTEUR
 	public StdSudokuModel(int width, int height)  {
 		Contract.checkCondition(width > 0 && height > 0);

@@ -14,6 +14,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,7 +40,6 @@ import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
 import sudoku.view.Grid;
 
-//import com.sun.media.sound.Toolkit;
 
 public class Game {
 	
@@ -70,7 +70,7 @@ public class Game {
 	private SudokuModel sudokuModel;
 	// boutons de menu
 	private JMenuItem exit;
-	private JMenuItem newGameV4;
+	private JMenuItem newGrid;
 	private JMenuItem open;
 	private JMenuItem save;
 	private JMenuItem resetMenu;
@@ -94,13 +94,18 @@ public class Game {
 	// gestion du chrono
 	private JLabel time;
 	private Chrono chrono;
-	private Timer timer;
+	private Thread threadChrono;
+	
+	//gestion des évenements
+	private Thread threadEvent;
 	
 	// zone de texte pour l'aide
     private JTextField textArea;
     
     // listener
     PropertyChangeListener finish;
+    PropertyChangeListener undoListener;
+    PropertyChangeListener doListener;
 	
 	// CONSTRUCTEURS
 	public Game() {
@@ -108,8 +113,6 @@ public class Game {
 		createView();
 		placeComponents();
 		createController();
-		// permet d'avoir le focus sur la fenêtre de notre application
-		//mainFrame.requestFocus();
 	}
 	
 	// COMMANDES
@@ -134,8 +137,20 @@ public class Game {
        
 		grid = new Grid(sudokuModel);
 		
+		// par défault, grille 2
+		try {
+	        sudokuModel.removePropertyChangeListener(finish);
+			sudokuModel = new StdSudokuModel(new File("grille2.txt"));
+			setModel(sudokuModel);
+	        sudokuModel.addPropertyChangeListener(SudokuModel.FINISH, finish);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		chrono = new Chrono();
-         
+        threadChrono = new Thread(); 
+		
         mainFrame = new JFrame("Game");
         mainFrame.setPreferredSize(new Dimension(frameWidth, frameHeight));
         
@@ -145,8 +160,8 @@ public class Game {
     	exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
     	
     	// nouveau jeu
-    	newGameV4 = new JMenuItem("Nouveau");
-    	newGameV4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,KeyEvent.CTRL_MASK));
+    	newGrid = new JMenuItem("Nouvelle grille");
+    	newGrid.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,KeyEvent.CTRL_MASK));
     	
     	// ouverture 
     	open = new JMenuItem("Ouvrir");
@@ -183,12 +198,10 @@ public class Game {
     	// annuler la dernière action
     	undoMenu = new JMenuItem("Annuler l'action");
     	undoMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK));
-    	//undoMenu.setEnabled(false);
     	
     	// refaire l'action
     	doMenu = new JMenuItem("Refaire l'action");
     	doMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_MASK));
-    	//doMenu.setEnabled(false);
     	
     	// pause
     	pause = new JButton();
@@ -231,7 +244,6 @@ public class Game {
     	clue.setPreferredSize(new Dimension(50, 75));
     	clue.setToolTipText("Indice");
     	
-    	
     	// résoudre pas-à-pas
     	resolve  = new JButton();
     	resolve.setBackground(Color.WHITE);
@@ -251,7 +263,6 @@ public class Game {
     	undoAction.setMargin(new Insets(0, 0, 0, 0));
     	undoAction.setPreferredSize(new Dimension(50, 75));
     	undoAction.setToolTipText("annuler l'action");
-    	//undoAction.setEnabled(false);
     	
     	// refaire l'action
     	doAction = new JButton();
@@ -262,17 +273,14 @@ public class Game {
     	doAction.setMargin(new Insets(0, 0, 0, 0));
     	doAction.setPreferredSize(new Dimension(50, 75));
     	doAction.setToolTipText("refaire l'action");
-    	//doAction.setEnabled(false);
     	
     	// chronomètre
-    	//chrono = new Chrono();
-    	//chrono.start();
     	time = new JLabel(chrono.getChrono());
     	time.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
     	// Zone de texte pour l'aide
     	textArea = new JTextField("-- Aide : -- \n");
-    	textArea.setPreferredSize(new Dimension(800, 75));
+    	textArea.setPreferredSize(new Dimension(780, 75));
     	textArea.setEditable(false);
 	}
 	
@@ -322,7 +330,7 @@ public class Game {
 		
 		// barre de menu
 		// Nouvelle grille
-		newGameV4.addActionListener(new ActionListener() {
+		newGrid.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	newGame();
             }
@@ -361,12 +369,12 @@ public class Game {
                 resolveMenu();
             }
         });
+        
         resolve.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 resolveMenu();
             }
         });
-
 
 		// indice
         clueMenu.addActionListener(new ActionListener() {
@@ -380,6 +388,7 @@ public class Game {
                 clue();
             }
         });
+        
         // solution finale
         solutionMenu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -458,13 +467,54 @@ public class Game {
   	      public void keyPressed(KeyEvent e) {
   	    	int code = e.getKeyCode();
   			
-  	    	// n pour nouveau jeu 
+  	    	// n pour nouvelle grille 
   	    	if (code == KeyEvent.VK_N) {
   	    		newGame();
   	    	}
   	    	
+  	    	// o pour ouvrir
+  	    	if (code == KeyEvent.VK_O) {
+  	    		open();
+  	    	}
+  	    	
+  	    	// s pour sauvegarder
+  	    	if (code == KeyEvent.VK_S) {
+  	    		save();
+  	    	}
+  	    	
+  	    	// q pour quitter
+  	    	if (code == KeyEvent.VK_Q) {
+  	    		exit();
+  	    	}
+  	    	
+  	    	// r pour réinitialiser
+  	    	if (code == KeyEvent.VK_R) {
+  	    		resetMenu();
+  	    	}
+  	    	
+  	    	// pour résoudre pas à pas
+  	    	if (code == KeyEvent.VK_P) {
+  	    		resolveMenu();
+  	    	}
+  	    	
+  	    	// c pour avoir un indice
   	    	if (code == KeyEvent.VK_C) {
   	    		clue();
+  	    	}
+  	    	
+  	    	// f pour obtenir la solution complète
+  	    	if (code == KeyEvent.VK_F) {
+  	    		solutionMenu();
+  	    	}
+  	    	
+  	    	// y pour refaire l'action précendante
+  	    	if (code == KeyEvent.VK_Y) {
+  	    		doMenu();
+  	    	}
+  	    	
+  	    	// z pour annuler l'action réalisée
+  	    	if (code == KeyEvent.VK_Z) {
+  	    		undoMenu();
   	    	}
   	    	
   			// espace pour pause
@@ -484,37 +534,64 @@ public class Game {
   	      }
   	    });
         
-        
+        // gestion de fin de partie
         finish = new PropertyChangeListener() {
     		@Override
     		public void propertyChange(PropertyChangeEvent evt) {
     			JOptionPane.showMessageDialog(null, "Vous avez gagné", "Félicitations", JOptionPane.INFORMATION_MESSAGE);
-    		}
-        	
+    		}	
         };
         
         sudokuModel.addPropertyChangeListener(SudokuModel.FINISH, finish);
-        
-        
-        // gestion du rafraîchissement du chrono
-        TimerTask actionChrono = new TimerTask() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				time.setText(chrono.getChrono());
-			}
-        };
-        timer = new Timer(true);
-        timer.schedule(actionChrono, DELAY_REFRESH_CHRONO);
-	}
+
+        // chronomètre
+        threadChrono = new Thread(new Runnable() {
+            @Override
+            public void run() {
+              try {
+                while (true) {
+                  time.setText(chrono.getChrono());
+                }
+              } finally {
+                
+              }
+            }
+          });
+
+          threadChrono.start();
+          
+          // evenement pour activer/désactiver les boutons annuler/refaire
+          threadEvent = new Thread(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  while (true) {
+                    if (sudokuModel.canUndo()) {
+                    	undoAction.setEnabled(true);
+                    } else {
+                    	undoAction.setEnabled(false);
+                    }
+                    
+                    if (sudokuModel.canRedo()) {
+                    	doAction.setEnabled(true);
+                    } else {
+                    	doAction.setEnabled(false);
+                    }
+                  }
+                } finally {
+                  
+                }
+              }
+            });
+          
+          threadEvent.start();
+	} 
 	
-	/**
-	 * Retourne une JMenuBar.
-	 */
+	// Retourne une JMenuBar.
 	private JMenuBar createJMenuBar() {
         JMenuBar bar = new JMenuBar(); {
             JMenu m = new JMenu("Fichier"); {
-                m.add(newGameV4);
+                m.add(newGrid);
                 m.add(open);
                 m.add(save);
                 m.addSeparator();
@@ -542,6 +619,7 @@ public class Game {
     }
 	
 	// gestion des fonctions 
+	// nouveau jeu (choix de la grille)
 	private void newGame() {
 		JFileChooser fc = new JFileChooser();
 		FileNameExtensionFilter flt = new FileNameExtensionFilter(
@@ -561,6 +639,7 @@ public class Game {
 		}
 	}
 	
+	// ouverture d'un fichier de sauvegarde
 	private void open() {
 		// TODO
 		JFileChooser fc = new JFileChooser();
@@ -582,6 +661,7 @@ public class Game {
 		}
 	}
 	
+	// sauvegarder la partie en cours
 	private void save() {
 		// TODO
 		JFileChooser fc = new JFileChooser();
@@ -599,6 +679,7 @@ public class Game {
 		}
 	}
     
+	// quitter le jeu
 	private void exit() {
 		int exit = JOptionPane.showConfirmDialog(null,
 	        		"Êtes-vous sûr de vouloir quitter?\n" +
@@ -609,6 +690,7 @@ public class Game {
         }
 	}
 	
+	// pause
 	private void pause() {
 		// bouton pause au moment d'appuyer, on stoppe le chrono 
     	// et on verrouille la grille en la faisant disparaitre momentanément 
@@ -620,6 +702,7 @@ public class Game {
        					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage()
        							.getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
        	   chrono.pause();
+       	         	   
            mainFrame.setVisible(false);
            String[] msg = {"Reprendre le jeu", "Quittez le jeu"};
            String result = (String) JOptionPane.showInputDialog(mainFrame, 
@@ -628,19 +711,18 @@ public class Game {
            if (result != null && result.compareTo("Quittez le jeu") == 0) {
         	   exit();
            } 
-           mainFrame.setVisible(true);
-        // bouton démarrer/start au moment d'appuyer, on change 
-    	//   le bouton en pause et on affiche le logo adéquat.  
+           mainFrame.setVisible(true);  
     	} else {
     	   pause.setName("pause");
     	   pause.setIcon(
        			new ImageIcon(
        					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage()
        							.getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
-    	   chrono.start();
+    	   chrono.start();	   
     	}
 	}
     
+	// réinititiasation
 	private void resetMenu() {
 		sudokuModel.reset();
 		textArea.setText("");
@@ -648,6 +730,7 @@ public class Game {
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	// résoudre 
 	private void resolveMenu() {
 		if (!sudokuModel.isWin()) {
 			String describe = sudokuModel.help();
@@ -656,6 +739,7 @@ public class Game {
 		}
 	}
 	
+	// indice
 	private void clue() {
 		if (!sudokuModel.isWin()) {
 			String describe = sudokuModel.help();
@@ -663,36 +747,45 @@ public class Game {
 		}
 	}
 	
+	// solution complète
 	private void solutionMenu() {
 		sudokuModel.finish();
 		/*JOptionPane.showMessageDialog(null, "Résolution de la grille", "Solution", 
 				JOptionPane.INFORMATION_MESSAGE);*/
 	}
 	
+	// refaire la dernière action
 	private void doMenu() {
 		if (sudokuModel.canRedo()) {
 			sudokuModel.redo();
 			textArea.setText("");
 		}
 		if (!sudokuModel.canRedo()) {
-			//doMenu.setEnabled(false);
-		}
+			doAction.setEnabled(false);
+		} else {
+			doAction.setEnabled(true);
+		}	
 	}
 	
+	// défaire la précédente action
 	private void undoMenu() {
 		if (sudokuModel.canUndo()) {
 			sudokuModel.undo();
 			textArea.setText("");
 		}
 		if (!sudokuModel.canUndo()) {
-			//undoMenu.setEnabled(false);
-		}
+			undoAction.setEnabled(false);
+		} else {
+			undoAction.setEnabled(true);
+		}	
 	}
 	
+	// tutoriel
 	private void tutorial() {
 		new Tutorial().display();
 	}
 	
+	// guide utilisateur
 	private void guide() {
 		new Guide().display();
 	}

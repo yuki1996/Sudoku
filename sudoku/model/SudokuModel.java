@@ -45,8 +45,8 @@ public interface SudokuModel {
     // PROPRIETES
     public static final String GRID = "grid";
     public static final String FINISH = "finish";
-	
-	//REQUÊTES
+    
+    //REQUÊTES
 	/**
 	 * Retourne la grille du joueur.
 	 */
