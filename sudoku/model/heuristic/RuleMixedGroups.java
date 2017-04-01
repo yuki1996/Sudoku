@@ -59,7 +59,6 @@ public class RuleMixedGroups extends ReportGenerator {
 		
 		RemoveCandidateReport res = new RemoveCandidateReport(grid);
 		res.setValues(couple.getFirst());
-		res.setCellSet(CellSetName.DECISIVE_UNITS, unit);
 		res.setCellSet(CellSetName.DELETION_UNITS, unit);
 		Set<ICoord> decisiveCells = new HashSet<ICoord>(listArg);
 		decisiveCells.removeAll(couple.getSecond());

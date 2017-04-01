@@ -7,7 +7,6 @@ import java.util.Set;
 
 import sudoku.model.GridModel;
 import sudoku.model.heuristic.Report.CellSetName;
-import sudoku.util.Coord;
 import sudoku.util.Couple;
 import sudoku.util.ICoord;
 
@@ -60,7 +59,6 @@ public class RuleIsolatedGroups extends ReportGenerator {
 		}
 		RemoveCandidateReport res = new RemoveCandidateReport(grid);
 		res.setCellSet(CellSetName.DELETION_UNITS, unit);
-		res.setCellSet(CellSetName.DECISIVE_UNITS, unit);
 		String str = "Les cellules";
 		for (ICoord coord : couple.getSecond()) {
 			str += " L" + coord.getRow() + "C" + coord.getCol();

@@ -30,7 +30,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -97,7 +97,7 @@ public class Game {
 	private Timer timer;
 	
 	// zone de texte pour l'aide
-    private JTextField textArea;
+    private JTextArea textArea;
     
     // listener
     PropertyChangeListener finish;
@@ -271,8 +271,7 @@ public class Game {
     	time.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
     	// Zone de texte pour l'aide
-    	textArea = new JTextField("-- Aide : -- \n");
-    	textArea.setPreferredSize(new Dimension(800, 75));
+    	textArea = new JTextArea("-- Aide : -- \n");
     	textArea.setEditable(false);
 	}
 	
@@ -311,6 +310,7 @@ public class Game {
 		// Zone de texte
 		p = new JPanel(new GridLayout(1, 1)); {
 			JScrollPane scroll = new JScrollPane(textArea);
+			scroll.setPreferredSize(new Dimension(100, 75));
 			p.add(scroll);
 			scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		}
