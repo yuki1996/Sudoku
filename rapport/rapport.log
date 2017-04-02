@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.5.4)  1 APR 2017 11:37
-=======
 This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.1.17)  2 APR 2017 20:19
->>>>>>> master
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -577,15 +573,12 @@ Package hyperref Info: Option `breaklinks' set `true' on input line 37.
  (./rapport.aux
 (./title.aux) (./intro.aux) (./partie1.aux) (./partie2.aux
 
-<<<<<<< HEAD
-=======
 LaTeX Warning: Label `annexe1' multiply defined.
 
 
 LaTeX Warning: Label `annexe1' multiply defined.
 
 
->>>>>>> master
 LaTeX Warning: Label `Site Internet' multiply defined.
 
 ))
@@ -660,11 +653,7 @@ LaTeX Info: Redefining \Ref on input line 39.
 \openout2 = `title.aux'.
 
  (./title.tex
-<<<<<<< HEAD
-<images/logo-univ.jpg, id=112, 1202.24156pt x 368.1253pt>
-=======
 <images/logo-univ.jpg, id=132, 1202.24156pt x 368.1253pt>
->>>>>>> master
 File: images/logo-univ.jpg Graphic file (type jpg)
 
 <use images/logo-univ.jpg>
@@ -687,21 +676,11 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write5
 \openout5 = `rapport.toc'.
 
-<<<<<<< HEAD
- [2
-
-] [3]
-\openout2 = `intro.aux'.
-
- (./intro.tex
-<images/sudokuOriginale.png, id=164, 250.9375pt x 250.9375pt>
-=======
  [3]
 \openout2 = `intro.aux'.
 
  (./intro.tex
 <images/sudokuOriginale.png, id=189, 250.9375pt x 250.9375pt>
->>>>>>> master
 File: images/sudokuOriginale.png Graphic file (type png)
 
 <use images/sudokuOriginale.png>
@@ -784,18 +763,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 44--47
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
-<<<<<<< HEAD
-=======
-
- [5
->>>>>>> master
 
  [5
 
-<<<<<<< HEAD
 
-=======
->>>>>>> master
 ]
 Underfull \hbox (badness 10000) in paragraph at lines 48--52
 
@@ -940,65 +911,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 144--146
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 147--150
-<<<<<<< HEAD
-
- []
-=======
->>>>>>> master
 
  []
 
-<<<<<<< HEAD
-Underfull \hbox (badness 1014) in paragraph at lines 161--175
-\T1/cmr/m/n/10.95 La grille du joueur est le ré-sul-tat des in-ter-ac-tions du 
-joueur (ajou-
- []
-
-[8] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 225--228
-=======
 [8] [9]
 Underfull \hbox (badness 10000) in paragraph at lines 228--231
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 225--228
-
- []
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 229--232
-
- []
-
-<images/only-candidate.png, id=226, 593.21625pt x 199.74625pt>
-File: images/only-candidate.png Graphic file (type png)
-
-<use images/only-candidate.png>
-Package pdftex.def Info: images/only-candidate.png used on input line 235.
-(pdftex.def)             Requested size: 227.62204pt x 76.64499pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 235--236
-
- []
-
-[11 <./images/only-candidate.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 247--250
-
- []
-
-<images/one-candidate.png, id=232, 596.2275pt x 591.20876pt>
-File: images/one-candidate.png Graphic file (type png)
-
-<use images/one-candidate.png>
-Package pdftex.def Info: images/one-candidate.png used on input line 253.
-(pdftex.def)             Requested size: 284.52756pt x 282.13513pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 253--254
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 228--231
 
  []
@@ -1019,16 +940,12 @@ Package pdftex.def Info: images/only-candidate.png used on input line 238.
 (pdftex.def)             Requested size: 227.62204pt x 154.95302pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 238--239
->>>>>>> master
 
  []
 
 [11 <./images/only-candidate.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 250--253
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 258--280
-=======
  []
 
 <images/one-candidate.png, id=256, 686.565pt x 469.755pt>
@@ -1039,53 +956,30 @@ Package pdftex.def Info: images/one-candidate.png used on input line 256.
 (pdftex.def)             Requested size: 284.52756pt x 194.67232pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 256--257
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 258--280
-=======
-Underfull \hbox (badness 10000) in paragraph at lines 261--283
->>>>>>> master
-
- []
-
-
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 258--280
-=======
-Underfull \hbox (badness 10000) in paragraph at lines 261--283
->>>>>>> master
-
- []
-
-
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 258--280
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 261--283
 
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 261--283
->>>>>>> master
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--283
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--283
 
  []
 
 [12 <./images/one-candidate.png (PNG copy)>]
-<<<<<<< HEAD
-<images/PairTriplet.png, id=238, 697.60625pt x 478.78876pt>
-File: images/PairTriplet.png Graphic file (type png)
-
-<use images/PairTriplet.png>
-Package pdftex.def Info: images/PairTriplet.png used on input line 283.
-(pdftex.def)             Requested size: 284.52756pt x 195.28186pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 283--284
-=======
 <images/PairTriplet.png, id=262, 678.535pt x 466.74374pt>
 File: images/PairTriplet.png Graphic file (type png)
 
@@ -1094,126 +988,64 @@ Package pdftex.def Info: images/PairTriplet.png used on input line 286.
 (pdftex.def)             Requested size: 284.52756pt x 195.71767pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 286--287
->>>>>>> master
 
  []
 
 [13 <./images/PairTriplet.png (PNG copy)>]
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 289--293
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 292--296
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 289--293
-
- []
-
-<images/InteractionBetweenSector.png, id=245, 689.57625pt x 471.7625pt>
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 292--296
 
  []
 
 <images/InteractionBetweenSector.png, id=269, 687.56876pt x 469.755pt>
->>>>>>> master
 File: images/InteractionBetweenSector.png Graphic file (type png)
 
 <use images/InteractionBetweenSector.png>
 Package pdftex.def Info: images/InteractionBetweenSector.png used on input line
-<<<<<<< HEAD
- 300.
-(pdftex.def)             Requested size: 284.52756pt x 194.65482pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 300--301
-=======
  303.
 (pdftex.def)             Requested size: 284.52756pt x 194.39276pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 303--304
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 304--318
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 307--321
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 304--318
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 307--321
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 1210) in paragraph at lines 304--318
-=======
 Underfull \hbox (badness 1210) in paragraph at lines 307--321
->>>>>>> master
 \T1/cmr/m/n/10.95 Il est pos-sible d'uti-li-ser cette mé-thode dans toutes les 
 uni-tés de la
  []
 
 [14 <./images/InteractionBetweenSector.png (PNG copy)>]
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 320--337
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 323--340
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 320--337
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 323--340
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 1210) in paragraph at lines 320--337
-=======
 Underfull \hbox (badness 1210) in paragraph at lines 323--340
->>>>>>> master
 \T1/cmr/m/n/10.95 Il est pos-sible d'uti-li-ser cette mé-thode dans toutes les 
 uni-tés de la
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 320--337
-
- []
-
-<images/XWing.png, id=251, 689.57625pt x 475.7775pt>
-File: images/XWing.png Graphic file (type png)
- <use images/XWing.png>
-Package pdftex.def Info: images/XWing.png used on input line 346.
-(pdftex.def)             Requested size: 284.52756pt x 196.31145pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 346--347
-
- []
-
-[15]
-Underfull \hbox (badness 10000) in paragraph at lines 352--361
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 323--340
 
  []
@@ -1230,52 +1062,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 349--350
 
 [15]
 Underfull \hbox (badness 10000) in paragraph at lines 355--364
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 365--369
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 368--372
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 365--369
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 368--372
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 370--386
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 373--389
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 370--386
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 373--389
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 370--386
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 373--389
->>>>>>> master
 
  []
 
@@ -1283,14 +1094,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 373--389
 \openout2 = `partie2.aux'.
 
  (./partie2.tex
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 4--13
-
- []
-
-
-Underfull \hbox (badness 1043) in paragraph at lines 4--13
-=======
 <images/Fichier_text.png, id=290, 681.54625pt x 255.95625pt>
 File: images/Fichier_text.png Graphic file (type png)
 
@@ -1329,35 +1132,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 43--52
 
 
 Underfull \hbox (badness 1043) in paragraph at lines 43--52
->>>>>>> master
 \T1/cmr/m/n/10.95 La grille de su-doku oc-cupe le centre de notre ap-pli-ca-tio
 n et se re-
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 4--13
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 43--52
->>>>>>> master
 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 14--21
-
- []
-
-<images/interface.png, id=265, 596.2275pt x 447.92343pt>
-File: images/interface.png Graphic file (type png)
-
-<use images/interface.png>
-Package pdftex.def Info: images/interface.png used on input line 28.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 28--29
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 53--60
 
  []
@@ -1370,28 +1154,10 @@ Package pdftex.def Info: images/interface.png used on input line 145.
 (pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
 
 Overfull \hbox (9.88582pt too wide) in paragraph at lines 145--146
->>>>>>> master
 [][] 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 28--29
-
- []
-
-[18
-
-
-] <images/fichier.png, id=270, 596.2275pt x 447.92343pt>
-File: images/fichier.png Graphic file (type png)
-
-<use images/fichier.png>
-Package pdftex.def Info: images/fichier.png used on input line 40.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 40--41
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 145--146
 
  []
@@ -1422,102 +1188,10 @@ Package pdftex.def Info: images/edition.png used on input line 171.
 (pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
 
 Overfull \hbox (9.88582pt too wide) in paragraph at lines 171--172
->>>>>>> master
 [][] 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 40--41
-
- []
-
-[19 <./images/interface.png>]
-<images/edition.png, id=278, 596.2275pt x 447.92343pt>
-File: images/edition.png Graphic file (type png)
-
-<use images/edition.png>
-Package pdftex.def Info: images/edition.png used on input line 54.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 54--55
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 54--55
-
- []
-
-[20 <./images/fichier.png>]
-<images/aide.png, id=286, 596.2275pt x 447.92343pt>
-File: images/aide.png Graphic file (type png)
- <use images/aide.png>
-Package pdftex.def Info: images/aide.png used on input line 63.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 63--64
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
-
- []
-
-[21 <./images/edition.png>] [22 <./images/aide.png>]
-<images/pause.png, id=299, 252.945pt x 92.59593pt>
-File: images/pause.png Graphic file (type png)
- <use images/pause.png>
-Package pdftex.def Info: images/pause.png used on input line 88.
-(pdftex.def)             Requested size: 199.16928pt x 72.91118pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
-
- []
-
-[23 <./images/pause.png>]
-<images/solution.png, id=306, 596.2275pt x 447.92343pt>
-File: images/solution.png Graphic file (type png)
-
-<use images/solution.png>
-Package pdftex.def Info: images/solution.png used on input line 95.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 95--96
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 95--96
-
- []
-
-[24 <./images/solution.png>]
-<images/reinit.png, id=313, 596.2275pt x 447.92343pt>
-File: images/reinit.png Graphic file (type png)
- <use images/reinit.png>
-Package pdftex.def Info: images/reinit.png used on input line 103.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 103--104
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 103--104
-
- []
-
-[25 <./images/reinit.png>] <images/clue.png, id=321, 596.2275pt x 447.92343pt>
-File: images/clue.png Graphic file (type png)
-
-<use images/clue.png>
-Package pdftex.def Info: images/clue.png used on input line 112.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 112--113
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 171--172
 
  []
@@ -1574,85 +1248,17 @@ Package pdftex.def Info: images/reinit.png used on input line 220.
 (pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
 
 Overfull \hbox (9.88582pt too wide) in paragraph at lines 220--221
->>>>>>> master
 [][] 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 112--113
-
- []
-
-[26 <./images/clue.png>] <images/pas.png, id=328, 596.2275pt x 447.92343pt>
-File: images/pas.png Graphic file (type png)
-
-<use images/pas.png>
-Package pdftex.def Info: images/pas.png used on input line 121.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 121--122
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 121--122
-
- []
-
-[27 <./images/pas.png>] <images/newGrid.png, id=335, 596.2275pt x 447.92343pt>
-File: images/newGrid.png Graphic file (type png)
-
-<use images/newGrid.png>
-Package pdftex.def Info: images/newGrid.png used on input line 129.
-(pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
-
-Overfull \hbox (9.88582pt too wide) in paragraph at lines 129--130
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 129--130
-
- []
-
-[28 <./images/newGrid.png>]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 150.
-
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-<images/model.png, id=346, 726.715pt x 833.1125pt>
-File: images/model.png Graphic file (type png)
- <use images/model.png>
-Package pdftex.def Info: images/model.png used on input line 171.
-(pdftex.def)             Requested size: 455.24408pt x 521.9017pt.
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 220--221
->>>>>>> master
 
-Overfull \hbox (95.24408pt too wide) in paragraph at lines 171--172
-[][] 
  []
 
 [29 <./images/reinit.png>] <images/clue.png, id=367, 596.2275pt x 447.92343pt>
 File: images/clue.png Graphic file (type png)
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 171--172
-
- []
-
-<images/history.png, id=347, 588.1975pt x 1004.75375pt>
-File: images/history.png Graphic file (type png)
-
-<use images/history.png>
-Package pdftex.def Info: images/history.png used on input line 176.
-(pdftex.def)             Requested size: 398.33858pt x 680.43323pt.
-
-Overfull \hbox (38.33858pt too wide) in paragraph at lines 176--177
-=======
 <use images/clue.png>
 Package pdftex.def Info: images/clue.png used on input line 229.
 (pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
@@ -1690,28 +1296,10 @@ Package pdftex.def Info: images/newGrid.png used on input line 246.
 (pdftex.def)             Requested size: 369.88582pt x 277.88052pt.
 
 Overfull \hbox (9.88582pt too wide) in paragraph at lines 246--247
->>>>>>> master
 [][] 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 176--177
-
- []
-
-
-LaTeX Warning: Float too large for page by 133.13445pt on input line 177.
-
-<images/heuristic.png, id=348, 661.47125pt x 1163.34625pt>
-File: images/heuristic.png Graphic file (type png)
-
-<use images/heuristic.png>
-Package pdftex.def Info: images/heuristic.png used on input line 181.
-(pdftex.def)             Requested size: 398.33858pt x 700.55157pt.
-
-Overfull \hbox (38.33858pt too wide) in paragraph at lines 181--182
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 246--247
 
  []
@@ -1730,21 +1318,10 @@ Package pdftex.def Info: images/model.png used on input line 307.
 (pdftex.def)             Requested size: 455.24408pt x 521.9017pt.
 
 Overfull \hbox (95.24408pt too wide) in paragraph at lines 307--308
->>>>>>> master
 [][] 
  []
 
 
-<<<<<<< HEAD
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
-
- []
-
-
-LaTeX Warning: Float too large for page by 153.25279pt on input line 182.
-
-) [29pdfTeX warning (ext4): destination with the same identifier (name{cite.Sit
-=======
 Underfull \hbox (badness 10000) in paragraph at lines 307--308
 
  []
@@ -1788,19 +1365,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 317--318
 LaTeX Warning: Float too large for page by 153.25279pt on input line 318.
 
 ) [34pdfTeX warning (ext4): destination with the same identifier (name{cite.Sit
->>>>>>> master
 e\040Internet}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.45   \include{partie2}
-<<<<<<< HEAD
-                        ] [30 <./images/model.png>] [31 <./images/history.png>]
-[32 <./images/heuristic.png>]
-=======
                         ] [35 <./images/model.png>] [36 <./images/history.png>]
 [37 <./images/heuristic.png>]
->>>>>>> master
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 46.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 46.
  (./rapport.aux (./title.aux) (./intro.aux)
@@ -1808,11 +1379,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 46.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 46.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 46.
 Package rerunfilecheck Info: File `rapport.out' has not changed.
-<<<<<<< HEAD
-(rerunfilecheck)             Checksum: 6084EF9CDA850DE899B8FD87993965CF;1692.
-=======
 (rerunfilecheck)             Checksum: 928C6E2C5286B74333D0C2945B00AD36;2068.
->>>>>>> master
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -1820,15 +1387,6 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 46.
  ) 
 Here is how much of TeX's memory you used:
-<<<<<<< HEAD
- 7798 strings out of 493085
- 111868 string characters out of 6136918
- 210106 words of memory out of 5000000
- 11031 multiletter control sequences out of 15000+600000
- 16357 words of font info for 37 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 29i,7n,35p,378b,472s stack positions out of 5000i,500n,10000p,200000b,80000s
-=======
  7920 strings out of 493029
  112866 string characters out of 6136234
  211311 words of memory out of 5000000
@@ -1836,25 +1394,12 @@ Here is how much of TeX's memory you used:
  15589 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  29i,7n,35p,378b,566s stack positions out of 5000i,500n,10000p,200000b,80000s
->>>>>>> master
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf/
 fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/c
 m-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb
 ></usr/share/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/f
 onts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/fonts/type1/public/cm
 -super/sfcc1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1440.pfb>
-<<<<<<< HEAD
-</usr/share/texmf/fonts/type1/public/cm-super/sfrm0700.pfb></usr/share/texmf/fo
-nts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-
-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb><
-/usr/share/texmf/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on rapport.pdf (32 pages, 974000 bytes).
-PDF statistics:
- 439 PDF objects out of 1000 (max. 8388607)
- 358 compressed objects within 4 object streams
- 109 named destinations out of 1000 (max. 500000)
- 317 words of extra memory for PDF output out of 10000 (max. 10000000)
-=======
 </usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fo
 nts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-
 super/sfti1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1095.pfb>
@@ -1864,5 +1409,4 @@ PDF statistics:
  405 compressed objects within 5 object streams
  124 named destinations out of 1000 (max. 500000)
  367 words of extra memory for PDF output out of 10000 (max. 10000000)
->>>>>>> master
 

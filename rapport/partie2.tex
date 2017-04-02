@@ -1,17 +1,4 @@
 \newpage
-<<<<<<< HEAD
-\section{Interface}
-
-Notre application se présente de la manière suivante :\\
-une barre de menu situé au nord de la fenêtre vous permettra de choisir 
-une action à réaliser parmi toutes les fonctionnalités qui vous sont proposés.\\
-\\
-La grille de sudoku occupe le centre de notre application et se retrouve accompagnée 
-d'une colonne, à l'est de la fenêtre, vous permettant de sélectionner 
-parmi des boutons raccourcis, les fonctionnalités les plus utilisés tel défaire, 
-refaire une action, demander un indice, réinitialiser la grille etc, puis, 
-une zone d'aide, situé en bas de la grille.\\
-=======
 \section{Extension de l’application}
 \subsection{Structure d'un fichier grilleXX.txt}
 Ce fichier commence  par les dimensions de la futur grille, d’abord le nombre de région par 
@@ -62,7 +49,6 @@ d'une colonne, à l'est de la fenêtre, vous permettant de sélectionner
 parmi des boutons raccourcis, les fonctionnalités les plus utilisées telle défaire, 
 refaire une action, demander un indice, réinitialiser la grille etc, puis, 
 une zone d'aide, située en bas de la grille.\\
->>>>>>> master
 
 Il vous est également possible d'utiliser votre clavier afin de profiter 
 des fonctionnalités que vous offre notre application.\\
@@ -75,8 +61,6 @@ sur la touche contrôle et la lettre correspondante à l'action souhaîtée. \\
 Pour ajouter/retirer des possibilités dans la grille, il vous suffit d'utiliser 
 le bouton droit de la souris tandis que pour ajouter/retirer des candidats, il 
 faudra utiliser le bouton gauche de votre souris.
-<<<<<<< HEAD
-=======
 
 \subsection{Le composant principal - La grille}
 
@@ -155,7 +139,6 @@ et la nouvelle sont de même taille, alors le modèle de chaque Cell est mis à 
 Sinon, tous les composant graphiques interne de Grid sont retirés et on recommence
 le procéssus de construction à partir de la création de la vue (createView())
 
->>>>>>> master
 
 \begin{figure}[ht]
   \caption{\label{annexe6} interface sudoku}
@@ -223,11 +206,7 @@ et vous propose de reprendre la partie ou de la quitter.
 \end{figure}
 
 \newpage
-<<<<<<< HEAD
-Si vous appuyez sur le bouton solution, la grille sera rempli entièrement.
-=======
 Si vous appuyez sur le bouton solution, la grille sera remplie entièrement.
->>>>>>> master
 \begin{figure}[ht]
   \caption{\label{annexe11} solution complète}
   \includegraphics [width=130mm]{images/solution.png} \\[0.5cm]
@@ -244,12 +223,6 @@ et ainsi de recommencer la partie.
 \newpage
 Si vous demandez un indice, vous pourrez avoir un texte d'aide 
 et pourrez compléter la grille en vous aidant de la surbrillance 
-<<<<<<< HEAD
-des cases concernés.  
-\begin{figure}[ht]
-  \caption{\label{annexe13} indice}
-  \includegraphics [width=130mm]{images/clue.png} \\[0.5cm]
-=======
 des cases concernées.  
 \begin{figure}[ht]
   \caption{\label{annexe13} indice}
@@ -332,72 +305,6 @@ très intéressant pour le développement d'applications graphiques.
 \begin{figure}[ht]
   \caption{\label{annexe16} Diagramme model}
   \includegraphics [width=160mm]{images/model.png} \\[0.5cm]
->>>>>>> master
-\end{figure}
-
-\newpage
-En choisissantla méthode pas à pas, vous bénéficierez à la fois de conseils
-pour remplir la grille mais également de la réponse de la case concerné 
-vous permettant de résoudre la grille de sudoku. 
-\begin{figure}[ht]
-<<<<<<< HEAD
-  \caption{\label{annexe14} pas à pas}
-  \includegraphics [width=130mm]{images/pas.png} \\[0.5cm]
-=======
-  \caption{\label{annexe17} Diagramme history}
-  \includegraphics [width=140mm]{images/history.png} \\[0.5cm]
->>>>>>> master
-\end{figure}
-
-\newpage
-Il vous est posssible de demander une nouvelle grille, en chargeant 
-un fichier grilleXX.txt. L'application supporte différents formats de grilles. 
-\begin{figure}[ht]
-<<<<<<< HEAD
-  \caption{\label{annexe15} nouvelle grille}
-  \includegraphics [width=130mm]{images/newGrid.png} \\[0.5cm]
-\end{figure}
-
-\newpage
-\section{Difficultés rencontrées}
-Lors de la conception de notre projet, nous avons rencontrés quelques difficultés :
-\begin{itemize}
- \item gestion du temps, où chaque semaine, nous nous fixions des objectifs à atteindre,
- \item utilisation et prise en main du logiciel git et du site 
-	    \href{https://github.com/yuki1996/Sudoku}{github.com}, 
- \item respect des demandes de la part du client, 
- \item incompatibilité/réajustement lors de réunion de différents travaux des membres du groupe
-\end{itemize}
-
-
-\section{Conclusion}
-Ce projet nous a apporté une grande expérience car il s'agit 
-de notre premier ``gros'' projet en équipe de plus de deux personnes.
-
-Afin de réaliser un travail commun, nous avons opté pour un service 
-de gestion de développement de logiciels, utilisant le logiciel 
-de gestion de versions Git ainsi que le service web d'hébergement \url{https://github.com/}.
-
-Ce dernier fut pour nous d'une grande aide, ce fut une toute nouvelle façon de 
-procéder que nous a donné comme opportunité ce projet même si la prise en main 
-fut assez compliqué.
-
-Pour finir, ce projet fut pour nous très enrichissant car il nous a permi de réunir
-l'ensemble de nos connaissances au sein d'un même projet. Nous avons fait le choix 
-de développer notre application dans le langage de programmation Java, qui est un langage
-très intéressant pour les développements d'applications graphiques.
-
-\begin{thebibliography}{9}
- \bibitem{Site Internet}
-          \url{https://www.mots-croises.ch/Sudoku.htm}
- \bibitem{Site Internet}
-          \url{http://www.le-sudoku.fr/}
-\end{thebibliography}
-
-\section{Annexes}
-\begin{figure}[ht]
-  \caption{\label{annexe16} Diagramme model}
-  \includegraphics [width=160mm]{images/model.png} \\[0.5cm]
 \end{figure}
 
 \begin{figure}[ht]
@@ -410,11 +317,5 @@ très intéressant pour les développements d'applications graphiques.
   \includegraphics [width=140mm]{images/heuristic.png} \\[0.5cm]
 \end{figure}
 
-=======
-  \caption{\label{annexe18} Diagramme heuristic}
-  \includegraphics [width=140mm]{images/heuristic.png} \\[0.5cm]
-\end{figure}
-
->>>>>>> master
 
 

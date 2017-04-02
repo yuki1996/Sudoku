@@ -153,16 +153,6 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
 Pour implanter notre sudoku, nous avons choisi de fonctionner selon le modèle MVC, 
 c'est-à-dire le système Modèle-Vue-Contrôleur. Afin de visualiser notre organisation, 
 des diagrammes ont été réalisés et sont disponibles en annexe 
-<<<<<<< HEAD
-(annexe 16 : diagramme model,
-annexe 17 : diagramme history,
-annexe 18 : diagramme heuristic).
-
-\subsection{SudokuModel}
-Le sudoku possède une grille pour le joueur (GridModel) et un historique.\\ 
-La grille du joueur est le résultat des interactions du joueur (ajouter/supprimer 
-un candidat ou sélectionner/désélectionner une valeur). \\
-=======
 (annexe 18 : diagramme model,
 annexe 19 : diagramme history,
 annexe 20 : diagramme heuristic).
@@ -174,7 +164,6 @@ La grille solution est générée par application des heuristiques à l’aide
 d’un gestionnaire d’heuristiques (RuleManager). La grille
 joueur est le résultat des interactions du joueur(ajouter/supprimer un candidat 
 ou sélectionner/désélectionner une valeur). \\
->>>>>>> master
 L’historique répertorie les actions du joueur avec possibilité d’annuler ses actions.\\ 
 Le joueur a gagné quand sa grille est finie, sans conflits de nombres 
 (deux 6 sur la même ligne par exemple).\\
@@ -184,11 +173,7 @@ heuristique). On peut sauvegarder ou enregistrer sa partie ou encore générer u
 à partir d’un fichier texte (sur la première ligne doit se trouver la hauteur
 et la largeur de la grille puis sur les lignes qui suivent les valeurs des cases
 fixes du sudoku). Le joueur peut à tout moment réinitialiser sa partie, c’est
-<<<<<<< HEAD
-à dire, mettre sa grille comme elle était avant toutes interactions de sa part,
-=======
 à dire, mettre sa grille comme elle était avant toute interaction de sa part,
->>>>>>> master
 seules les valeurs des cases fixes restent.
 
 \subsection{GridModel}
@@ -245,13 +230,8 @@ finale de la case obligatoirement.\\
 \\
 
 Exemple : \\
-<<<<<<< HEAD
-On peut voir ici que sur la première ligne et la deuxième colonne se trouve le candidat 4.
-Comme étant le seul 4 dans la région, de ce fait, on peut le sélectionner comme valeur.\\
-=======
 On peut voir ici que sur la troisième ligne et la sixième colonne se trouve le candidat 4.
 Comme étant le seul candidat dans cette case, de ce fait, on peut le sélectionner comme valeur.\\
->>>>>>> master
 
 \begin{figure}[ht]
   \caption{\label{annexe1} seul candidat}
@@ -268,11 +248,7 @@ de toutes les cases de la ligne, un candidat n'apparait qu'une seule fois, alors
 Il est possible d'utiliser cette méthode dans toutes les unités de la grille (lignes, colonnes, régions).
 
 Exemple :
-<<<<<<< HEAD
-On peut voir ici que sur la première ligne, septième colonne, il y a un seul candidat 
-=======
 On peut voir ici que sur la première ligne, deuxième colonne, il y a un seul candidat 
->>>>>>> master
 dans la case. Donc il n'y a qu'une solution : 5.\\
 
 \begin{figure}[ht]
@@ -319,11 +295,7 @@ ce bloc.\\
 \\
 
 Exemple :\\
-<<<<<<< HEAD
-Dans cet exemple, on peut constater que R7 et R9 que le 8 n'est pas présent sur L8. 
-=======
 Dans cet exemple, on peut constater que dans R7 et R9, le 8 n'est pas présent sur L8. 
->>>>>>> master
 On peut donc supprimer les 8 dans la R8 à l'exception de ceux sur L8.
 
 \begin{figure}[ht]
@@ -369,11 +341,7 @@ Il est possible d'utiliser cette méthode dans toutes les unités de la grille (
 Exemple :\\
 Dans cet exemple, il n'est possible de trouver le candidat 5 
 qu'à deux emplacements des lignes L2 et L8.\\ 
-<<<<<<< HEAD
-De plus, ces candidats font partie des colonnes communes L5 et L7.\\ 
-=======
 De plus, ces candidats font partie des colonnes communes C5 et C7.\\ 
->>>>>>> master
 Il est donc possible de supprimer tous les autres candidats 5 de ces 2 colonnes. 
 
 \begin{figure}[ht]
