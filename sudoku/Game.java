@@ -128,7 +128,7 @@ public class Game {
 	
 	public void createModel() {
 		try {
-			sudokuModel = new StdSudokuModel(new File(getClass().getResource("default_grid.txt").getFile()));
+			sudokuModel = new StdSudokuModel(new File("default_grid.txt"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
