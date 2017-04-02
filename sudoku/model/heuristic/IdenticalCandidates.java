@@ -62,7 +62,7 @@ public class IdenticalCandidates extends ReportGenerator {
 					unitStr = "du secteur";
 				}
 				
-				Set<ICoord> possiblyChangedCells = unit;
+				Set<ICoord> possiblyChangedCells = new HashSet<ICoord>(unit);
 				possiblyChangedCells.removeAll(couple.getSecond());
 				Set<ICoord> changedCells = new HashSet<ICoord>();
 				
