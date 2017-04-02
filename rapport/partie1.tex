@@ -64,7 +64,7 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
   
   \item Fichier de chargement pour une nouvelle grille :
   l'utilisateur peut demander le chargement d'une grille afin 
-  de pour pouvoir effectuer l'une de deux actions suivantes : 
+  de pouvoir effectuer l'une de deux actions suivantes : 
   la compléter ou la créer afin d'avoir une nouvelle grille. \\
   
   \item Sauvegarde/chargement d’une partie :
@@ -109,7 +109,7 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
   
   \item Annuler : permet de défaire la dernière action action réalisée sur la grille.\\
   
-  \item Refaire : permet de défaire l'action annuler. \\
+  \item Refaire : permet de défaire l'action annulé. \\
 
   \item Raccourcis clavier : gestion des appuis simultanés de touches du clavier 
   générant des possibilités inscrites dans le menu tel les sauvegardes/chargements 
@@ -150,7 +150,7 @@ de ces mots en anglais, ils seront noté ci-dessous entre parenthèses.
 \end{enumerate}
 
 \section{Implantation}
-Pour implanter notre sudoku, nous avons choisit de fonctionner selon le modèle MVC, 
+Pour implanter notre sudoku, nous avons choisi de fonctionner selon le modèle MVC, 
 c'est-à-dire le système Modèle-Vue-Contrôleur. Afin de visualiser notre organisation, 
 des diagrammes ont été réalisés et sont disponibles en annexe 
 (annexe 18 : diagramme model,
@@ -173,7 +173,7 @@ heuristique). On peut sauvegarder ou enregistrer sa partie ou encore générer u
 à partir d’un fichier texte (sur la première ligne doit se trouver la hauteur
 et la largeur de la grille puis sur les lignes qui suivent les valeurs des cases
 fixes du sudoku). Le joueur peut à tout moment réinitialiser sa partie, c’est
-à dire, mettre sa grille comme elle était avant toutes interactions de sa part,
+à dire, mettre sa grille comme elle était avant toute interaction de sa part,
 seules les valeurs des cases fixes restent.
 
 \subsection{GridModel}
@@ -189,7 +189,7 @@ case fixe) une valeur.
 
 \subsection{CellModel}
 Une cellule possède un tableau de candidat.
-Une cellule peut être soit modifiable c'est-à-dire qu'on peut modifier sa valeur ou soit fixe, immuable : 
+Une cellule peut être soit modifiable, c'est-à-dire qu'on peut modifier sa valeur, ou soit fixe, immuable : 
 ce sont les cases du départ de la grille. 
 Comme la grille, elle connait son nombre de valeurs/candidats possibles qui est donné en paramètre.
 La cellule a soit une valeur, soit une liste de candidats possibles. 
@@ -201,8 +201,8 @@ le cas et inversement).
 \subsection{Command}
 Une commande est un objet capable de modifier une grille selon certains critères (ajout/suppression candidat, ajout/suppression valeur).
 AbstractCommand est la classe fournissant un mécanisme général pour les commandes, elle est la super classe de 
-addValue (ajoute une valeur à la cellule), addCandidate (ajoute un candidat à la cellule),
-removeValue (supprime une valeur à la cellule), removeCandidate (supprime un candidat à la cellule).
+AddValue (ajoute une valeur à la cellule), AddCandidate (ajoute un candidat à la cellule),
+RemoveValue (supprime une valeur à la cellule), RemoveCandidate (supprime un candidat à la cellule).
 
 \subsection{History}
 L'historique est une sorte de pile chronologique bornée. On peut toujours ajouter des éléments (Command) à un historique : lorsque l'historique est plein, rajouter un nouvel élément fait disparaître le plus ancien. On peut avancer et 
@@ -248,7 +248,7 @@ de toutes les cases de la ligne, un candidat n'apparait qu'une seule fois, alors
 Il est possible d'utiliser cette méthode dans toutes les unités de la grille (lignes, colonnes, régions).
 
 Exemple :
-On peut voir ici que sur la première ligne, septième colonne, il y a un seul candidat 
+On peut voir ici que sur la première ligne, deuxième colonne, il y a un seul candidat 
 dans la case. Donc il n'y a qu'une solution : 5.\\
 
 \begin{figure}[ht]
@@ -295,7 +295,7 @@ ce bloc.\\
 \\
 
 Exemple :\\
-Dans cet exemple, on peut constater que R7 et R9 que le 8 n'est pas présent sur L8. 
+Dans cet exemple, on peut constater que dans R7 et R9, le 8 n'est pas présent sur L8. 
 On peut donc supprimer les 8 dans la R8 à l'exception de ceux sur L8.
 
 \begin{figure}[ht]
@@ -341,7 +341,7 @@ Il est possible d'utiliser cette méthode dans toutes les unités de la grille (
 Exemple :\\
 Dans cet exemple, il n'est possible de trouver le candidat 5 
 qu'à deux emplacements des lignes L2 et L8.\\ 
-De plus, ces candidats font partie des colonnes communes L5 et L7.\\ 
+De plus, ces candidats font partie des colonnes communes C5 et C7.\\ 
 Il est donc possible de supprimer tous les autres candidats 5 de ces 2 colonnes. 
 
 \begin{figure}[ht]
