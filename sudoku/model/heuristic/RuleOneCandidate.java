@@ -50,7 +50,7 @@ public class RuleOneCandidate extends ReportGenerator {
 					for (int j = 0; j < grid.numberCandidates(); j++) {
 						r.addDecisiveUnits(new Coord(i,j));
 					}
-					String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette ligne.";
+					String s = "Candidat Unique : le candidat " + value + " n'est présent qu'une seule fois dans cette ligne.";
 					r.setDescription(s);
 					return r;
 				}
@@ -90,7 +90,7 @@ public class RuleOneCandidate extends ReportGenerator {
 					for (int j = 0; j < grid.numberCandidates(); j++) {
 						r.addDecisiveUnits(new Coord(j,i));
 					}
-					String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette colonne.";
+					String s = "Candidat Unique : le candidat " + value + " n'est présent qu'une seule fois dans cette colonne.";
 					r.setDescription(s);
 					return r;
 				}
@@ -135,7 +135,7 @@ public class RuleOneCandidate extends ReportGenerator {
 						for (ICoord cd : grid.getSector(tabRow[k], tabCol[k])) {
 							r.addDecisiveUnits(cd);
 						}
-						String s = "Le candidat " + value + " n'est présent qu'une seule fois dans cette région.";
+						String s = "Candidat Unique : le candidat " + value + " n'est présent qu'une seule fois dans cette région.";
 						r.setDescription(s);
 						return r;
 					}

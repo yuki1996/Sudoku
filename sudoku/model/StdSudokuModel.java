@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import sudoku.model.heuristic.Report;
@@ -40,7 +38,7 @@ public class StdSudokuModel implements SudokuModel {
 	private History<Command> history;
 
 	private PropertyChangeSupport propertySupport;
-	
+
 	//CONSTRUCTEUR
 	public StdSudokuModel(int width, int height)  {
 		Contract.checkCondition(width > 0 && height > 0);

@@ -40,7 +40,6 @@ import sudoku.model.StdSudokuModel;
 import sudoku.model.SudokuModel;
 import sudoku.view.Grid;
 
-
 public class Game {
 	
 	// CONSTANTES
@@ -198,11 +197,11 @@ public class Game {
     	// annuler la dernière action
     	undoMenu = new JMenuItem("Annuler l'action");
     	undoMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK));
-    	
+
     	// refaire l'action
     	doMenu = new JMenuItem("Refaire l'action");
     	doMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_MASK));
-    	
+
     	// pause
     	pause = new JButton();
     	pause.setBackground(Color.WHITE);
@@ -369,7 +368,7 @@ public class Game {
                 resolveMenu();
             }
         });
-        
+
         resolve.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 resolveMenu();
@@ -388,7 +387,7 @@ public class Game {
                 clue();
             }
         });
-        
+
         // solution finale
         solutionMenu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -539,6 +538,7 @@ public class Game {
     		@Override
     		public void propertyChange(PropertyChangeEvent evt) {
     			JOptionPane.showMessageDialog(null, "Vous avez gagné", "Félicitations", JOptionPane.INFORMATION_MESSAGE);
+
     		}	
         };
         
@@ -702,7 +702,7 @@ public class Game {
        					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage()
        							.getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
        	   chrono.pause();
-       	         	   
+       	   
            mainFrame.setVisible(false);
            String[] msg = {"Reprendre le jeu", "Quittez le jeu"};
            String result = (String) JOptionPane.showInputDialog(mainFrame, 
@@ -718,6 +718,7 @@ public class Game {
        			new ImageIcon(
        					new ImageIcon(getClass().getResource("pictures/pause.png")).getImage()
        							.getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+
     	   chrono.start();	   
     	}
 	}

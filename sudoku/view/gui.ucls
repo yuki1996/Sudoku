@@ -3,106 +3,67 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="sudoku.view.Cell" project="Sudoku" file="/Sudoku/src/sudoku/view/Cell.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="177" width="302" x="83" y="218"/>    
+    <position height="123" width="266" x="41" y="200"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
   <class id="2" language="java" name="sudoku.view.Grid" project="Sudoku" file="/Sudoku/src/sudoku/view/Grid.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="141" width="138" x="43" y="37"/>    
+    <position height="123" width="167" x="194" y="37"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="javax.swing.JPanel" project="Sudoku" 
-    file="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
-    <position height="231" width="234" x="43" y="435"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="false" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="4" language="java" name="sudoku.model.GridModel" project="Sudoku" 
-    file="/Sudoku/src/sudoku/model/GridModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="33" width="82" x="425" y="218"/>    
-    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="false" package="true" protected="true" private="false" static="true"/>    
-    </display>  
-  </interface>  
-  <interface id="5" language="java" name="sudoku.model.CellModel" project="Sudoku" 
+  <interface id="3" language="java" name="sudoku.model.CellModel" project="Sudoku" 
     file="/Sudoku/src/sudoku/model/CellModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="23" width="80" x="317" y="435"/>    
+    <position height="64" width="189" x="41" y="363"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <association id="6">    
-    <bendpoint x="31" y="218"/>    
+  <interface id="4" language="java" name="sudoku.model.SudokuModel" project="Sudoku" 
+    file="/Sudoku/src/sudoku/model/SudokuModel.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="64" width="141" x="347" y="200"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <association id="5">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="7" name="squareGrid"/>      
-      <multiplicity id="8" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="false"/>  
-  </association>  
-  <dependency id="9">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <association id="10">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="11" name="model"/>      
-      <multiplicity id="12" minimum="0" maximum="1"/>    
+      <attribute id="6" name="model"/>      
+      <multiplicity id="7" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
-  <association id="13">    
+  <association id="8">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="14" name="cards"/>      
-      <multiplicity id="15" minimum="0" maximum="2147483647"/>    
+      <attribute id="9" name="model">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="10" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="false"/>  
   </association>  
-  <generalization id="16">    
-    <bendpoint x="52" y="218"/>    
+  <dependency id="11">    
     <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="17">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="18" name="model"/>      
-      <multiplicity id="19" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="false"/>  
-  </association>  
-  <generalization id="20">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </generalization>  
-  <association id="21">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="22" name="candidates"/>      
-      <multiplicity id="23" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="false"/>  
-  </association>  
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="false" package="false" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
-    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <attributes public="false" package="false" protected="false" private="false" static="true"/>    
     <operations public="true" package="true" protected="true" private="false" static="true"/>  
   </classifier-display>  
   <association-display labels="true" multiplicity="false"/>

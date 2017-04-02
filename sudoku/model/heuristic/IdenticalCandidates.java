@@ -62,7 +62,7 @@ public class IdenticalCandidates extends ReportGenerator {
 					unitStr = "du secteur";
 				}
 				
-				Set<ICoord> possiblyChangedCells = unit;
+				Set<ICoord> possiblyChangedCells = new HashSet<ICoord>(unit);
 				possiblyChangedCells.removeAll(couple.getSecond());
 				Set<ICoord> changedCells = new HashSet<ICoord>();
 				
@@ -86,6 +86,7 @@ public class IdenticalCandidates extends ReportGenerator {
 					String str = "Les cellules";
 					for (ICoord coord : couple.getSecond()) {
 						str += " L" + coord.getRow() + "C" + coord.getCol();
+						res.addCell(CellSetName.DECISIVE_CELLS, coord);
 					}
 					str += " ont et ont uniquement les candidats";
 					for (Integer j : Candidates) {
