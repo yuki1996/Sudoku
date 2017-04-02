@@ -127,7 +127,12 @@ public class Game {
 	}
 	
 	public void createModel() {
-		sudokuModel = new StdSudokuModel(3, 3);
+		try {
+			sudokuModel = new StdSudokuModel(new File(getClass().getResource("default_grid.txt").getFile()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
   
 	private void createView() {
@@ -135,17 +140,6 @@ public class Game {
         final int frameHeight = 600;
        
 		grid = new Grid(sudokuModel);
-		
-		// par défault, grille 2
-		try {
-	        sudokuModel.removePropertyChangeListener(finish);
-			sudokuModel = new StdSudokuModel(new File("grille2.txt"));
-			setModel(sudokuModel);
-	        sudokuModel.addPropertyChangeListener(SudokuModel.FINISH, finish);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		chrono = new Chrono();
         threadChrono = new Thread(); 
