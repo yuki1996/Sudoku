@@ -1,27 +1,32 @@
 \select@language {french}
-\contentsline {section}{Introduction}{3}{section*.2}
-\contentsline {section}{\numberline {1}Vocabulaire utilis\IeC {\'e}}{4}{section.1}
-\contentsline {section}{\numberline {2}Fonctionnalit\IeC {\'e}s}{5}{section.2}
-\contentsline {subsection}{\numberline {2.1}Fonctionnalit\IeC {\'e}s obligatoires}{5}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Fonctionnalit\IeC {\'e}s facultatives}{7}{subsection.2.2}
-\contentsline {section}{\numberline {3}Implantation}{7}{section.3}
-\contentsline {subsection}{\numberline {3.1}SudokuModel}{7}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}GridModel}{8}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}CellModel}{8}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Command}{8}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}History}{9}{subsection.3.5}
-\contentsline {subsection}{\numberline {3.6}RuleManager}{9}{subsection.3.6}
-\contentsline {subsection}{\numberline {3.7}Report}{9}{subsection.3.7}
-\contentsline {section}{\numberline {4}Heuristiques implant\IeC {\'e}es}{9}{section.4}
-\contentsline {subsection}{\numberline {4.1}Un seul candidat : (only candidate)}{9}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Un candidat unique : (one candidate)}{11}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Des jumeaux/tripl\IeC {\'e}s : (pair/triplet)}{11}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Interactions entre r\IeC {\'e}gions}{13}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Candidats identiques}{13}{subsection.4.5}
-\contentsline {subsection}{\numberline {4.6}X-Wing}{14}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}Groupes isol\IeC {\'e}s}{15}{subsection.4.7}
-\contentsline {subsection}{\numberline {4.8}Groupes m\IeC {\'e}lang\IeC {\'e}s}{15}{subsection.4.8}
-\contentsline {section}{\numberline {5}Interface}{17}{section.5}
-\contentsline {section}{\numberline {6}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{18}{section.6}
-\contentsline {section}{\numberline {7}Conclusion}{18}{section.7}
-\contentsline {section}{\numberline {8}Annexes}{19}{section.8}
+\contentsline {section}{Introduction}{4}{section*.2}
+\contentsline {section}{\numberline {1}Vocabulaire utilis\IeC {\'e}}{5}{section.1}
+\contentsline {section}{\numberline {2}Fonctionnalit\IeC {\'e}s}{6}{section.2}
+\contentsline {subsection}{\numberline {2.1}Fonctionnalit\IeC {\'e}s obligatoires}{6}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Fonctionnalit\IeC {\'e}s facultatives}{8}{subsection.2.2}
+\contentsline {section}{\numberline {3}Implantation}{8}{section.3}
+\contentsline {subsection}{\numberline {3.1}SudokuModel}{8}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}GridModel}{9}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}CellModel}{9}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Command}{10}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}History}{10}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}RuleManager}{10}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Report}{10}{subsection.3.7}
+\contentsline {section}{\numberline {4}Heuristiques implant\IeC {\'e}es}{11}{section.4}
+\contentsline {subsection}{\numberline {4.1}Un seul candidat : (only candidate)}{11}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Un candidat unique : (one candidate)}{12}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Des jumeaux/tripl\IeC {\'e}s : (pair/triplet)}{12}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Interactions entre r\IeC {\'e}gions}{14}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Candidats identiques}{14}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}X-Wing}{15}{subsection.4.6}
+\contentsline {subsection}{\numberline {4.7}Groupes isol\IeC {\'e}s}{16}{subsection.4.7}
+\contentsline {subsection}{\numberline {4.8}Groupes m\IeC {\'e}lang\IeC {\'e}s}{16}{subsection.4.8}
+\contentsline {section}{\numberline {5}Extension de l\IeC {\textquoteright }application}{18}{section.5}
+\contentsline {subsection}{\numberline {5.1}Structure d'un fichier grilleXX.txt}{18}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Cr\IeC {\'e}ation d\IeC {\textquoteright }une r\IeC {\`e}gle}{19}{subsection.5.2}
+\contentsline {section}{\numberline {6}Interface}{20}{section.6}
+\contentsline {section}{\numberline {7}Jouabilit\IeC {\'e}}{21}{section.7}
+\contentsline {section}{\numberline {8}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{31}{section.8}
+\contentsline {section}{\numberline {9}R\IeC {\'e}partition du travail}{31}{section.9}
+\contentsline {section}{\numberline {10}Conclusion}{32}{section.10}
+\contentsline {section}{\numberline {11}Annexes}{32}{section.11}

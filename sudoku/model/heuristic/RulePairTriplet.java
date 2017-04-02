@@ -70,7 +70,6 @@ public class RulePairTriplet extends ReportGenerator {
 						if (row != -1) {
 							for (ICoord coord : decisiveCellsRow) {
 								r.addCell(CellSetName.DECISIVE_CELLS, coord);
-								//System.out.println("case("+coord.getRow()+","+coord.getCol()+ ": "+ k);
 								
 								for(ICoord cd : grid.getSector(coord.getRow(), coord.getCol())) {
 									r.addCell(CellSetName.DECISIVE_UNITS, cd);
@@ -86,9 +85,9 @@ public class RulePairTriplet extends ReportGenerator {
 								}
 							}
 
-							s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+							s = " Jumeaux et triplés : les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
 							s += k + " alignés dans cette région, donnent la possibilité de" 
-									+ " supprimer les " + k + " dans les autres régions de cette ligne.";
+									+ " supprimer les " + k + " dans les autres \n régions de cette ligne.";
 						} else {
 							for (ICoord coord : decisiveCellsCol) {
 								r.addCell(CellSetName.DECISIVE_CELLS, coord);
@@ -106,9 +105,9 @@ public class RulePairTriplet extends ReportGenerator {
 								}
 							}
 
-							s = "Les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
+							s = " Jumeaux et triplés : les " + r.getCellSet(CellSetName.DECISIVE_CELLS).size() + " candidats ";
 							s += k + " alignés dans cette région, donnent la possibilité de" 
-									+ " supprimer les " + k + " dans les autres régions de cette colonne.";
+									+ " supprimer les " + k + " dans les autres \n régions de cette colonne.";
 						}
 						
 

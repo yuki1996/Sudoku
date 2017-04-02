@@ -33,7 +33,7 @@ public class RuleOnlyCandidate extends ReportGenerator {
 				}
 				if (k == 1) {
 					SetValueReport r = new SetValueReport(grid, c, l);
-					String string = "Cette case contient un seul candidat avec le symbole " + l;
+					String string = "Seul Candidat : cette case contient un seul candidat avec le symbole " + l;
 					r.setDescription(string);
 					return r;
 				}

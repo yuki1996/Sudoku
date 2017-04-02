@@ -14,7 +14,9 @@ import sudoku.util.ICoord;
  * 		isWin() <==> getGridPlayer().isFull() && check().isEmpty()
  * 		isModifiableCell(c) <==> getGridPlayer().getCell(c).isModifiable()
  * 		 isValidCoord(coord) <==> 0 <= coord.getCol() < getGridPlayer().size()
- *				&& 0 <= coord.getRow() < getGridPlayer().size()=
+ *				&& 0 <= coord.getRow() < getGridPlayer().size()
+ *		getGridPlayer().getWidth() == getGridSoluce().getWidth()
+ *		getGridPlayer().getHeight() == getGridSoluce().getHeight() 
  * </pre>
  * 
  * @cons <pre>
@@ -32,6 +34,9 @@ import sudoku.util.ICoord;
  *         forall int i,j : ! getGridPlayer().cells[i][j].hasValue() &&
  *         				    getGridPlayer().cells[i][j].isModifiable()
  *         
+ *         forall int i,j : ! getGridSoluce().cells[i][j].hasValue() &&
+ *         				    getGridSoluce().cells[i][j].isModifiable()
+ *         
  *    </pre>
  *    
  */
@@ -46,6 +51,12 @@ public interface SudokuModel {
 	 * Retourne la grille du joueur.
 	 */
 	GridModel getGridPlayer();
+	
+
+	/**
+	 * Retourne la grille solution.
+	 */
+	GridModel getGridSoluce();
 	
 	/**
 	 * Retourne si on a gagné.
@@ -158,7 +169,7 @@ public interface SudokuModel {
 	/**
 	 * Résous la partie.
 	 * @post <pre>
-	 * 		getGridPlayer().iswin()
+	 * 		getGridPlayer() == getGridSoluce()
 	 * </pre>
 	 */
 	void finish();
@@ -219,4 +230,6 @@ public interface SudokuModel {
 	
 	void addPropertyChangeListener(String propertyName,
 			PropertyChangeListener l);
+	
+	void removePropertyChangeListener(PropertyChangeListener l);
 }
